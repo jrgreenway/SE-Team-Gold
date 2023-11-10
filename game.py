@@ -21,7 +21,7 @@ class Game:
     start: start(self) - starts the game loop
     drawScene: drawScene(self) - draws the current scene to the screen with its objects
         and NPCs
-    drawPlayer: drawPlayer(self) - draws the player to the screen
+    drawPlayer: drawPlayer(self, currentFrame, moving) - draws the player to the screen
     movePlayer: movePlayer(self, direction) - moves the player in the direction of the keyPress
     findInteractable: findInteractable(self) - finds the closest object to the player that
         can be interacted with - every frame go through the scene's objects and check if they can
