@@ -1,23 +1,19 @@
 
 import pygame
 
+from game import Game
+
 pygame.init()
 
 # Set up the display
 screen = pygame.display.set_mode((800, 600))
 
-# Game loop
-running = True
-while running:
-    # Handle events
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-    
-    # Update game state
-    
-    # Draw to the screen
-    screen.fill((255, 255, 255))
-    pygame.display.flip()
+# Set up the scenes and objects - will use a json for this
+
+# Create the player
+
+# Create the game TODO add the scenes, player, etc. to the constructor
+game = Game(screen)
+game.start()
 
 pygame.quit()
