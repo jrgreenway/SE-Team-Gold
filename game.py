@@ -1,4 +1,7 @@
 import pygame
+from screens.screenConstants import START_SCREEN, WELCOME_SCREEN, nextScreen
+
+from screens.welcomeScreen import draw_welcome_screen
 
 
 class Game:
@@ -34,12 +37,34 @@ class Game:
 
     # Temporary Constructor for testing purposes
     def __init__(self, screen: pygame.Surface) -> None:
+        self.clock = pygame.time.Clock()
         self.screen = screen
+        self.currentScreen = WELCOME_SCREEN
+        self.frame = 0
 
+    def awaitExitWelcomeScreen(self) -> None:
+        keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_SPACE]:
+            self.currentScreen = nextScreen(self.currentScreen)
+
+    def welcomeScreen(self) -> None:
+        draw_welcome_screen(self.screen, self.frame)
+        self.awaitExitWelcomeScreen()
+
+    def handleCurrentScreen(self) -> None:
+        if self.currentScreen == WELCOME_SCREEN:
+            self.welcomeScreen()
+        elif self.currentScreen == START_SCREEN:
+            pass
+        else:
+            raise Exception("Invalid Screen")
+        
     def start(self) -> None:
         '''
         Starts the game loop
         '''
+        self.frame = 0
         # Game loop
         running = True
         while running:
@@ -49,7 +74,11 @@ class Game:
                     running = False
             
             # Update game state
-            
+            self.handleCurrentScreen()
+
             # Draw to the screen
-            self.screen.fill((255, 255, 255))
+            # self.screen.fill((255, 255, 255))
             pygame.display.flip()
+            self.frame += 1
+            self.frame %= 60
+            self.clock.tick(60)
