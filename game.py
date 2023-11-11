@@ -35,11 +35,19 @@ class Game:
     # Temporary Constructor for testing purposes
     def __init__(self, screen: pygame.Surface) -> None:
         self.screen = screen
+        self.currentFrame = 0
+
+    def setcurrentFrame(self, currentFrame):
+        self.currentFrame = currentFrame
 
     def start(self) -> None:
         '''
         Starts the game loop
         '''
+
+        clock = pygame.time.Clock()
+
+
         # Game loop
         running = True
         while running:
@@ -53,3 +61,6 @@ class Game:
             # Draw to the screen
             self.screen.fill((255, 255, 255))
             pygame.display.flip()
+            clock.tick(60)
+            self.setcurrentFrame(self.currentFrame+1)
+
