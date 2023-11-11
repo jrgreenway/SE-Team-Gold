@@ -38,7 +38,7 @@ def scene_drawer(screen: pygame.Surface, sceneNumber: int) -> None:
         
         gameObjects.append(gameObject)
     
-    texture = pygame.image.load(scene['texture'])
+    texture = pygame.transform.scale(pygame.image.load(scene['texture']),  (128, 128))
     texture_width, texture_height = texture.get_size()
     scene_width, scene_height = screen.get_size()
     num_repeats_x = math.ceil(scene_width / texture_width)
