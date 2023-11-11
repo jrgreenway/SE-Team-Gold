@@ -63,7 +63,7 @@ class Game:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 clicked = [button for button in buttons if button.rect.collidepoint(event.pos)]
                 if len(clicked) > 0:
-                    self.running = clicked[0].onClick()
+                    self.running, self.currentScreen = clicked[0].onClick()
 
     def welcomeScreen(self) -> None:
         ''' Game.welcomeScreen() -> None

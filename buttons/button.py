@@ -28,14 +28,14 @@ class Button:
         '''
         return self.rect.collidepoint(pos)
     
-    def onClick(self) -> bool:
-        ''' Button.onClick(self) -> bool
+    def onClick(self, *args) -> tuple[bool, str]:
+        ''' Button.onClick(self, args) -> bool, str
         Calls the action function if it exists and returns the result which is the new state
-        of the running attribute of the game
+        of the running attribute of the game. Also, returns the next screen of the game.
         '''
         if self.action is not None:
-            return self.action()
-        return False
+            return self.action(args)
+        return False, ''
     
     def setAction(self, action: Callable) -> None:
         ''' Button.setAction(self, action) -> None
