@@ -24,6 +24,8 @@ def draw_start_screen(screen: pygame.Surface) -> list[Button]:
     load_label = font.render("Load Game", True, (255, 255, 255))
     exit_label = font.render("Exit", True, (255, 255, 255))
 
+    screen.fill((255, 255, 255))
+
     # Draw the buttons
     pygame.draw.rect(screen, (0, 255, 0), start_button_rect)
     pygame.draw.rect(screen, (0, 255, 0), load_button_rect)

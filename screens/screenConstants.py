@@ -20,3 +20,15 @@ def nextScreen(currentScreen: str) -> str:
         PAUSE_SCREEN: GAME_SCREEN,
         LOAD_SCREEN: GAME_SCREEN
     }[currentScreen]
+
+def previousScreen(currentScreen: str) -> str:
+    ''' previousScreen: str -> str
+    Returns the previous screen given the current screen.
+    '''
+    return {
+        WELCOME_SCREEN: WELCOME_SCREEN,
+        START_SCREEN: WELCOME_SCREEN,
+        CREATE_AVATAR_SCREEN: START_SCREEN,
+        PAUSE_SCREEN: GAME_SCREEN,
+        LOAD_SCREEN: START_SCREEN
+    }[currentScreen]

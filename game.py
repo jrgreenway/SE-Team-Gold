@@ -1,7 +1,6 @@
-from ast import List
-from sched import Event
 import pygame
-from screens.screenConstants import START_SCREEN, WELCOME_SCREEN, nextScreen
+from screens.avatarScreen import draw_avatar_screen
+from screens.screenConstants import CREATE_AVATAR_SCREEN, START_SCREEN, WELCOME_SCREEN, nextScreen
 from screens.startScreen import draw_start_screen
 
 from screens.welcomeScreen import draw_welcome_screen
@@ -45,6 +44,8 @@ class Game:
         self.currentScreen = WELCOME_SCREEN
         self.frame = 0
         self.running = True
+        self.playerName = "" # TODO this will be linked with the Player Class
+        self.playerGender = "male" # TODO this will be linked with the Player Class
 
     def awaitExitWelcomeScreen(self) -> None:
         ''' Game.awaitExitWelcomeScreen() -> None
@@ -79,6 +80,48 @@ class Game:
         buttons = draw_start_screen(self.screen)
         self.handleMoseClicksStartScreen(events, buttons)
 
+    def handleAvatarScreenEvents(self, events, buttons) -> None:
+        ''' Game.handleAvatarScreenEvents(events, buttons) -> None
+        Handles mouse clicks on the avatar screen
+        '''
+        for event in events:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_BACKSPACE:
+                    self.playerName = self.playerName[:-1]
+                else:
+                    self.playerName += event.unicode
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                clicked = [button for button in buttons if button.rect.collidepoint(event.pos)]
+                if len(clicked) > 0:
+                    self.running, self.currentScreen = clicked[0].onClick(currentScreen=self.currentScreen)
+
+    # TODO these will be moved to Player Class
+    def setMale(self, **k) -> tuple[bool, str]:
+        self.playerGender = "male"
+        return True, self.currentScreen
+
+    # TODO these will be moved to Player Class
+    def setFemale(self, **_) -> tuple[bool, str]:
+        self.playerGender = "female"
+        return True, self.currentScreen
+
+    def createAvatarScreen(self, events) -> None:
+        ''' Game.createAvatarScreen(events) -> None
+        Draws the create avatar screen and handles mouse clicks on the buttons
+        '''
+
+        # todo go back to callbacks if this works
+        buttons = draw_avatar_screen(
+            self.screen, 
+            self.playerName,
+            self.playerGender,
+            onMaleSelected=self.setMale,
+            onFemaleSelected=self.setFemale
+        )
+
+        self.handleAvatarScreenEvents(events, buttons)
+
+
     def handleCurrentScreen(self, events) -> None:
         ''' Game.handleCurrentScreen(events) -> None
         Handles the current screen
@@ -87,6 +130,8 @@ class Game:
             self.welcomeScreen()
         elif self.currentScreen == START_SCREEN:
             self.startScreen(events)
+        elif self.currentScreen == CREATE_AVATAR_SCREEN:
+            self.createAvatarScreen(events)
         else:
             raise Exception("Invalid Screen")
         
