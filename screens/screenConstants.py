@@ -5,6 +5,9 @@ PAUSE_SCREEN = "pause"
 LOAD_SCREEN = "load"
 
 def nextScreen(currentScreen: str) -> str:
+    ''' nextScreen: str -> str
+    Returns the next screen given the current screen.
+    '''
     return {
         WELCOME_SCREEN: START_SCREEN,
         START_SCREEN: GAME_SCREEN,

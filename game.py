@@ -47,12 +47,18 @@ class Game:
         self.running = True
 
     def awaitExitWelcomeScreen(self) -> None:
+        ''' Game.awaitExitWelcomeScreen() -> None
+        Waits for the user to press the space bar to exit the welcome screen
+        '''
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_SPACE]:
             self.currentScreen = nextScreen(self.currentScreen)
 
     def handleMoseClicksStartScreen(self, events, buttons) -> None:
+        ''' Game.handleMoseClicksStartScreen(events, buttons) -> None
+        Handles mouse clicks on the start screen
+        '''
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 clicked = [button for button in buttons if button.rect.collidepoint(event.pos)]
@@ -60,14 +66,23 @@ class Game:
                     self.running = clicked[0].onClick()
 
     def welcomeScreen(self) -> None:
+        ''' Game.welcomeScreen() -> None
+        Draws the welcome screen and waits for the user to press the space bar to exit
+        '''
         draw_welcome_screen(self.screen, self.frame)
         self.awaitExitWelcomeScreen()
 
     def startScreen(self, events) -> None:
+        ''' Game.startScreen(events) -> None
+        Draws the start screen and handles mouse clicks on the buttons
+        '''
         buttons = draw_start_screen(self.screen)
         self.handleMoseClicksStartScreen(events, buttons)
 
     def handleCurrentScreen(self, events) -> None:
+        ''' Game.handleCurrentScreen(events) -> None
+        Handles the current screen
+        '''
         if self.currentScreen == WELCOME_SCREEN:
             self.welcomeScreen()
         elif self.currentScreen == START_SCREEN:
@@ -76,13 +91,13 @@ class Game:
             raise Exception("Invalid Screen")
         
     def start(self) -> None:
-        '''
+        ''' Game.start() -> None
         Starts the game loop
         '''
         self.frame = 0
         # Game loop
         while self.running:
-            # Handle events - keyPresses
+            # Handle quit event
             events = pygame.event.get()
             if pygame.QUIT in [event.type for event in events]:
                 self.running = False
@@ -91,7 +106,6 @@ class Game:
             self.handleCurrentScreen(events)
 
             # Draw to the screen
-            # self.screen.fill((255, 255, 255))
             pygame.display.flip()
             self.frame += 1
             self.frame %= 60

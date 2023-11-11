@@ -3,6 +3,9 @@ import math
 import pygame
 
 def draw_welcome_screen(screen, currentFrame):
+    ''' draw_welcome_screen: pygame.Surface, int -> None
+    Draws the welcome screen to the screen.
+    '''
     # Set background color
     background_color = (255, 255, 255)
     screen.fill(background_color)
