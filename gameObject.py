@@ -1,3 +1,7 @@
+from typing import Optional
+import pygame
+
+
 class GameObject:
     '''
     The base class for all game objects. ex: laundry machine, oven, etc.
@@ -32,3 +36,26 @@ class GameObject:
     checkInteractable: checkInteractable(self, player) - checks if the player is close enough to
         interact with the object - returns a boolean - if true update the interactable attribute
     '''
+
+    def __init__(self, id: int, position: pygame.Vector2 = pygame.Vector2(0, 0), sprite: Optional[pygame.Surface] = None) -> None:
+        self.id = id
+        self.position = position
+        self.sprite = sprite
+
+    def getID(self) -> int:
+        return self.id
+    
+    def getPosition(self) -> pygame.Vector2:
+        return self.position
+    
+    def setPosition(self, position: pygame.Vector2) -> None:
+        self.position = position
+
+    def getSprite(self) -> pygame.Surface:
+        if self.sprite is None:
+            raise Exception("Sprite not set")
+        return self.sprite
+    
+    def setSprite(self, sprite: pygame.Surface) -> None:
+        self.sprite = sprite
+

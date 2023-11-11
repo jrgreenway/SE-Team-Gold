@@ -1,0 +1,55 @@
+{
+    "1": {
+        "texture": "assets/Floor.png",
+        "objects": [
+            {
+                "id": 0,
+                "texture": "assets/Cupboard.png",
+                "position-absolute": {
+                    "x": 150,
+                    "y": 0
+                }
+            },
+            {
+                "id": 1,
+                "texture": "assets/Oven.png",
+                "position-relative": {
+                    "direction": "E",
+                    "relativeTo": 0
+                }
+            },
+            {
+                "id": 2,
+                "texture": "assets/Sink.png",
+                "position-relative": {
+                    "direction": "E",
+                    "relativeTo": 1
+                }
+            },
+            {
+                "id": 3,
+                "texture": "assets/Sink.png",
+                "position-relative": {
+                    "direction": "E",
+                    "relativeTo": 2
+                }
+            },
+            {
+                "id": 4,
+                "texture": "assets/Cupboard.png",
+                "position-relative": {
+                    "direction": "E",
+                    "relativeTo": 3
+                }
+            },
+            {
+                "id": 5,
+                "texture": "assets/Cupboard.png",
+                "position-relative": {
+                    "direction": "S",
+                    "relativeTo": 4
+                }
+            }
+        ]
+    }
+}

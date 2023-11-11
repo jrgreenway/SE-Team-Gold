@@ -6,7 +6,7 @@ from game import Game
 pygame.init()
 
 # Set up the display
-screen = pygame.display.set_mode((800, 600))
+screen = pygame.display.set_mode((800, 640))
 
 # Set up the scenes and objects - will use a json for this
 

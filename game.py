@@ -1,6 +1,7 @@
 import pygame
 from screens.avatarScreen import draw_avatar_screen
-from screens.screenConstants import CREATE_AVATAR_SCREEN, START_SCREEN, WELCOME_SCREEN, nextScreen
+from screens.gameScreen import draw_game_screen
+from screens.screenConstants import CREATE_AVATAR_SCREEN, GAME_SCREEN, START_SCREEN, WELCOME_SCREEN, nextScreen
 from screens.startScreen import draw_start_screen
 
 from screens.welcomeScreen import draw_welcome_screen
@@ -46,6 +47,7 @@ class Game:
         self.running = True
         self.playerName = "" # TODO this will be linked with the Player Class
         self.playerGender = "male" # TODO this will be linked with the Player Class
+        self.currentScene = 1
 
     def awaitExitWelcomeScreen(self) -> None:
         ''' Game.awaitExitWelcomeScreen() -> None
@@ -121,6 +123,11 @@ class Game:
 
         self.handleAvatarScreenEvents(events, buttons)
 
+    def createGameScreen(self, events) -> None:
+        ''' Game.createGameScreen(events) -> None
+        Draws the game screen and handles mouse clicks on the buttons
+        '''
+        draw_game_screen(self.screen, self.currentScene)
 
     def handleCurrentScreen(self, events) -> None:
         ''' Game.handleCurrentScreen(events) -> None
@@ -132,6 +139,8 @@ class Game:
             self.startScreen(events)
         elif self.currentScreen == CREATE_AVATAR_SCREEN:
             self.createAvatarScreen(events)
+        elif self.currentScreen == GAME_SCREEN:
+            self.createGameScreen(events)
         else:
             raise Exception("Invalid Screen")
         
