@@ -1,7 +1,8 @@
 import pygame
 from screens.avatarScreen import draw_avatar_screen
 from screens.gameScreen import draw_game_screen
-from screens.screenConstants import CREATE_AVATAR_SCREEN, GAME_SCREEN, START_SCREEN, WELCOME_SCREEN, nextScreen
+from screens.pauseScreen import draw_pause_screen
+from screens.screenConstants import CREATE_AVATAR_SCREEN, GAME_SCREEN, PAUSE_SCREEN, START_SCREEN, WELCOME_SCREEN, nextScreen
 from screens.startScreen import draw_start_screen
 
 from screens.welcomeScreen import draw_welcome_screen
@@ -48,13 +49,14 @@ class Game:
         self.playerName = "" # TODO this will be linked with the Player Class
         self.playerGender = "male" # TODO this will be linked with the Player Class
         self.currentScene = 1
+        self.keyDown = False
 
     def awaitExitWelcomeScreen(self) -> None:
         ''' Game.awaitExitWelcomeScreen() -> None
         Waits for the user to press the space bar to exit the welcome screen
         '''
         keys = pygame.key.get_pressed()
-
+        # TODO improve with events instead of keys
         if keys[pygame.K_SPACE]:
             self.currentScreen = nextScreen(self.currentScreen)
 
@@ -98,7 +100,7 @@ class Game:
                     self.running, self.currentScreen = clicked[0].onClick(currentScreen=self.currentScreen)
 
     # TODO these will be moved to Player Class
-    def setMale(self, **k) -> tuple[bool, str]:
+    def setMale(self, **_) -> tuple[bool, str]:
         self.playerGender = "male"
         return True, self.currentScreen
 
@@ -128,6 +130,46 @@ class Game:
         Draws the game screen and handles mouse clicks on the buttons
         '''
         draw_game_screen(self.screen, self.currentScene)
+        self.handleGameScreenEvents(events)
+
+    def handleGameScreenEvents(self, events) -> None:
+        ''' Game.handleGameScreenEvents(events) -> None
+        Handles mouse clicks on the game screen
+        '''
+        for event in events:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE and not self.keyDown:
+                    self.currentScreen = PAUSE_SCREEN
+                    self.keyDown = True
+            elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_ESCAPE:
+                    self.keyDown = False
+
+    def createPauseScreen(self, events) -> None:
+        ''' Game.createPauseScreen(events) -> None
+        Draws the pause screen and handles mouse clicks on the buttons
+        '''
+        # draw the game screen so we can display the overlay effect
+        draw_game_screen(self.screen, self.currentScene)
+        buttons = draw_pause_screen(self.screen)
+        self.handlePauseScreenEvents(events, buttons)
+
+    def handlePauseScreenEvents(self, events, buttons) -> None:
+        ''' Game.handlePauseScreenEvents(events, buttons) -> None
+        Handles mouse clicks on the pause screen
+        '''
+        for event in events:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                clicked = [button for button in buttons if button.rect.collidepoint(event.pos)]
+                if len(clicked) > 0:
+                    self.running, self.currentScreen = clicked[0].onClick()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE and not self.keyDown:
+                    self.currentScreen = GAME_SCREEN
+                    self.keyDown = True
+            elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_ESCAPE:
+                    self.keyDown = False
 
     def handleCurrentScreen(self, events) -> None:
         ''' Game.handleCurrentScreen(events) -> None
@@ -141,6 +183,8 @@ class Game:
             self.createAvatarScreen(events)
         elif self.currentScreen == GAME_SCREEN:
             self.createGameScreen(events)
+        elif self.currentScreen == PAUSE_SCREEN:
+            self.createPauseScreen(events)
         else:
             raise Exception("Invalid Screen")
         
