@@ -1,3 +1,5 @@
+import os
+import pickle
 from typing import Optional
 import pygame
 
@@ -58,4 +60,31 @@ class GameObject:
     
     def setSprite(self, sprite: pygame.Surface) -> None:
         self.sprite = sprite
+
+    def toJson(self) -> dict:
+        if self.sprite is None:
+            raise Exception("Sprite not set")
+        
+        sprite32 = pygame.transform.scale(self.sprite, (32, 32))
+        serialized_sprite = pygame.surfarray.array3d(sprite32)
+
+        dir = "assets/objects/"
+
+        bkg = pickle.dumps(serialized_sprite)
+        fileName = dir + f"{self.id}.pickle"
+
+        if not os.path.exists(dir):
+            os.makedirs(dir)
+
+        with open(fileName, "wb") as f:
+            f.write(bkg)
+
+        return {
+            'id': self.id,
+            'position-absolute': {
+                'x': self.position.x,
+                'y': self.position.y
+            },
+            'texture': fileName
+        }
 

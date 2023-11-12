@@ -3,14 +3,14 @@ from assets.assetsConstants import FEMALE_CHAR_ASSET, MALE_CHAR_ASSET
 from buttons.button import Button
 import pygame
 
-from buttons.buttonCallbacks import backButtonCB, startGameButtonCB
-
 def draw_avatar_screen(
         screen: pygame.Surface,
         currentName: str,
         playerGender: str,
         onMaleSelected: Callable,
-        onFemaleSelected: Callable
+        onFemaleSelected: Callable,
+        backCB: Callable,
+        startGameCB: Callable
     ) -> list[Button]:
     ''' draw_avatar_screen: pygame.Surface, str, str, Callable, Callable -> list[Button]
     Draws the avatar screen to the screen and returns a list of all the buttons on the screen.
@@ -77,5 +77,5 @@ def draw_avatar_screen(
     start_label = label_font.render("Start", True, black)
     screen.blit(start_label, (start_button.x + 10, start_button.y + 10))
 
-    return [Button(male_button, onMaleSelected), Button(female_button, onFemaleSelected), Button(back_button, backButtonCB), Button(start_button, startGameButtonCB)]
+    return [Button(male_button, onMaleSelected), Button(female_button, onFemaleSelected), Button(back_button, backCB), Button(start_button, startGameCB)]
 

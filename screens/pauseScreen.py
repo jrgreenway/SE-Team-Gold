@@ -1,10 +1,13 @@
+from typing import Callable
 from buttons.button import Button
 import pygame
 
-from buttons.buttonCallbacks import exitButtonCB, saveButtonCB
 
-
-def draw_pause_screen(screen: pygame.Surface) -> list[Button]:
+def draw_pause_screen(
+        screen: pygame.Surface,
+        saveCB: Callable,
+        exitCB: Callable
+    ) -> list[Button]:
     ''' draw_pause_screen: pygame.Surface -> list[Button]
     Draws the pause screen to the screen and returns a list of all the buttons on the screen.
     '''
@@ -33,4 +36,4 @@ def draw_pause_screen(screen: pygame.Surface) -> list[Button]:
     pygame.draw.rect(screen, (255, 0, 0), exit_button)
     screen.blit(exit_text, (screen.get_width() // 2 - exit_text.get_width() // 2, 315))
 
-    return [Button(save_button, saveButtonCB), Button(exit_button, exitButtonCB)]
+    return [Button(save_button, saveCB), Button(exit_button, exitCB)]

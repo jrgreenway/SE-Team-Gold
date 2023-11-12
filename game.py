@@ -1,8 +1,12 @@
+from typing import Callable
+from numpy import save
 import pygame
+from scene import Scene
 from screens.avatarScreen import draw_avatar_screen
 from screens.gameScreen import draw_game_screen
+from screens.loadScreen import draw_load_screen
 from screens.pauseScreen import draw_pause_screen
-from screens.screenConstants import CREATE_AVATAR_SCREEN, GAME_SCREEN, PAUSE_SCREEN, START_SCREEN, WELCOME_SCREEN, nextScreen
+from screens.screenConstants import CREATE_AVATAR_SCREEN, GAME_SCREEN, LOAD_SCREEN, PAUSE_SCREEN, START_SCREEN, WELCOME_SCREEN, nextScreen
 from screens.startScreen import draw_start_screen
 
 from screens.welcomeScreen import draw_welcome_screen
@@ -40,7 +44,7 @@ class Game:
 
 
     # Temporary Constructor for testing purposes
-    def __init__(self, screen: pygame.Surface) -> None:
+    def __init__(self, screen: pygame.Surface, scene: Scene, buttonCBs: dict[str, Callable], savedGames: list[str]) -> None:
         self.clock = pygame.time.Clock()
         self.screen = screen
         self.currentScreen = WELCOME_SCREEN
@@ -48,8 +52,19 @@ class Game:
         self.running = True
         self.playerName = "" # TODO this will be linked with the Player Class
         self.playerGender = "male" # TODO this will be linked with the Player Class
-        self.currentScene = 1
+        self.currentScene = scene
         self.keyDown = False
+
+        self.buttonCBs = buttonCBs
+        self.savedGames = savedGames
+
+        self.scrollPos = 0
+
+    def setCurrentScreen(self, currentScreen: str) -> None:
+        self.currentScreen = currentScreen
+
+    def setCurrentScene(self, currentScene: Scene) -> None:
+        self.currentScene = currentScene
 
     def awaitExitWelcomeScreen(self) -> None:
         ''' Game.awaitExitWelcomeScreen() -> None
@@ -68,7 +83,7 @@ class Game:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 clicked = [button for button in buttons if button.rect.collidepoint(event.pos)]
                 if len(clicked) > 0:
-                    self.running, self.currentScreen = clicked[0].onClick()
+                    self.running, self.currentScreen = clicked[0].onClick(game=self)
 
     def welcomeScreen(self) -> None:
         ''' Game.welcomeScreen() -> None
@@ -81,7 +96,7 @@ class Game:
         ''' Game.startScreen(events) -> None
         Draws the start screen and handles mouse clicks on the buttons
         '''
-        buttons = draw_start_screen(self.screen)
+        buttons = draw_start_screen(self.screen, startCB=self.buttonCBs['start'], loadCB=self.buttonCBs['load'], exitCB=self.buttonCBs['exit'])
         self.handleMoseClicksStartScreen(events, buttons)
 
     def handleAvatarScreenEvents(self, events, buttons) -> None:
@@ -120,7 +135,9 @@ class Game:
             self.playerName,
             self.playerGender,
             onMaleSelected=self.setMale,
-            onFemaleSelected=self.setFemale
+            onFemaleSelected=self.setFemale,
+            backCB=self.buttonCBs['back'],
+            startGameCB=self.buttonCBs['startGame']
         )
 
         self.handleAvatarScreenEvents(events, buttons)
@@ -151,7 +168,7 @@ class Game:
         '''
         # draw the game screen so we can display the overlay effect
         draw_game_screen(self.screen, self.currentScene)
-        buttons = draw_pause_screen(self.screen)
+        buttons = draw_pause_screen(self.screen, self.buttonCBs['save'], self.buttonCBs['exit'])
         self.handlePauseScreenEvents(events, buttons)
 
     def handlePauseScreenEvents(self, events, buttons) -> None:
@@ -162,7 +179,7 @@ class Game:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 clicked = [button for button in buttons if button.rect.collidepoint(event.pos)]
                 if len(clicked) > 0:
-                    self.running, self.currentScreen = clicked[0].onClick()
+                    self.running, self.currentScreen = clicked[0].onClick(game=self)
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE and not self.keyDown:
                     self.currentScreen = GAME_SCREEN
@@ -170,6 +187,34 @@ class Game:
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_ESCAPE:
                     self.keyDown = False
+
+    def createLoadScreen(self, events) -> None:
+        ''' Game.createLoadScreen(events) -> None
+        Draws the load screen and handles mouse clicks on the buttons
+        '''
+        buttons = draw_load_screen(
+            self.screen, 
+            self.savedGames, 
+            loadGameCB=self.buttonCBs['loadGame'], 
+            scrollPos=self.scrollPos,
+            backCB=self.buttonCBs['back']
+        )
+        self.handleLoadScreenEvents(events, buttons)
+
+    def handleLoadScreenEvents(self, events, buttons) -> None:
+        ''' Game.handleLoadScreenEvents(events, buttons) -> None
+        Handles mouse clicks on the load screen
+        '''
+        for event in events:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                clicked = [button for button in buttons if button.rect.collidepoint(event.pos)]
+                if len(clicked) > 0 and event.button == 1:
+                    self.running, self.currentScreen = clicked[0].onClick(game=self, currentScreen=self.currentScreen)
+                if event.button == 4:
+                    self.scrollPos = max(0, self.scrollPos - 1)
+                elif event.button == 5:
+                    self.scrollPos = min(len(self.savedGames) - 1, self.scrollPos + 1)
+
 
     def handleCurrentScreen(self, events) -> None:
         ''' Game.handleCurrentScreen(events) -> None
@@ -185,6 +230,8 @@ class Game:
             self.createGameScreen(events)
         elif self.currentScreen == PAUSE_SCREEN:
             self.createPauseScreen(events)
+        elif self.currentScreen == LOAD_SCREEN:
+            self.createLoadScreen(events)
         else:
             raise Exception("Invalid Screen")
         
@@ -208,3 +255,14 @@ class Game:
             self.frame += 1
             self.frame %= 60
             self.clock.tick(60)
+
+    def toJson(self) -> dict:
+        ''' Game.toJson() -> dict
+        Returns a dictionary representation of the game
+        '''
+        return {
+            'currentScreen': self.currentScreen,
+            'playerName': self.playerName,
+            'playerGender': self.playerGender,
+            'currentScene': self.currentScene.toJson()
+        }

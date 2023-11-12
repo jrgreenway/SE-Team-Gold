@@ -1,20 +1,22 @@
-{
-    "1": {
+[
+    {
+        "id": 1,
+        "name": "Kitchen",
         "texture": "assets/Floor.png",
         "objects": [
             {
                 "id": 0,
                 "texture": "assets/Cupboard.png",
                 "position-absolute": {
-                    "x": 150,
-                    "y": 0
+                    "x": 312,
+                    "y": 214
                 }
             },
             {
                 "id": 1,
                 "texture": "assets/Oven.png",
                 "position-relative": {
-                    "direction": "E",
+                    "direction": "S",
                     "relativeTo": 0
                 }
             },
@@ -52,4 +54,4 @@
             }
         ]
     }
-}
+]

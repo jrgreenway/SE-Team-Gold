@@ -1,10 +1,10 @@
 
+from typing import Callable
 import pygame
 
 from buttons.button import Button
-from buttons.buttonCallbacks import exitButtonCB, loadButtonCB, startButtonCB
 
-def draw_start_screen(screen: pygame.Surface) -> list[Button]:
+def draw_start_screen(screen: pygame.Surface, startCB: Callable, loadCB: Callable, exitCB: Callable) -> list[Button]:
     ''' draw_start_screen: pygame.Surface -> list[Button]
     Draws the start screen to the screen and returns a list of all the buttons on the screen.
     '''
@@ -35,4 +35,4 @@ def draw_start_screen(screen: pygame.Surface) -> list[Button]:
     screen.blit(load_label, load_button_rect.move(10, 10))
     screen.blit(exit_label, exit_button_rect.move(10, 10))
 
-    return [Button(start_button_rect, startButtonCB), Button(load_button_rect, loadButtonCB), Button(exit_button_rect, exitButtonCB)]
+    return [Button(start_button_rect, startCB), Button(load_button_rect, loadCB), Button(exit_button_rect, exitCB)]
