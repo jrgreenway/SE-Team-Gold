@@ -8,10 +8,12 @@ from scenes.sceneDrawer import scene_loader_data
 
 def get_saved_games() -> list[str]:
     ''' get_saved_games: None -> list[str]
-    Returns a list of the names of the saved games
+    Returns a list of the names of the saved games sorted by creation time
     '''
     saves_dir = "saved_games"
-    return [f"{filename}"[:-5] for filename in os.listdir(saves_dir) if filename.endswith(".json")]
+    files = os.listdir(saves_dir)
+    files.sort(key=lambda x: os.path.getctime(os.path.join(saves_dir, x)))
+    return [f"{filename}"[:-5] for filename in files if filename.endswith(".json")]
 
 def load_game(currentInstace: Game, gameName: str) -> None:
     ''' load_game: Game, str -> None

@@ -168,7 +168,7 @@ class Game:
         '''
         # draw the game screen so we can display the overlay effect
         draw_game_screen(self.screen, self.currentScene)
-        buttons = draw_pause_screen(self.screen, self.buttonCBs['save'], self.buttonCBs['exit'])
+        buttons = draw_pause_screen(self.screen, self.buttonCBs['save'], self.buttonCBs['exit'], self.buttonCBs['backToMainMenu'])
         self.handlePauseScreenEvents(events, buttons)
 
     def handlePauseScreenEvents(self, events, buttons) -> None:
@@ -179,7 +179,7 @@ class Game:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 clicked = [button for button in buttons if button.rect.collidepoint(event.pos)]
                 if len(clicked) > 0:
-                    self.running, self.currentScreen = clicked[0].onClick(game=self)
+                    self.running, self.currentScreen = clicked[0].onClick(game=self, currentScreen=self.currentScreen)
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE and not self.keyDown:
                     self.currentScreen = GAME_SCREEN

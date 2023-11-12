@@ -36,6 +36,9 @@ def saveButtonCB(**kwargs) -> tuple[bool, str]:
     save_game(kwargs['game'])
     return True, GAME_SCREEN
 
+def backToMainMenuButtonCB(**_) -> tuple[bool, str]:
+    return True, START_SCREEN
+
 def createButtonCBDict() -> dict[str, Callable]:
     ''' createButtonCBDict: None -> dict[str, Callable]
     Creates a dictionary of button callbacks
@@ -47,5 +50,6 @@ def createButtonCBDict() -> dict[str, Callable]:
         'exit': exitButtonCB,
         'back': backButtonCB,
         'startGame': startGameButtonCB,
-        'save': saveButtonCB
+        'save': saveButtonCB,
+        'backToMainMenu': backToMainMenuButtonCB
     }

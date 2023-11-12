@@ -30,5 +30,6 @@ def previousScreen(currentScreen: str) -> str:
         START_SCREEN: WELCOME_SCREEN,
         CREATE_AVATAR_SCREEN: START_SCREEN,
         PAUSE_SCREEN: GAME_SCREEN,
-        LOAD_SCREEN: START_SCREEN
+        LOAD_SCREEN: START_SCREEN,
+        GAME_SCREEN: START_SCREEN
     }[currentScreen]
