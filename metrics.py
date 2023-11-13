@@ -16,6 +16,7 @@ class Metrics:
         getHealth: Gets the health.
 
         updateTime: Updates the time by increment (default 1).
+        formatTime: Formats the time into a string.
         '''
     def __init__(self, time, happiness, health) -> None:
         self.time = self.setTime(time)
