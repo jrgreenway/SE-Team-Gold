@@ -1,6 +1,6 @@
 import pygame
 
-class Metrics():
+class Metrics:
     '''A class to represent the metrics of the avatar.
     Attributes:
         time (int): The time spent on a task.
@@ -41,12 +41,15 @@ class Metrics():
     
     def getHealth(self):
         return self.health
-        return self.health
     
     #Methods
 
     def updateTime(self, increment=1):
         self.setTime(self.time+increment)
     
+    def formatTime(self):
+        minutes = self.time // 60
+        seconds = self.time % 60
+        return f"{minutes:02d}:{seconds:02d}"
     
 
