@@ -46,10 +46,10 @@ class Player:
             return walkDown[0]
         else:
             if self.facing == "S":
-                return walkDown[(currentFrame//5)%4] #Each image lasts 5 frames so animation loops every 20 frames (maybe be too fast - will have to see when testing)))
+                self.sprite = walkDown[(currentFrame//15] #Each image lasts 15 frames so animation loops every 60 frames (maybe be too fast - will have to see when testing)))
             elif self.facing == "N":
-                return walkUp[(currentFrame//5)%4] 
+                self.sprite = walkUp[(currentFrame//15] 
             elif self.facing == "E":
-                return walkRight[(currentFrame//5)%4]
+                self.sprite = walkRight[(currentFrame//15]
             elif self.facing == "W":
-                return walkLeft[(currentFrame//5)%4]
+                self.sprite = walkLeft[(currentFrame//15]
