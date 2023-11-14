@@ -1,6 +1,6 @@
 from typing import Any
 import pygame
-from game import Game
+
 class Player():
     ''' Player Class for the Avatar - could be renamed later
     
@@ -42,7 +42,6 @@ class Player():
         self.position = pygame.Vector2(self.screen.get_width() / 2, self.screen.get_height() / 2)
         self.facing = facing
         self.speed = speed
-        # temporary for testing
     
     #Getters
 
@@ -72,14 +71,20 @@ class Player():
     
     #Methods
 
-    def move(self):#call in main loop.
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP:
-                    self.position.y -= self.speed  # Move up
-                elif event.key == pygame.K_DOWN:
-                    self.position.y += self.speed  # Move down
-                elif event.key == pygame.K_LEFT:
-                    self.position.x -= self.speed  # Move left
-                elif event.key == pygame.K_RIGHT:
-                    self.position.x += self.speed  # Move right
+    # TODO find which type of Event to import
+    def move(self, holdingKeys):#call in main loop.
+        # TODO retrieve events only once in game main loop and pass them as
+        # parameters to subsequent methods to avoid double triggers.
+        for key in holdingKeys:
+            if key == pygame.K_UP:
+                self.position.y -= self.speed  # Move up
+            elif key == pygame.K_DOWN:
+                self.position.y += self.speed  # Move down
+            elif key == pygame.K_LEFT:
+                self.position.x -= self.speed  # Move left
+            elif key == pygame.K_RIGHT:
+                self.position.x += self.speed  # Move right
+
+    # testing
+    def draw(self) -> None:
+        pygame.draw.circle(self.screen, (255, 0, 0), (int(self.position.x), int(self.position.y)), 10)
