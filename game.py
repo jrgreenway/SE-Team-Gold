@@ -1,5 +1,7 @@
 import pygame
 
+from player import Player
+
 
 class Game:
     '''
@@ -33,23 +35,43 @@ class Game:
 
 
     # Temporary Constructor for testing purposes
-    def __init__(self, screen: pygame.Surface) -> None:
+    def __init__(self, screen: pygame.Surface, player: Player) -> None:
         self.screen = screen
+        self.currentFrame = 0
+        self.player = player
+        self.holdingKeys = []
+
+    def setcurrentFrame(self, currentFrame):
+        self.currentFrame = currentFrame
 
     def start(self) -> None:
         '''
         Starts the game loop
         '''
+
+        clock = pygame.time.Clock()
+
+
         # Game loop
         running = True
         while running:
             # Handle events - keyPresses
-            for event in pygame.event.get():
+            events = pygame.event.get()
+            for event in events:
                 if event.type == pygame.QUIT:
                     running = False
-            
+                elif event.type == pygame.KEYDOWN and event.key not in self.holdingKeys:
+                    self.holdingKeys.append(event.key)
+                elif event.type == pygame.KEYUP:
+                    self.holdingKeys.remove(event.key)
             # Update game state
             
             # Draw to the screen
             self.screen.fill((255, 255, 255))
+            self.player.move(self.holdingKeys)
+            self.player.draw()
             pygame.display.flip()
+            clock.tick(60)
+            self.currentFrame += 1
+            self.currentFrame %= 60
+
