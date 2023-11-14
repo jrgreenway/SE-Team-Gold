@@ -32,6 +32,13 @@ class Player:
         frame in the game logic 
     '''
 
+    def __init__(self) -> None:
+        self.facing = "S"
+        # animations is dict with keys S, N, E, W
+        # every key has a list of sprites as its value
+        self.loadAnimations()
+        self.sprite = self.animations[self.facing][0]
+
     #Animate method (returns next sprite image)
     #Each walking animation in each direction had a 4 frame animation (1st and 3rd being the same image)
     #Sprite will have 12 images (3 for each direction) named (D1, D2, D3 (walking down), U1, U2, U3, (walking up)...)
