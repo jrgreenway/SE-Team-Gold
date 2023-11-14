@@ -32,8 +32,10 @@ class Player:
         frame in the game logic 
     '''
 
-    def __init__(self) -> None:
-        self.facing = "S"
+    def __init__(self, gender: str, screen: pygame.Surface, facing) -> None:
+        self.facing = facing
+        self.gender = gender
+        self.screen = screen
         # animations is dict with keys S, N, E, W
         # every key has a list of sprites as its value
         self.loadAnimations()
