@@ -12,9 +12,7 @@ screen = pygame.display.set_mode((800, 600))
 # Set up the scenes and objects - will use a json for this
 
 # Create the player
-player = Player(screen)
-
-player = Player("F", screen, "S")
+player = Player(gender="F", screen=screen, facing="S")
 
 # Create the game TODO add the scenes, player, etc. to the constructor
 game = Game(screen, player)
