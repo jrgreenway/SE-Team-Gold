@@ -2,6 +2,8 @@ import json
 import os
 from turtle import st
 
+import pygame
+
 from game import Game
 from scenes.sceneDrawer import scene_loader_data
 
@@ -28,5 +30,15 @@ def load_game(currentInstace: Game, gameName: str) -> None:
         game_data = json.load(f)
     
     scene = scene_loader_data(game_data['currentScene'])
+
+    playerData = game_data['player']
+
     currentInstace.setCurrentScreen(game_data['currentScreen'])
     currentInstace.setCurrentScene(scene)
+    currentInstace.loadPlayer(
+        playerData['name'],
+        playerData['gender'],
+        pygame.Vector2(playerData['position']['x'], playerData['position']['y']),
+        playerData['speed'],
+    )
+    

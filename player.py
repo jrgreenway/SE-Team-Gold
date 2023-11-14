@@ -1,3 +1,4 @@
+import json
 from typing import Any
 import pygame
 
@@ -38,7 +39,7 @@ class Player():
                 facing:str="S",
                 speed=3
     ) -> None:
-        self.name = self.setName(name)
+        self.name = name
         self.screen = screen
         self.position = pygame.Vector2(self.screen.get_width() / 2, self.screen.get_height() / 2)
         self.facing = facing
@@ -52,8 +53,11 @@ class Player():
     
     #Getters
 
-    def getName(self):
+    def getName(self) -> str:
         return self.name
+    
+    def getGender(self) -> str:
+        return self.gender
     
     def getPosition(self):
         return self.position
@@ -75,6 +79,9 @@ class Player():
 
     def setSpeed(self, speed: int):
         self.speed = speed
+
+    def setGender(self, gender: str):
+        self.gender = gender
     
     #Methods
 
@@ -144,4 +151,14 @@ class Player():
 
     def draw(self) -> None:
         self.screen.blit(self.sprite, (int(self.position.x), int(self.position.y)))
+
+    def toJson(self) -> dict:
+        player_dict = {
+            "name": self.name,
+            "gender": self.gender,
+            "facing": self.facing,
+            "speed": self.speed,
+            "position": [self.position.x, self.position.y]
+        }
+        return player_dict
 

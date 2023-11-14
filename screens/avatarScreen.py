@@ -62,10 +62,10 @@ def draw_avatar_screen(
     screen.blit(male_label, (male_button.x + 10, male_button.y + 10))
     female_label = label_font.render("Female", True, black)
     screen.blit(female_label, (female_button.x + 10, female_button.y + 10))
-    if playerGender == "male":
+    if playerGender == "M":
         pygame.draw.rect(screen, black, male_button, 2)
         screen.blit(male_image, (250, 350))
-    elif playerGender == "female":
+    elif playerGender == "F":
         pygame.draw.rect(screen, black, female_button, 2)
         screen.blit(female_image, (450, 350))
 
