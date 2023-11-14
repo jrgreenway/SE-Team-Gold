@@ -86,3 +86,6 @@ class Player:
         else:
             #Each image lasts 15 frames so animation loops every 60 frames (maybe be too fast - will have to see when testing)))
             self.sprite = self.animations[self.facing][(currentFrame//15) % 4]
+
+    def draw(self) -> None:
+        self.screen.blit(self.sprite, (400, 300))
