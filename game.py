@@ -62,5 +62,6 @@ class Game:
             self.screen.fill((255, 255, 255))
             pygame.display.flip()
             clock.tick(60)
-            self.setcurrentFrame(self.currentFrame+1)
+            self.currentFrame += 1
+            self.currentFrame %= 60
 

@@ -19,9 +19,9 @@ class Metrics:
         formatTime: Formats the time into a string.
         '''
     def __init__(self, time, happiness, health) -> None:
-        self.time = self.setTime(time)
-        self.happiness = self.setHappiness(happiness)
-        self.health = self.setHealth(health)
+        self.time = time
+        self.happiness = happiness
+        self.health = health
 
     #Setters/Getters
 
@@ -46,7 +46,7 @@ class Metrics:
     #Methods
 
     def updateTime(self, increment=1):
-        self.setTime(self.time+increment)
+        self.time += increment
     
     def formatTime(self):
         minutes = self.time // 60

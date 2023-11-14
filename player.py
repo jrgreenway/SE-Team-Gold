@@ -38,9 +38,11 @@ class Player():
                 speed=1
                 ) -> None:
         self.name = self.setName(name)
-        self.position = self.setPosition(pygame.Vector2(self.screen.get_width() / 2, self.screen.get_height() / 2))
-        self.facing = self.setFacing(facing)
-        self.speed = self.setSpeed(speed)
+        self.screen = screen
+        self.position = pygame.Vector2(self.screen.get_width() / 2, self.screen.get_height() / 2)
+        self.facing = facing
+        self.speed = speed
+        # temporary for testing
     
     #Getters
 
@@ -64,6 +66,9 @@ class Player():
     def setFacing(self, facing:str):
         if facing in {"N", "E", "S", "W"}:
             self.facing = facing # could add a raise ValueError if not in {}.
+
+    def setSpeed(self, speed: int):
+        self.speed = speed
     
     #Methods
 
