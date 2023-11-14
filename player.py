@@ -47,10 +47,34 @@ class Player:
     # TODO - include images in assets folder
     def loadAnimations(self) -> None:
         #Arrays of all of the images for the animation
-        walkDown = [pygame.image.load('D1.png'), pygame.image.load('D2.png'), pygame.image.load('D1.png'), pygame.image.load('D3.png')]
-        walkUp = [pygame.image.load('U1.png'), pygame.image.load('U2.png'), pygame.image.load('U1.png'), pygame.image.load('U3.png')]
-        walkRight = [pygame.image.load('R1.png'), pygame.image.load('R2.png'), pygame.image.load('R1.png'), pygame.image.load('R3.png')]
-        walkLeft = [pygame.image.load('L1.png'), pygame.image.load('L2.png'), pygame.image.load('L1.png'), pygame.image.load('L3.png')]
+        prefix = "assets/animations/"
+        walkDown = [
+            pygame.image.load(prefix + 'S_' + self.gender + "/S0.gif"),
+            pygame.image.load(prefix + 'S_' + self.gender + "/S1.gif"),
+            pygame.image.load(prefix + 'S_' + self.gender + "/S0.gif"),
+            pygame.image.load(prefix + 'S_' + self.gender + "/S2.gif"),
+        ]
+
+        walkUp = [
+            pygame.image.load(prefix + 'N_' + self.gender + "/N0.gif"),
+            pygame.image.load(prefix + 'N_' + self.gender + "/N1.gif"),
+            pygame.image.load(prefix + 'N_' + self.gender + "/N0.gif"),
+            pygame.image.load(prefix + 'N_' + self.gender + "/N2.gif"),
+        ]
+
+        walkRight = [
+            pygame.image.load(prefix + 'E_' + self.gender + "/E0.gif"),
+            pygame.image.load(prefix + 'E_' + self.gender + "/E1.gif"),
+            pygame.image.load(prefix + 'E_' + self.gender + "/E0.gif"),
+            pygame.image.load(prefix + 'E_' + self.gender + "/E2.gif"),
+        ]
+
+        walkLeft = [
+            pygame.image.load(prefix + 'W_' + self.gender + "/W0.gif"),
+            pygame.image.load(prefix + 'W_' + self.gender + "/W1.gif"),
+            pygame.image.load(prefix + 'W_' + self.gender + "/W0.gif"),
+            pygame.image.load(prefix + 'W_' + self.gender + "/W2.gif"),
+        ]
 
         self.animations = {"S": walkDown, "N": walkUp, "E": walkRight, "W": walkLeft}
 
