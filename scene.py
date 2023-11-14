@@ -1,3 +1,10 @@
+import os
+import pickle
+import pygame
+
+from gameObject import GameObject
+
+
 class Scene:
     '''
     Scene class - Has a background and contains a list of all objects in the scene
@@ -13,3 +20,47 @@ class Scene:
         on optional parameters
     getters and setters for all attributes
     '''
+
+    def __init__(self, id: int, name: str, background: pygame.Surface, objects: list[GameObject] = []) -> None:
+        self.id = id
+        self.name = name
+        self.background = background
+        self.objects = objects
+
+    def getID(self) -> int:
+        return self.id
+    
+    def getName(self) -> str:
+        return self.name
+    
+    def getBackground(self) -> pygame.Surface:
+        return self.background
+    
+    def getObjects(self) -> list[GameObject]:
+        return self.objects
+    
+    def toJson(self) -> dict:
+        
+        # crop the rectangle from 0,0 to 128, 128 from baground
+        cropped_background = self.background.subsurface(pygame.Rect(0, 0, 128, 128))
+        texture = pygame.transform.scale(cropped_background, (32, 32))
+
+        serialized_texture = pygame.surfarray.array3d(texture)
+
+        dir = "assets/scenes/"
+
+        bkg = pickle.dumps(serialized_texture)
+        fileName = dir + f"{self.id}.pickle"
+
+        if not os.path.exists(dir):
+            os.makedirs(dir)
+        
+        with open(fileName, "wb") as f:
+            f.write(bkg)
+
+        return {
+            'id': self.id,
+            'name': self.name,
+            'texture': fileName,
+            'objects': [obj.toJson() for obj in self.objects]
+        }

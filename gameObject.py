@@ -1,3 +1,9 @@
+import os
+import pickle
+from typing import Optional
+import pygame
+
+
 class GameObject:
     '''
     The base class for all game objects. ex: laundry machine, oven, etc.
@@ -32,3 +38,53 @@ class GameObject:
     checkInteractable: checkInteractable(self, player) - checks if the player is close enough to
         interact with the object - returns a boolean - if true update the interactable attribute
     '''
+
+    def __init__(self, id: int, position: pygame.Vector2 = pygame.Vector2(0, 0), sprite: Optional[pygame.Surface] = None) -> None:
+        self.id = id
+        self.position = position
+        self.sprite = sprite
+
+    def getID(self) -> int:
+        return self.id
+    
+    def getPosition(self) -> pygame.Vector2:
+        return self.position
+    
+    def setPosition(self, position: pygame.Vector2) -> None:
+        self.position = position
+
+    def getSprite(self) -> pygame.Surface:
+        if self.sprite is None:
+            raise Exception("Sprite not set")
+        return self.sprite
+    
+    def setSprite(self, sprite: pygame.Surface) -> None:
+        self.sprite = sprite
+
+    def toJson(self) -> dict:
+        if self.sprite is None:
+            raise Exception("Sprite not set")
+        
+        sprite32 = pygame.transform.scale(self.sprite, (32, 32))
+        serialized_sprite = pygame.surfarray.array3d(sprite32)
+
+        dir = "assets/objects/"
+
+        bkg = pickle.dumps(serialized_sprite)
+        fileName = dir + f"{self.id}.pickle"
+
+        if not os.path.exists(dir):
+            os.makedirs(dir)
+
+        with open(fileName, "wb") as f:
+            f.write(bkg)
+
+        return {
+            'id': self.id,
+            'position-absolute': {
+                'x': self.position.x,
+                'y': self.position.y
+            },
+            'texture': fileName
+        }
+
