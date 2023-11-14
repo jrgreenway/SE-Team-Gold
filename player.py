@@ -1,3 +1,5 @@
+import pygame
+
 class Player:
     ''' Player Class for the Avatar - could be renamed later
     
