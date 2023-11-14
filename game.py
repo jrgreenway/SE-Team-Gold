@@ -44,6 +44,13 @@ class Game:
     def setcurrentFrame(self, currentFrame):
         self.currentFrame = currentFrame
 
+    def checkMoving(self):
+        if pygame.K_UP in self.holdingKeys or pygame.K_DOWN in self.holdingKeys or \
+            pygame.K_LEFT in self.holdingKeys or pygame.K_RIGHT in self.holdingKeys:
+            return True
+        else:
+            return False
+
     def start(self) -> None:
         '''
         Starts the game loop
@@ -55,6 +62,8 @@ class Game:
         # Game loop
         running = True
         while running:
+            self.currentFrame += 1
+            self.currentFrame %= 60
             # Handle events - keyPresses
             events = pygame.event.get()
             for event in events:
@@ -66,12 +75,13 @@ class Game:
                     self.holdingKeys.remove(event.key)
             # Update game state
             
+
+
             # Draw to the screen
             self.screen.fill((255, 255, 255))
             self.player.move(self.holdingKeys)
+            self.player.animate(self.checkMoving(), self.currentFrame)
             self.player.draw()
+
             pygame.display.flip()
             clock.tick(60)
-            self.currentFrame += 1
-            self.currentFrame %= 60
-

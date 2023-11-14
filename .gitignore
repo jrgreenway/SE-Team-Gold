@@ -1,5 +1,5 @@
-/.vscode
-/.DS_Store
+.vscode
+.DS_Store
 __pycache__
 saved_games
 assets/objects

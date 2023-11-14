@@ -14,6 +14,8 @@ screen = pygame.display.set_mode((800, 600))
 # Create the player
 player = Player(screen)
 
+player = Player("F", screen, "S")
+
 # Create the game TODO add the scenes, player, etc. to the constructor
 game = Game(screen, player)
 game.start()

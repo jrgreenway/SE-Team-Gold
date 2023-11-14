@@ -32,16 +32,23 @@ class Player():
         frame in the game logic 
     '''
     def __init__(self,
-                screen,
+                screen: pygame.Surface,
                 name:str = "James",
+                gender: str = "F",
                 facing:str="S",
-                speed=1
-                ) -> None:
+                speed=3
+    ) -> None:
         self.name = self.setName(name)
         self.screen = screen
         self.position = pygame.Vector2(self.screen.get_width() / 2, self.screen.get_height() / 2)
         self.facing = facing
         self.speed = speed
+        self.gender = gender
+
+        # animations is dict with keys S, N, E, W
+        # every key has a list of sprites as its value
+        self.loadAnimations()
+        self.sprite = self.animations[self.facing][0]
     
     #Getters
 
@@ -78,13 +85,63 @@ class Player():
         for key in holdingKeys:
             if key == pygame.K_UP:
                 self.position.y -= self.speed  # Move up
+                self.facing = "N"
             elif key == pygame.K_DOWN:
                 self.position.y += self.speed  # Move down
+                self.facing = "S"
             elif key == pygame.K_LEFT:
                 self.position.x -= self.speed  # Move left
+                self.facing = "W"
             elif key == pygame.K_RIGHT:
                 self.position.x += self.speed  # Move right
+                self.facing = "E"
 
-    # testing
+    #Animate method (returns next sprite image)
+    #Each walking animation in each direction had a 4 frame animation (1st and 3rd being the same image)
+    #Sprite will have 12 images (3 for each direction) named (D1, D2, D3 (walking down), U1, U2, U3, (walking up)...)
+    #Standing image will be D1 (first and 3rd frame of walking down animation)
+
+    # TODO - include images in assets folder
+    def loadAnimations(self) -> None:
+        #Arrays of all of the images for the animation
+        prefix = "assets/animations/"
+        walkDown = [
+            pygame.image.load(prefix + 'S_' + self.gender + "/S0.gif"),
+            pygame.image.load(prefix + 'S_' + self.gender + "/S1.gif"),
+            pygame.image.load(prefix + 'S_' + self.gender + "/S0.gif"),
+            pygame.image.load(prefix + 'S_' + self.gender + "/S2.gif"),
+        ]
+
+        walkUp = [
+            pygame.image.load(prefix + 'N_' + self.gender + "/N0.gif"),
+            pygame.image.load(prefix + 'N_' + self.gender + "/N1.gif"),
+            pygame.image.load(prefix + 'N_' + self.gender + "/N0.gif"),
+            pygame.image.load(prefix + 'N_' + self.gender + "/N2.gif"),
+        ]
+
+        walkRight = [
+            pygame.image.load(prefix + 'E_' + self.gender + "/E0.gif"),
+            pygame.image.load(prefix + 'E_' + self.gender + "/E1.gif"),
+            pygame.image.load(prefix + 'E_' + self.gender + "/E0.gif"),
+            pygame.image.load(prefix + 'E_' + self.gender + "/E2.gif"),
+        ]
+
+        walkLeft = [
+            pygame.image.load(prefix + 'W_' + self.gender + "/W0.gif"),
+            pygame.image.load(prefix + 'W_' + self.gender + "/W1.gif"),
+            pygame.image.load(prefix + 'W_' + self.gender + "/W0.gif"),
+            pygame.image.load(prefix + 'W_' + self.gender + "/W2.gif"),
+        ]
+
+        self.animations = {"S": walkDown, "N": walkUp, "E": walkRight, "W": walkLeft}
+
+    def animate(self, moving:bool, currentFrame) -> None:
+        if not moving:
+            self.sprite = self.animations[self.facing][0]
+        else:
+            #Each image lasts 15 frames so animation loops every 60 frames (maybe be too fast - will have to see when testing)))
+            self.sprite = self.animations[self.facing][(currentFrame//15) % 4]
+
     def draw(self) -> None:
-        pygame.draw.circle(self.screen, (255, 0, 0), (int(self.position.x), int(self.position.y)), 10)
+        self.screen.blit(self.sprite, (int(self.position.x), int(self.position.y)))
+
