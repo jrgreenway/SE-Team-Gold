@@ -113,31 +113,31 @@ class Player():
         #Arrays of all of the images for the animation
         prefix = "assets/animations/"
         walkDown = [
-            pygame.image.load(prefix + 'S_' + self.gender + "/S0.gif"),
-            pygame.image.load(prefix + 'S_' + self.gender + "/S1.gif"),
-            pygame.image.load(prefix + 'S_' + self.gender + "/S0.gif"),
-            pygame.image.load(prefix + 'S_' + self.gender + "/S2.gif"),
+            pygame.image.load(prefix + 'S_' + self.gender + "/S0.png"),
+            pygame.image.load(prefix + 'S_' + self.gender + "/S1.png"),
+            pygame.image.load(prefix + 'S_' + self.gender + "/S0.png"),
+            pygame.image.load(prefix + 'S_' + self.gender + "/S2.png"),
         ]
 
         walkUp = [
-            pygame.image.load(prefix + 'N_' + self.gender + "/N0.gif"),
-            pygame.image.load(prefix + 'N_' + self.gender + "/N1.gif"),
-            pygame.image.load(prefix + 'N_' + self.gender + "/N0.gif"),
-            pygame.image.load(prefix + 'N_' + self.gender + "/N2.gif"),
+            pygame.image.load(prefix + 'N_' + self.gender + "/N0.png"),
+            pygame.image.load(prefix + 'N_' + self.gender + "/N1.png"),
+            pygame.image.load(prefix + 'N_' + self.gender + "/N0.png"),
+            pygame.image.load(prefix + 'N_' + self.gender + "/N2.png"),
         ]
 
         walkRight = [
-            pygame.image.load(prefix + 'E_' + self.gender + "/E0.gif"),
-            pygame.image.load(prefix + 'E_' + self.gender + "/E1.gif"),
-            pygame.image.load(prefix + 'E_' + self.gender + "/E0.gif"),
-            pygame.image.load(prefix + 'E_' + self.gender + "/E2.gif"),
+            pygame.image.load(prefix + 'E_' + self.gender + "/E0.png"),
+            pygame.image.load(prefix + 'E_' + self.gender + "/E1.png"),
+            pygame.image.load(prefix + 'E_' + self.gender + "/E0.png"),
+            pygame.image.load(prefix + 'E_' + self.gender + "/E2.png"),
         ]
 
         walkLeft = [
-            pygame.image.load(prefix + 'W_' + self.gender + "/W0.gif"),
-            pygame.image.load(prefix + 'W_' + self.gender + "/W1.gif"),
-            pygame.image.load(prefix + 'W_' + self.gender + "/W0.gif"),
-            pygame.image.load(prefix + 'W_' + self.gender + "/W2.gif"),
+            pygame.image.load(prefix + 'W_' + self.gender + "/W0.png"),
+            pygame.image.load(prefix + 'W_' + self.gender + "/W1.png"),
+            pygame.image.load(prefix + 'W_' + self.gender + "/W0.png"),
+            pygame.image.load(prefix + 'W_' + self.gender + "/W2.png"),
         ]
 
         self.animations = {"S": walkDown, "N": walkUp, "E": walkRight, "W": walkLeft}
