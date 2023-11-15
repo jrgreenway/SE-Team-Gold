@@ -280,15 +280,14 @@ class Game:
         clock = pygame.time.Clock()
 
         # Game loop
-        running = True
-        while running:
+        while self.running:
             self.currentFrame += 1
             self.currentFrame %= 60
             # Handle events - keyPresses
             events = pygame.event.get()
             for event in events:
                 if event.type == pygame.QUIT:
-                    running = False
+                    self.running = False
                 elif event.type == pygame.KEYDOWN and event.key not in self.holdingKeys:
                     self.holdingKeys.append(event.key)
                 elif event.type == pygame.KEYUP:
