@@ -51,6 +51,9 @@ class Player():
         self.loadAnimations()
         self.sprite = self.animations[self.facing][0]
     
+    def reset(self) -> None:
+        self.position = pygame.Vector2(self.screen.get_width() / 2, self.screen.get_height() / 2)
+
     #Getters
 
     def getName(self) -> str:
@@ -158,7 +161,10 @@ class Player():
             "gender": self.gender,
             "facing": self.facing,
             "speed": self.speed,
-            "position": [self.position.x, self.position.y]
+            "position": {
+                "x": self.position.x, 
+                "y": self.position.y
+            }
         }
         return player_dict
 

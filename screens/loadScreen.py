@@ -5,8 +5,8 @@ import pygame
 def create_buttons(width: int, savedGames: list[str], buttonClick: Callable) -> list[Button]:
     """Create a list of Button objects from a list of saved games."""
     buttons = []
-    for i, game in enumerate(savedGames):
-        button = Button(pygame.Rect(0, 0, width, 50), lambda **kwargs: buttonClick(**kwargs, gameName=game))
+    for _ in enumerate(savedGames):
+        button = Button(pygame.Rect(0, 0, width, 50), buttonClick)
         button.rect.x = 50
         buttons.append(button)
     return buttons
@@ -22,7 +22,8 @@ def draw_scrollbar(screen: pygame.Surface, scroll_pos: int, total_items: int, vi
 
 def draw_load_screen(
         screen: pygame.Surface, 
-        savedGames: list[str], loadGameCB: Callable, 
+        savedGames: list[str], 
+        loadGameCB: Callable, 
         scrollPos: int,
         backCB: Callable
 ) -> list[Button]:

@@ -23,7 +23,6 @@ def load_game(currentInstace: Game, gameName: str) -> None:
     '''
     saves_dir = "saved_games"
 
-    
     selected_file = f"{saves_dir}/{gameName}" + ".json"
 
     with open(selected_file) as f:

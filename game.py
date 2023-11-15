@@ -68,6 +68,9 @@ class Game:
         self.scrollPos = 0
         self.keyDown = False
 
+    def setSavedGames(self, savedGames: list[str]) -> None:
+        self.savedGames = savedGames
+
     def loadPlayer(self, playerName: str, playerGender: str, playerPosition: pygame.Vector2, speed: int) -> None:
         self.player.setName(playerName)
         self.player.setGender(playerGender)
@@ -136,7 +139,10 @@ class Game:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 clicked = [button for button in buttons if button.rect.collidepoint(event.pos)]
                 if len(clicked) > 0:
-                    self.running, self.currentScreen = clicked[0].onClick(currentScreen=self.currentScreen)
+                    self.running, self.currentScreen = clicked[0].onClick(
+                        currentScreen=self.currentScreen,
+                        player = self.player
+                    )
 
     # TODO these will be moved to Player Class
     def setMale(self, **_) -> tuple[bool, str]:
@@ -236,8 +242,14 @@ class Game:
         for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 clicked = [button for button in buttons if button.rect.collidepoint(event.pos)]
+                index = buttons.index(clicked[0]) if len(clicked) > 0 else -1
+                print(clicked)
                 if len(clicked) > 0 and event.button == 1:
-                    self.running, self.currentScreen = clicked[0].onClick(game=self, currentScreen=self.currentScreen)
+                    self.running, self.currentScreen = clicked[0].onClick(
+                        game=self, 
+                        currentScreen=self.currentScreen,
+                        gameName=self.savedGames[index] if index < len(self.savedGames) else None
+                    )
                 if event.button == 4:
                     self.scrollPos = max(0, self.scrollPos - 1)
                 elif event.button == 5:

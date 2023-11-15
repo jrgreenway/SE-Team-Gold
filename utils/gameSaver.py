@@ -2,7 +2,10 @@ import json
 import os
 from datetime import datetime
 
+from requests import get
+
 from game import Game
+from utils.gameLoader import get_saved_games
 
 def save_game(game_instance: Game):
     ''' save_game: Game -> None
@@ -21,3 +24,5 @@ def save_game(game_instance: Game):
     filename = f"saved_games/game_{date_string}.json"
     with open(filename, 'w') as f:
         f.write(game_json)
+
+    game_instance.setSavedGames(get_saved_games())
