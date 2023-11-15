@@ -18,7 +18,7 @@ class Metrics:
         updateTime: Updates the time by increment (default 1).
         formatTime: Formats the time into a string.
         '''
-    def __init__(self, time, happiness, health) -> None:
+    def __init__(self, time: int, happiness: int, health: int) -> None:
         self.time = time
         self.happiness = happiness
         self.health = health
@@ -45,7 +45,7 @@ class Metrics:
     
     #Methods
 
-    def updateTime(self, increment=1):
+    def updateTime(self, increment=-1):
         self.time += increment
     
     def formatTime(self):

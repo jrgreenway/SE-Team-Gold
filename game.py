@@ -297,6 +297,10 @@ class Game:
         # Game loop
         while self.running:
             self.currentFrame += 1
+            
+            if self.currentFrame == 60 and self.currentScreen == GAME_SCREEN:
+                self.player.metrics.updateTime()
+            
             self.currentFrame %= 60
             # Handle events - keyPresses
             events = pygame.event.get()
@@ -309,6 +313,5 @@ class Game:
                     self.holdingKeys.remove(event.key)
             # Update game state
             self.handleCurrentScreen(events)
-
             pygame.display.flip()
             clock.tick(60)

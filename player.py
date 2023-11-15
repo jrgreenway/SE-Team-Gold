@@ -2,6 +2,8 @@ import json
 from typing import Any
 import pygame
 
+from metrics import Metrics
+
 class Player():
     ''' Player Class for the Avatar - could be renamed later
     
@@ -45,6 +47,7 @@ class Player():
         self.facing = facing
         self.speed = speed
         self.gender = gender
+        self.metrics = Metrics(15, 0, 0)
 
         # animations is dict with keys S, N, E, W
         # every key has a list of sprites as its value
@@ -67,6 +70,9 @@ class Player():
     
     def getFacing(self):
         return self.facing
+    
+    def getMetrics(self):
+        return self.metrics
     
     #Setters
 
@@ -154,6 +160,11 @@ class Player():
 
     def draw(self) -> None:
         self.screen.blit(self.sprite, (int(self.position.x), int(self.position.y)))
+        font = pygame.font.Font(None, 24)
+        text = font.render(self.metrics.formatTime(), True, (255, 255, 255))
+        text_rect = text.get_rect()
+        text_rect.topright = (self.screen.get_width() - 10, 10)
+        self.screen.blit(text, text_rect)
 
     def toJson(self) -> dict:
         player_dict = {
