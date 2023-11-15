@@ -243,7 +243,6 @@ class Game:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 clicked = [button for button in buttons if button.rect.collidepoint(event.pos)]
                 index = buttons.index(clicked[0]) if len(clicked) > 0 else -1
-                print(clicked)
                 if len(clicked) > 0 and event.button == 1:
                     self.running, self.currentScreen = clicked[0].onClick(
                         game=self, 
@@ -290,6 +289,10 @@ class Game:
         Starts the game loop
         '''
         clock = pygame.time.Clock()
+
+        pygame.mixer.init()
+        pygame.mixer.music.load("assets/audio/soundtrack.mp3")
+        pygame.mixer.music.play(-1)
 
         # Game loop
         while self.running:
