@@ -13,7 +13,12 @@ def get_saved_games() -> list[str]:
     Returns a list of the names of the saved games sorted by creation time
     '''
     saves_dir = "saved_games"
-    files = os.listdir(saves_dir)
+    
+    try:
+        files = os.listdir(saves_dir)
+    except FileNotFoundError:
+        return []
+    
     files.sort(key=lambda x: os.path.getctime(os.path.join(saves_dir, x)))
     return [f"{filename}"[:-5] for filename in files if filename.endswith(".json")]
 
