@@ -15,6 +15,10 @@
             {
                 "id": 1,
                 "texture": "assets/Oven.png",
+                "interactable": "True",
+                "happiness-effect":10,
+                "health-effect":10,
+                "time-effect":10,
                 "position-relative": {
                     "direction": "S",
                     "relativeTo": 0
@@ -23,6 +27,7 @@
             {
                 "id": 2,
                 "texture": "assets/Sink.png",
+                "interactable": "False",
                 "position-relative": {
                     "direction": "E",
                     "relativeTo": 1
@@ -31,6 +36,7 @@
             {
                 "id": 3,
                 "texture": "assets/Sink.png",
+                "interactable": "False",
                 "position-relative": {
                     "direction": "E",
                     "relativeTo": 2
@@ -39,6 +45,7 @@
             {
                 "id": 4,
                 "texture": "assets/Cupboard.png",
+                "interactable": "False",
                 "position-relative": {
                     "direction": "E",
                     "relativeTo": 3
@@ -47,6 +54,7 @@
             {
                 "id": 5,
                 "texture": "assets/Cupboard.png",
+                "interactable": "False",
                 "position-relative": {
                     "direction": "S",
                     "relativeTo": 4

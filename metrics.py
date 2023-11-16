@@ -23,6 +23,8 @@ class Metrics:
         self.happiness = happiness
         self.health = health
 
+    #def __add__(self, other: object()): could do a class+class which alters the metrics?
+
     #Setters/Getters
 
     def setTime(self, time):

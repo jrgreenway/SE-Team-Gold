@@ -31,8 +31,17 @@ def scene_loader_data(sceneData: dict) -> Scene:
                 surf_array = pickle.load(f)
             gameSprite = pygame.surfarray.make_surface(surf_array)
             gameSprite = pygame.transform.scale(gameSprite, (128, 128))
+        
+        interactive = lambda: object['interactable'] is "True"
+        if interactive:
+            happiness_effect = object['happiness_effect']
+            time_effect = object['time_effect']
+            health_effect = object['health_effect']
+            gameObject = GameObject(object['id'], sprite=gameSprite)
+        else:
+            gameObject = GameObject(object['id'], sprite=gameSprite)
 
-        gameObject = GameObject(object['id'], sprite=gameSprite)
+        
         try:
             pos = object['position-absolute']
             gameObject.setPosition(pygame.Vector2(pos['x'], pos['y']))
