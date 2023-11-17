@@ -1,6 +1,8 @@
 from typing import Callable
 import pygame
 from gameObject import GameObject
+from buttons.button import Button
+from oracle import Oracle
 from scene import Scene
 from screens.avatarScreen import draw_avatar_screen
 from screens.gameScreen import draw_game_screen
@@ -52,7 +54,7 @@ class Game:
             player: Player, 
             scene: Scene, 
             buttonCBs: dict[str, Callable], 
-            savedGames: list[str]
+            savedGames: list[str],
     ) -> None:
         self.screen = screen
         self.currentFrame = 0
@@ -61,6 +63,7 @@ class Game:
         self.player = player
         self.currentScene = scene
         self.holdingKeys = []
+        self.oracle = Oracle(screen, callBacks=buttonCBs)
 
         self.buttonCBs = buttonCBs
         self.savedGames = savedGames
@@ -184,13 +187,18 @@ class Game:
         self.player.interact(self.holdingKeys, self.giveInteractable())
         self.player.animate(self.checkMoving(), self.currentFrame)
         self.player.draw()
-        self.handleGameScreenEvents(events)
+        oracleButton = self.oracle.draw()
+        self.handleGameScreenEvents(events, [oracleButton])
 
-    def handleGameScreenEvents(self, events) -> None:
+    def handleGameScreenEvents(self, events, buttons: list[Button]) -> None:
         ''' Game.handleGameScreenEvents(events) -> None
         Handles mouse clicks on the game screen
         '''
         for event in events:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                clicked = [button for button in buttons if button.rect.collidepoint(event.pos)]
+                if len(clicked) > 0:
+                    self.running, self.currentScreen = clicked[0].onClick(game=self, currentScreen=self.currentScreen)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE and not self.keyDown:
                     self.currentScreen = PAUSE_SCREEN

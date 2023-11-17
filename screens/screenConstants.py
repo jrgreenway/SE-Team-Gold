@@ -7,6 +7,7 @@ CREATE_AVATAR_SCREEN = "createAvatar"
 GAME_SCREEN = "game"
 PAUSE_SCREEN = "pause"
 LOAD_SCREEN = "load"
+ORACLE_SCREEN = "oracle"
 
 def nextScreen(currentScreen: str) -> str:
     ''' nextScreen: str -> str
@@ -31,5 +32,6 @@ def previousScreen(currentScreen: str) -> str:
         CREATE_AVATAR_SCREEN: START_SCREEN,
         PAUSE_SCREEN: GAME_SCREEN,
         LOAD_SCREEN: START_SCREEN,
-        GAME_SCREEN: START_SCREEN
+        GAME_SCREEN: START_SCREEN,
+        ORACLE_SCREEN: GAME_SCREEN,
     }[currentScreen]
