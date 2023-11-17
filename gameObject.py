@@ -39,11 +39,11 @@ class GameObject:
         interact with the object - returns a boolean - if true update the interactable attribute
     '''
 
-    def __init__(self, id: int, happiness_effect=0, health_effect=0, time_effect=0, interactable: bool=False, position: pygame.Vector2 = pygame.Vector2(0, 0), sprite: Optional[pygame.Surface] = None) -> None:
+    def __init__(self, id: int, happiness_effect=0, health_effect=0, time_effect=0, interactive: bool=False, position: pygame.Vector2 = pygame.Vector2(0, 0), sprite: Optional[pygame.Surface] = None) -> None:
         self.id = id
         self.position = position
         self.sprite = sprite
-        self.interactable = interactable
+        self.interactive = interactive
         self.happiness_effect = happiness_effect
         self.time_effect = time_effect
         self.health_effect = health_effect
@@ -77,6 +77,8 @@ class GameObject:
     def setSprite(self, sprite: pygame.Surface) -> None:
         self.sprite = sprite
 
+    def isInteractable():#TODO figure out how to determine interaction distance and in radius
+        return
     def toJson(self) -> dict:
         if self.sprite is None:
             raise Exception("Sprite not set")
