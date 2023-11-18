@@ -1,6 +1,8 @@
+from turtle import distance
 from typing import Callable
 from numpy import save
 import pygame
+from gameObject import GameObject
 from scene import Scene
 from screens.avatarScreen import draw_avatar_screen
 from screens.gameScreen import draw_game_screen
@@ -178,6 +180,7 @@ class Game:
         '''
         draw_game_screen(self.screen, self.currentScene)
         self.player.move(self.holdingKeys)
+        self.player.interact(self.holdingKeys, self.giveInteractable())
         self.player.animate(self.checkMoving(), self.currentFrame)
         self.player.draw()
         self.handleGameScreenEvents(events)
@@ -283,6 +286,25 @@ class Game:
             'currentScene': self.currentScene.toJson(),
             'player': self.player.toJson()
         }
+    
+    def giveInteractable(self):
+        ''' Game.giveInteractable() -> gameObject|None
+        Returns the closest interactable object in the interaction threshold
+        TODO add facing right direction condition
+        '''
+        objects = self.currentScene.getInteractableObjects()
+        if objects == []:
+            return None
+        player_position = self.player.getPosition()
+        distance_to_func = lambda obj: player_position.distance_to(obj.getPosition())
+        close_object = min(objects, key=distance_to_func)
+        print(player_position, close_object.getPosition(), distance_to_func(close_object))
+        if distance_to_func(close_object) <= self.player.interaction_threshold:
+            return close_object
+        else: return None
+        
+
+
 
     def start(self) -> None:
         ''' Game.start() -> None

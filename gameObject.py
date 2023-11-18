@@ -51,8 +51,8 @@ class GameObject:
     def getID(self) -> int:
         return self.id
     
-    def getInteractable(self):
-        return self.interactable
+    def getInteractive(self):
+        return self.interactive
     
     def getHappinessEffect(self):
         return self.happiness_effect
@@ -76,9 +76,10 @@ class GameObject:
     
     def setSprite(self, sprite: pygame.Surface) -> None:
         self.sprite = sprite
-
-    def isInteractable():#TODO figure out how to determine interaction distance and in radius
+    
+    def getInteractionDirection(self):#for seeing if player is facing right direction
         return
+
     def toJson(self) -> dict:
         if self.sprite is None:
             raise Exception("Sprite not set")

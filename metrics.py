@@ -22,8 +22,7 @@ class Metrics:
         self.time = time
         self.happiness = happiness
         self.health = health
-
-    #def __add__(self, other: object()): could do a class+class which alters the metrics?
+        #for buffs, maybe have as a list of dicts for each buff, then a loop in changeMetrics() to determine total de/buff
 
     #Setters/Getters
 
@@ -54,5 +53,12 @@ class Metrics:
         minutes = self.time // 60
         seconds = self.time % 60
         return f"{minutes:02d}:{seconds:02d}"
+    
+    def changeMetrics(self, happiness_change=0, time_change=0, health_change=0):
+        #if we add buffs/debuffs, suggest storing it in this class, then adding as modifier
+        self.happiness += happiness_change
+        self.time -= time_change #time alterations stored as +ve
+        self.health += health_change
+
     
 

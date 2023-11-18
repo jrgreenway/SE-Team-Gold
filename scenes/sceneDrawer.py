@@ -32,15 +32,16 @@ def scene_loader_data(sceneData: dict) -> Scene:
             gameSprite = pygame.surfarray.make_surface(surf_array)
             gameSprite = pygame.transform.scale(gameSprite, (128, 128))
         
-        interactive = lambda: object['interactable'] is "True"
-        if interactive:
-            happiness_effect = object['happiness_effect']
-            time_effect = object['time_effect']
-            health_effect = object['health_effect']
+        
+        if object['interactive'] == "True":
+            happiness_effect = object['happiness-effect']
+            time_effect = object['time-effect']
+            health_effect = object['health-effect']
             gameObject = GameObject(object['id'],
                                      happiness_effect=happiness_effect,
                                      time_effect=time_effect,
                                      health_effect=health_effect,
+                                     interactive=True,
                                      sprite=gameSprite)
         else:
             gameObject = GameObject(object['id'], sprite=gameSprite)
