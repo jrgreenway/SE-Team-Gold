@@ -21,11 +21,14 @@ class Scene:
     getters and setters for all attributes
     '''
 
-    def __init__(self, id: int, name: str, background: pygame.Surface, objects: list[GameObject] = []) -> None:
+    def __init__(self, id: int, name: str, background: pygame.Surface, objects: list[GameObject] = [], interactable_objects: list[GameObject] = []) -> None:
         self.id = id
         self.name = name
         self.background = background
         self.objects = objects
+        self.interactable_objects = interactable_objects
+        self.addInteractableObjects(objects=self.objects)#might want to change this and have it as a argument when initialising scene instead
+
 
     def getID(self) -> int:
         return self.id
@@ -39,6 +42,14 @@ class Scene:
     def getObjects(self) -> list[GameObject]:
         return self.objects
     
+    def getInteractableObjects(self) -> list[GameObject]:
+        return self.interactable_objects
+    
+    def addInteractableObjects(self, objects) -> list[GameObject]:
+        for object in objects:
+            if object.getInteractive():
+                self.interactable_objects.append(object)
+
     def toJson(self) -> dict:
         
         # crop the rectangle from 0,0 to 128, 128 from baground

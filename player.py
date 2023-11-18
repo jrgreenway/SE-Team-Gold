@@ -2,7 +2,6 @@ import json
 from typing import Any
 import pygame
 from gameObject import GameObject
-
 from metrics import Metrics
 
 class Player():
@@ -53,6 +52,8 @@ class Player():
         self.width = 200
         self.height = 200
         self.hitbox = pygame.Rect(self.position.x + 55, self.position.y + 40, 90, 130 )  
+        self.interaction_threshold = 10
+
         # animations is dict with keys S, N, E, W
         # every key has a list of sprites as its value
         self.loadAnimations()
@@ -100,6 +101,12 @@ class Player():
         self.gender = gender
     
     #Methods
+
+    def interact(self, holdingKeys, object: GameObject=None):#TODO sort out event that happens as a result of key press
+        if pygame.K_e in holdingKeys and object is not None:
+            #object interaction 
+            self.metrics.changeMetrics(object.getHappinessEffect(), object.getTimeEffect(), object.getHealthEffect())
+            print(f"interacted with {object.getID}")
 
     # TODO find which type of Event to import
     def move(self, holdingKeys, objects: list[GameObject]):#call in main loop.
