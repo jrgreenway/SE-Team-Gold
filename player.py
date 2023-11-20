@@ -52,7 +52,7 @@ class Player():
         self.width = 200
         self.height = 200
         self.hitbox = pygame.Rect(self.position.x + 55, self.position.y + 40, 90, 130 )  
-        self.metrics = Metrics(15, 0, 0, 10)
+        self.metrics = Metrics()
 
         self.interaction_threshold = 128
         self.not_interacting = True
@@ -230,9 +230,12 @@ class Player():
         text_rect = text.get_rect()
         text_rect.topright = (self.screen.get_width() - 10, 10)
         self.screen.blit(text, text_rect)
+        
         #Used to check the size of the hitbox
         if self.isDebug:
             pygame.draw.rect(self.screen, (255,0,0), self.hitbox, 2)
+
+        self.metrics.draw(self.screen)
 
     def toJson(self) -> dict:
         player_dict = {
