@@ -48,14 +48,18 @@ class Player():
         self.speed = speed
         self.gender = gender
         self.metrics = Metrics(15, 0, 0)
-
+        #New
+        self.width = 200
+        self.height = 200
+        self.hitbox = pygame.Rect(self.position.x + 55, self.position.y + 40, 90, 130 )  
         # animations is dict with keys S, N, E, W
         # every key has a list of sprites as its value
         self.loadAnimations()
         self.sprite = self.animations[self.facing][0]
     
     def reset(self) -> None:
-        self.position = pygame.Vector2(self.screen.get_width() / 2, self.screen.get_height() / 2)
+        #So that the player sprite doesn't start on an object
+        self.position = pygame.Vector2(self.screen.get_width() / 6, self.screen.get_height() / 2)
 
     #Getters
 
@@ -95,22 +99,44 @@ class Player():
     #Methods
 
     # TODO find which type of Event to import
-    def move(self, holdingKeys):#call in main loop.
+    def move(self, holdingKeys, objects):#call in main loop.
         # TODO retrieve events only once in game main loop and pass them as
         # parameters to subsequent methods to avoid double triggers.
+    
         for key in holdingKeys:
-            if key == pygame.K_UP:
+            if key == pygame.K_UP and "N" not in self.checkCollision(objects):
                 self.position.y -= self.speed  # Move up
                 self.facing = "N"
-            elif key == pygame.K_DOWN:
+            elif key == pygame.K_DOWN and "S" not in self.checkCollision(objects):
                 self.position.y += self.speed  # Move down
                 self.facing = "S"
-            elif key == pygame.K_LEFT:
+            elif key == pygame.K_LEFT and "W" not in self.checkCollision(objects):
                 self.position.x -= self.speed  # Move left
                 self.facing = "W"
-            elif key == pygame.K_RIGHT:
+            elif key == pygame.K_RIGHT and "E" not in self.checkCollision(objects):
                 self.position.x += self.speed  # Move right
                 self.facing = "E"
+    
+    #After player has moved, check for collision
+    #If collision is detected, check from which direction the collision is
+    #Return the direction(s) which are obstructed by and object as a list
+    def checkCollision(self, objects):
+        for object in objects:
+            rect = pygame.Rect(object.position.x, object.position.y, 128, 128)
+            pygame.draw.rect(self.screen, (255,0,0), rect, 2)
+            collisionTolerance = 10
+            obstructedDirections = []
+            if self.hitbox.colliderect(rect):
+                print("Collision with {}".format(object.id))
+                if abs(self.hitbox.top - rect.bottom) < collisionTolerance:
+                    obstructedDirections.append("N")
+                if abs(self.hitbox.bottom - rect.top) < collisionTolerance:
+                    obstructedDirections.append("S")
+                if abs(self.hitbox.left - rect.right) < collisionTolerance:
+                    obstructedDirections.append("W")
+                if abs(self.hitbox.right - rect.left) < collisionTolerance:
+                    obstructedDirections.append("E")
+        return obstructedDirections
 
     #Animate method (returns next sprite image)
     #Each walking animation in each direction had a 4 frame animation (1st and 3rd being the same image)
@@ -153,10 +179,11 @@ class Player():
 
     def animate(self, moving:bool, currentFrame) -> None:
         if not moving:
-            self.sprite = self.animations[self.facing][0]
+            #Scaled the images for that the sprite is smaller
+            self.sprite = pygame.transform.scale(self.animations[self.facing][0], (self.width, self.height))
         else:
             #Each image lasts 15 frames so animation loops every 60 frames (maybe be too fast - will have to see when testing)))
-            self.sprite = self.animations[self.facing][(currentFrame//15) % 4]
+            self.sprite = pygame.transform.scale(self.animations[self.facing][(currentFrame//15) % 4], (self.width, self.height))
 
     def draw(self) -> None:
         self.screen.blit(self.sprite, (int(self.position.x), int(self.position.y)))
@@ -165,6 +192,8 @@ class Player():
         text_rect = text.get_rect()
         text_rect.topright = (self.screen.get_width() - 10, 10)
         self.screen.blit(text, text_rect)
+        #Used to check the size of the hitbox
+        pygame.draw.rect(self.screen, (255,0,0), (self.position.x + 55, self.position.y + 40, 90, 130), 2)
 
     def toJson(self) -> dict:
         player_dict = {
