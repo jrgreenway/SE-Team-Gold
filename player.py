@@ -50,7 +50,7 @@ class Player():
         self.speed = speed
         self.gender = gender
         self.metrics = Metrics(15, 0, 0)
-        self.interaction_threshold = 100
+        self.interaction_threshold = 128
         self.not_interacting = True
 
         # animations is dict with keys S, N, E, W
@@ -102,7 +102,9 @@ class Player():
         if holdingKeys.count(pygame.K_e) == 0:
             self.not_interacting = True
         
-        if pygame.K_e in holdingKeys and self.not_interacting and object is not None:
+        canInteract = pygame.K_e in holdingKeys and self.not_interacting \
+                        and object is not None #and facing direction
+        if canInteract:
             self.not_interacting = False
             self.metrics.changeMetrics(object.getHappinessEffect(), object.getTimeEffect(), object.getHealthEffect())
             print(f"interacted with {object.getID()}")
