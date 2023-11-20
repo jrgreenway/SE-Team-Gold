@@ -51,6 +51,7 @@ class Player():
         self.gender = gender
         self.metrics = Metrics(15, 0, 0)
         self.interaction_threshold = 100
+        self.not_interacting = True
 
         # animations is dict with keys S, N, E, W
         # every key has a list of sprites as its value
@@ -98,8 +99,11 @@ class Player():
     #Methods
 
     def interact(self, holdingKeys, object: Optional[GameObject]=None):#TODO sort out event that happens as a result of key press
-        if pygame.K_e in holdingKeys and object is not None:
-            #object interaction 
+        if holdingKeys.count(pygame.K_e) == 0:
+            self.not_interacting = True
+        
+        if pygame.K_e in holdingKeys and self.not_interacting and object is not None:
+            self.not_interacting = False
             self.metrics.changeMetrics(object.getHappinessEffect(), object.getTimeEffect(), object.getHealthEffect())
             print(f"interacted with {object.getID}")
 
@@ -108,16 +112,16 @@ class Player():
         # TODO retrieve events only once in game main loop and pass them as
         # parameters to subsequent methods to avoid double triggers.
         for key in holdingKeys:
-            if key == pygame.K_UP:
+            if key == pygame.K_w:
                 self.position.y -= self.speed  # Move up
                 self.facing = "N"
-            elif key == pygame.K_DOWN:
+            elif key == pygame.K_s:
                 self.position.y += self.speed  # Move down
                 self.facing = "S"
-            elif key == pygame.K_LEFT:
+            elif key == pygame.K_a:
                 self.position.x -= self.speed  # Move left
                 self.facing = "W"
-            elif key == pygame.K_RIGHT:
+            elif key == pygame.K_d:
                 self.position.x += self.speed  # Move right
                 self.facing = "E"
 
