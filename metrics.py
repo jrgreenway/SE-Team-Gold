@@ -18,10 +18,11 @@ class Metrics:
         updateTime: Updates the time by increment (default 1).
         formatTime: Formats the time into a string.
         '''
-    def __init__(self, time: int, happiness: int, health: int) -> None:
+    def __init__(self, time: int, happiness: int, health: int, money:int) -> None:
         self.time = time
         self.happiness = happiness
         self.health = health
+        self.money = money
         #for buffs, maybe have as a list of dicts for each buff, then a loop in changeMetrics() to determine total de/buff
 
     #Setters/Getters
@@ -54,11 +55,12 @@ class Metrics:
         seconds = self.time % 60
         return f"{minutes:02d}:{seconds:02d}"
     
-    def changeMetrics(self, happiness_change=0, time_change=0, health_change=0):
+    def changeMetrics(self, happiness_change=0, time_change=0, health_change=0, money_change=0):
         #if we add buffs/debuffs, suggest storing it in this class, then adding as modifier
         self.happiness += happiness_change
         self.time -= time_change #time alterations stored as +ve
         self.health += health_change
+        self.money += money_change
 
     
 
