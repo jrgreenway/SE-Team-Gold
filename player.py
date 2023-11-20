@@ -54,6 +54,7 @@ class Player():
         self.height = 200
         self.hitbox = pygame.Rect(self.position.x + 55, self.position.y + 40, 90, 130 )  
         self.interaction_threshold = 100
+        self.not_interacting = True
 
         # animations is dict with keys S, N, E, W
         # every key has a list of sprites as its value
@@ -104,8 +105,11 @@ class Player():
     #Methods
 
     def interact(self, holdingKeys, object: Optional[GameObject]=None):#TODO sort out event that happens as a result of key press
-        if pygame.K_e in holdingKeys and object is not None:
-            #object interaction 
+        if holdingKeys.count(pygame.K_e) == 0:
+            self.not_interacting = True
+        
+        if pygame.K_e in holdingKeys and self.not_interacting and object is not None:
+            self.not_interacting = False
             self.metrics.changeMetrics(object.getHappinessEffect(), object.getTimeEffect(), object.getHealthEffect())
             print(f"interacted with {object.getID}")
 
@@ -119,16 +123,16 @@ class Player():
             temp_x = self.position.x
             temp_y = self.position.y    
             
-            if key == pygame.K_UP and "N" not in obstructedDirections:
+            if key == pygame.K_w and "N" not in obstructedDirections:
                 temp_y -= self.speed  # Move up
                 self.facing = "N"
-            elif key == pygame.K_DOWN and "S" not in obstructedDirections:
+            elif key == pygame.K_s and "S" not in obstructedDirections:
                 temp_y += self.speed  # Move down
                 self.facing = "S"
-            elif key == pygame.K_LEFT and "W" not in obstructedDirections:
+            elif key == pygame.K_a and "W" not in obstructedDirections:
                 temp_x -= self.speed  # Move left
                 self.facing = "W"
-            elif key == pygame.K_RIGHT and "E" not in obstructedDirections:
+            elif key == pygame.K_d and "E" not in obstructedDirections:
                 temp_x += self.speed  # Move right
                 self.facing = "E"
             
