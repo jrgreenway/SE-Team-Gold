@@ -82,8 +82,8 @@ class Game:
         self.currentFrame = currentFrame
 
     def checkMoving(self):
-        if pygame.K_UP in self.holdingKeys or pygame.K_DOWN in self.holdingKeys or \
-            pygame.K_LEFT in self.holdingKeys or pygame.K_RIGHT in self.holdingKeys:
+        if pygame.K_w in self.holdingKeys or pygame.K_s in self.holdingKeys or \
+            pygame.K_a in self.holdingKeys or pygame.K_d in self.holdingKeys:
             return True
         else:
             return False
