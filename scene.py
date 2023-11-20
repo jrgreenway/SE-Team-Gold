@@ -21,13 +21,16 @@ class Scene:
     getters and setters for all attributes
     '''
 
-    def __init__(self, id: int, name: str, background: pygame.Surface, objects: list[GameObject] = [], interactable_objects: list[GameObject] = []) -> None:
+    def __init__(self,
+                 id: int, 
+                 name: str, 
+                 background: pygame.Surface, 
+                 objects: list[GameObject] = [], 
+                 ) -> None:
         self.id = id
         self.name = name
         self.background = background
-        self.objects = objects
-        self.interactable_objects = interactable_objects
-        self.addInteractableObjects(objects=self.objects)#might want to change this and have it as a argument when initialising scene instead
+        self.loadObjects(objects)
 
 
     def getID(self) -> int:
@@ -40,15 +43,23 @@ class Scene:
         return self.background
     
     def getObjects(self) -> list[GameObject]:
-        return self.objects
+        return self.interactable_objects + self.noninteractable_objects
     
     def getInteractableObjects(self) -> list[GameObject]:
         return self.interactable_objects
     
-    def addInteractableObjects(self, objects) -> list[GameObject]:
+    def getNonInteractableObjects(self) -> list[GameObject]:
+        return self.noninteractable_objects
+    
+    def loadObjects(self, objects) -> None:
+        self.noninteractable_objects = []
+        self.interactable_objects = []
         for object in objects:
             if object.getInteractive():
                 self.interactable_objects.append(object)
+            else:
+                self.noninteractable_objects.append(object)
+
 
     def toJson(self) -> dict:
         

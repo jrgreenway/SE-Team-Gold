@@ -1,4 +1,3 @@
-from turtle import distance
 from typing import Callable
 from numpy import save
 import pygame
@@ -298,7 +297,6 @@ class Game:
         player_position = self.player.getPosition()
         distance_to_func = lambda obj: player_position.distance_to(obj.getPosition())
         close_object = min(objects, key=distance_to_func)
-        print(player_position, close_object.getPosition(), distance_to_func(close_object))
         if distance_to_func(close_object) <= self.player.interaction_threshold:
             return close_object
         else: return None
