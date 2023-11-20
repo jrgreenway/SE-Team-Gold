@@ -40,7 +40,7 @@ def draw_oracle_question_screen(
             question_button = pygame.Rect(screen.get_width() // 2 - question_text.get_width() // 2 - 10, buttonTop, question_text.get_width() + 20, 50)
             pygame.draw.rect(screen, (0, 0, 255), question_button)
             screen.blit(question_text, (screen.get_width() // 2 - question_text.get_width() // 2, questionTop))
-            question_buttons.append(Button(question_button, lambda **kwargs: questionCB(question=question, **kwargs)))
+            question_buttons.append(Button(question_button, questionCB))
 
         # Draw a back to Game button
         back_font = pygame.font.Font(None, 30)

@@ -221,7 +221,7 @@ class Player():
             self.sprite = pygame.transform.scale(self.animations[self.facing][0], (self.width, self.height))
         else:
             #Each image lasts 15 frames so animation loops every 60 frames (maybe be too fast - will have to see when testing)))
-            self.sprite = pygame.transform.scale(self.animations[self.facing][(currentFrame//15) % 4], (self.width, self.height))
+            self.sprite = pygame.transform.scale(self.animations[self.facing][((currentFrame % 60)//15) % 4], (self.width, self.height))
 
     def draw(self) -> None:
         self.screen.blit(self.sprite, (int(self.position.x), int(self.position.y)))

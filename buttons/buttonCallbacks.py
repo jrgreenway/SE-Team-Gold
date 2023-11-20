@@ -47,6 +47,10 @@ def clickOracleQuestionCB(**kwargs) -> tuple[bool, str]:
     kwargs['oracle'].setQuestion(kwargs['question'])
     return True, ORACLE_ANSWER_SCREEN
 
+def nextButtonCB(**kwargs) -> tuple[bool, str]:
+    currentScreen = kwargs['currentScreen']
+    return True, nextScreen(currentScreen)
+
 def createButtonCBDict() -> dict[str, Callable]:
     ''' createButtonCBDict: None -> dict[str, Callable]
     Creates a dictionary of button callbacks
@@ -62,4 +66,5 @@ def createButtonCBDict() -> dict[str, Callable]:
         'backToMainMenu': backToMainMenuButtonCB,
         'clickOracle': clickOracleCB,
         'clickOracleQuestion': clickOracleQuestionCB,
+        'next': nextButtonCB,
     }

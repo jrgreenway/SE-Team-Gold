@@ -20,6 +20,10 @@ ANSWERS = [
     " to it and are facing its direction. A pointer for this would be the name of the object popping up.",
     "The bars on the top are your metrics. The first one is your happines, the second one is the time left in the day. Below" + \
     " these you can also see your current funds as well as the time of the day.",
+    "The goal of the game is to live your life to the fullest. You can do this by interacting with the world and" + \
+    " making the right choices. However, be careful, as your choices will have consequences. You can also" + \
+    " interact with the oracle to get some hints on what to do next. Remember to watch your metrics and" + \
+    " make sure you don't run out of time or money. Have Fun!",
 ]
 
 class Oracle:
@@ -61,3 +65,6 @@ class Oracle:
 
     def getQuestions(self) -> list[str]:
         return self.questions
+    
+    def getAnswer(self) -> str:
+        return self.answers[self.questions.index(self.question)]
