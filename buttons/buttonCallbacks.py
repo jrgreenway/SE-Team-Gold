@@ -6,7 +6,8 @@ the game.
 from json import load
 from typing import Callable
 from urllib.request import CacheFTPHandler
-from screens.screenConstants import CREATE_AVATAR_SCREEN, GAME_SCREEN, LOAD_SCREEN, ORACLE_SCREEN, START_SCREEN, previousScreen
+from oracle import Oracle
+from screens.screenConstants import *
 from utils.gameLoader import load_game
 from utils.gameSaver import save_game
 
@@ -40,7 +41,11 @@ def backToMainMenuButtonCB(**_) -> tuple[bool, str]:
     return True, START_SCREEN
 
 def clickOracleCB(**_) -> tuple[bool, str]:
-    return True, ORACLE_SCREEN
+    return True, ORACLE_QUESTION_SCREEN
+
+def clickOracleQuestionCB(**kwargs) -> tuple[bool, str]:
+    kwargs['oracle'].setQuestion(kwargs['question'])
+    return True, ORACLE_ANSWER_SCREEN
 
 def createButtonCBDict() -> dict[str, Callable]:
     ''' createButtonCBDict: None -> dict[str, Callable]
@@ -55,5 +60,6 @@ def createButtonCBDict() -> dict[str, Callable]:
         'startGame': startGameButtonCB,
         'save': saveButtonCB,
         'backToMainMenu': backToMainMenuButtonCB,
-        'clickOracle': clickOracleCB
+        'clickOracle': clickOracleCB,
+        'clickOracleQuestion': clickOracleQuestionCB,
     }

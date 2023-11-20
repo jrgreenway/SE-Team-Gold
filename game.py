@@ -7,8 +7,9 @@ from scene import Scene
 from screens.avatarScreen import draw_avatar_screen
 from screens.gameScreen import draw_game_screen
 from screens.loadScreen import draw_load_screen
+from screens.oracleQuestionScreen import draw_oracle_question_screen
 from screens.pauseScreen import draw_pause_screen
-from screens.screenConstants import CREATE_AVATAR_SCREEN, GAME_SCREEN, LOAD_SCREEN, PAUSE_SCREEN, START_SCREEN, WELCOME_SCREEN, nextScreen
+from screens.screenConstants import *
 from screens.startScreen import draw_start_screen
 
 from screens.welcomeScreen import draw_welcome_screen
@@ -266,6 +267,33 @@ class Game:
                 elif event.button == 5:
                     self.scrollPos = min(len(self.savedGames) - 1, self.scrollPos + 1)
 
+    def drawQuestionScreen(self, events) -> None:
+        ''' Game.drawQuestionScreen(events) -> None
+        Draws the question screen and handles mouse clicks on the buttons
+        '''
+        draw_game_screen(self.screen, self.currentScene)
+        self.player.draw()
+        buttons = draw_oracle_question_screen(
+            self.screen, 
+            self.oracle.getQuestions(), 
+            self.buttonCBs['clickOracleQuestion'],
+            self.buttonCBs['back']
+        )
+        self.handleQuestionScreenEvents(events, buttons)
+
+    def handleQuestionScreenEvents(self, events, buttons) -> None:
+        ''' Game.handleQuestionScreenEvents(events, buttons) -> None
+        Handles mouse clicks on the question screen
+        '''
+        for event in events:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                clicked = [button for button in buttons if button.rect.collidepoint(event.pos)]
+                if len(clicked) > 0:
+                    self.running, self.currentScreen = clicked[0].onClick(
+                        game=self, 
+                        currentScreen=self.currentScreen,
+                        oracle=self.oracle
+                    )
 
     def handleCurrentScreen(self, events) -> None:
         ''' Game.handleCurrentScreen(events) -> None
@@ -283,6 +311,8 @@ class Game:
             self.createPauseScreen(events)
         elif self.currentScreen == LOAD_SCREEN:
             self.createLoadScreen(events)
+        elif self.currentScreen == ORACLE_QUESTION_SCREEN:
+            self.drawQuestionScreen(events)
         else:
             raise Exception("Invalid Screen")
         
@@ -320,9 +350,9 @@ class Game:
         '''
         clock = pygame.time.Clock()
 
-        pygame.mixer.init()
-        pygame.mixer.music.load("assets/audio/soundtrack.mp3")
-        pygame.mixer.music.play(-1)
+        # pygame.mixer.init()
+        # pygame.mixer.music.load("assets/audio/soundtrack.mp3")
+        # pygame.mixer.music.play(-1)
 
         # Game loop
         while self.running:

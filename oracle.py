@@ -53,3 +53,11 @@ class Oracle:
 
         self.screen.blit(self.sprite, buttonRect)
         return button
+    
+    def setQuestion(self, question: str) -> None:
+        if question not in self.questions:
+            return
+        self.question = question
+
+    def getQuestions(self) -> list[str]:
+        return self.questions
