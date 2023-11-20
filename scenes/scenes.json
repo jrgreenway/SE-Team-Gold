@@ -7,7 +7,7 @@
             {
                 "id": 0,
                 "texture": "assets/Cupboard.png",
-                "interactive": "False",
+                "interactive": false,
                 "position-absolute": {
                     "x": 312,
                     "y": 214
@@ -16,7 +16,7 @@
             {
                 "id": 1,
                 "texture": "assets/Oven.png",
-                "interactive": "True",
+                "interactive": true,
                 "happiness-effect":10,
                 "health-effect":10,
                 "time-effect":10,
@@ -28,7 +28,7 @@
             {
                 "id": 2,
                 "texture": "assets/Sink.png",
-                "interactive": "False",
+                "interactive": false,
                 "position-relative": {
                     "direction": "E",
                     "relativeTo": 1
@@ -37,7 +37,7 @@
             {
                 "id": 3,
                 "texture": "assets/Sink.png",
-                "interactive": "False",
+                "interactive": false,
                 "position-relative": {
                     "direction": "E",
                     "relativeTo": 2
@@ -46,7 +46,7 @@
             {
                 "id": 4,
                 "texture": "assets/Cupboard.png",
-                "interactive": "False",
+                "interactive": false,
                 "position-relative": {
                     "direction": "E",
                     "relativeTo": 3
@@ -55,7 +55,7 @@
             {
                 "id": 5,
                 "texture": "assets/Cupboard.png",
-                "interactive": "False",
+                "interactive": false,
                 "position-relative": {
                     "direction": "S",
                     "relativeTo": 4

@@ -1,5 +1,5 @@
 import json
-from typing import Any
+from typing import Optional
 import pygame
 from gameObject import GameObject
 from metrics import Metrics
@@ -48,11 +48,12 @@ class Player():
         self.speed = speed
         self.gender = gender
         self.metrics = Metrics(15, 0, 0)
+
         #New
         self.width = 200
         self.height = 200
         self.hitbox = pygame.Rect(self.position.x + 55, self.position.y + 40, 90, 130 )  
-        self.interaction_threshold = 10
+        self.interaction_threshold = 100
 
         # animations is dict with keys S, N, E, W
         # every key has a list of sprites as its value
@@ -102,7 +103,7 @@ class Player():
     
     #Methods
 
-    def interact(self, holdingKeys, object: GameObject=None):#TODO sort out event that happens as a result of key press
+    def interact(self, holdingKeys, object: Optional[GameObject]=None):#TODO sort out event that happens as a result of key press
         if pygame.K_e in holdingKeys and object is not None:
             #object interaction 
             self.metrics.changeMetrics(object.getHappinessEffect(), object.getTimeEffect(), object.getHealthEffect())

@@ -3,6 +3,8 @@ import pickle
 from typing import Optional
 import pygame
 
+from metrics import Metrics
+
 
 class GameObject:
     '''
@@ -39,7 +41,15 @@ class GameObject:
         interact with the object - returns a boolean - if true update the interactable attribute
     '''
 
-    def __init__(self, id: int, happiness_effect=0, health_effect=0, time_effect=0, interactive: bool=False, position: pygame.Vector2 = pygame.Vector2(0, 0), sprite: Optional[pygame.Surface] = None) -> None:
+    def __init__(self, 
+                 id: int,
+                 happiness_effect=0,
+                 health_effect=0,
+                 time_effect=0,
+                 interactive: bool=False,
+                 position: pygame.Vector2 = pygame.Vector2(0, 0), 
+                 sprite: Optional[pygame.Surface] = None
+                 ) -> None:
         self.id = id
         self.position = position
         self.sprite = sprite
@@ -47,7 +57,7 @@ class GameObject:
         self.happiness_effect = happiness_effect
         self.time_effect = time_effect
         self.health_effect = health_effect
-
+        
     def getID(self) -> int:
         return self.id
     
