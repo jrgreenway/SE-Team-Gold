@@ -43,7 +43,7 @@ class Player():
     ) -> None:
         self.name = name
         self.screen = screen
-        self.position = pygame.Vector2(self.screen.get_width() / 2, self.screen.get_height() / 2)
+        self.position = pygame.Vector2(self.screen.get_width() / 6, self.screen.get_height() / 2)
         self.facing = facing
         self.speed = speed
         self.gender = gender
@@ -56,6 +56,8 @@ class Player():
         # every key has a list of sprites as its value
         self.loadAnimations()
         self.sprite = self.animations[self.facing][0]
+        
+        self.isDebug = True
     
     def reset(self) -> None:
         #So that the player sprite doesn't start on an object
@@ -102,40 +104,55 @@ class Player():
     def move(self, holdingKeys, objects):#call in main loop.
         # TODO retrieve events only once in game main loop and pass them as
         # parameters to subsequent methods to avoid double triggers.
-    
+        obstructedDirections = self.checkCollision(objects)
         for key in holdingKeys:
-            if key == pygame.K_UP and "N" not in self.checkCollision(objects):
+            if key == pygame.K_UP and "N" not in obstructedDirections:
                 self.position.y -= self.speed  # Move up
                 self.facing = "N"
-            elif key == pygame.K_DOWN and "S" not in self.checkCollision(objects):
+            elif key == pygame.K_DOWN and "S" not in obstructedDirections:
                 self.position.y += self.speed  # Move down
                 self.facing = "S"
-            elif key == pygame.K_LEFT and "W" not in self.checkCollision(objects):
+            elif key == pygame.K_LEFT and "W" not in obstructedDirections:
                 self.position.x -= self.speed  # Move left
                 self.facing = "W"
-            elif key == pygame.K_RIGHT and "E" not in self.checkCollision(objects):
+            elif key == pygame.K_RIGHT and "E" not in obstructedDirections:
                 self.position.x += self.speed  # Move right
                 self.facing = "E"
+        #Update hitbox position
+        self.hitbox = pygame.Rect(self.position.x + 55, self.position.y + 40, 90, 130 )
     
     #After player has moved, check for collision
     #If collision is detected, check from which direction the collision is
-    #Return the direction(s) which are obstructed by and object as a list
+    #Return the direction(s) which are obstructed by an object/the screen as a list
     def checkCollision(self, objects):
+        obstructedDirections = []
+
+        #Check collision with sides of the screen
+        if self.hitbox.top < 0:
+            obstructedDirections.append("N")
+        if self.hitbox.bottom > self.screen.get_height():
+            obstructedDirections.append("S")
+        if self.hitbox.left < 0:
+            obstructedDirections.append("W")
+        if self.hitbox.right > self.screen.get_width():
+            obstructedDirections.append("E")
+
+        #Check collision with object
         for object in objects:
             rect = pygame.Rect(object.position.x, object.position.y, 128, 128)
-            pygame.draw.rect(self.screen, (255,0,0), rect, 2)
-            collisionTolerance = 10
-            obstructedDirections = []
+            if self.isDebug:    
+                pygame.draw.rect(self.screen, (255,0,0), rect, 2)
+            collisionTolerance = 3
             if self.hitbox.colliderect(rect):
-                print("Collision with {}".format(object.id))
-                if abs(self.hitbox.top - rect.bottom) < collisionTolerance:
+                if abs(self.hitbox.top - rect.bottom) < collisionTolerance and "N" not in obstructedDirections:
                     obstructedDirections.append("N")
-                if abs(self.hitbox.bottom - rect.top) < collisionTolerance:
+                if abs(self.hitbox.bottom - rect.top) < collisionTolerance and "S" not in obstructedDirections:
                     obstructedDirections.append("S")
-                if abs(self.hitbox.left - rect.right) < collisionTolerance:
+                if abs(self.hitbox.left - rect.right) < collisionTolerance and "W" not in obstructedDirections:
                     obstructedDirections.append("W")
-                if abs(self.hitbox.right - rect.left) < collisionTolerance:
+                if abs(self.hitbox.right - rect.left) < collisionTolerance and "E" not in obstructedDirections:
                     obstructedDirections.append("E")
+
         return obstructedDirections
 
     #Animate method (returns next sprite image)
@@ -193,7 +210,8 @@ class Player():
         text_rect.topright = (self.screen.get_width() - 10, 10)
         self.screen.blit(text, text_rect)
         #Used to check the size of the hitbox
-        pygame.draw.rect(self.screen, (255,0,0), (self.position.x + 55, self.position.y + 40, 90, 130), 2)
+        if self.isDebug:
+            pygame.draw.rect(self.screen, (255,0,0), self.hitbox, 2)
 
     def toJson(self) -> dict:
         player_dict = {
