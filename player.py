@@ -1,6 +1,7 @@
 import json
 from typing import Any
 import pygame
+from gameObject import GameObject
 
 from metrics import Metrics
 
@@ -43,19 +44,25 @@ class Player():
     ) -> None:
         self.name = name
         self.screen = screen
-        self.position = pygame.Vector2(self.screen.get_width() / 2, self.screen.get_height() / 2)
+        self.position = pygame.Vector2(self.screen.get_width() / 6, self.screen.get_height() / 2)
         self.facing = facing
         self.speed = speed
         self.gender = gender
         self.metrics = Metrics(15, 0, 0)
-
+        #New
+        self.width = 200
+        self.height = 200
+        self.hitbox = pygame.Rect(self.position.x + 55, self.position.y + 40, 90, 130 )  
         # animations is dict with keys S, N, E, W
         # every key has a list of sprites as its value
         self.loadAnimations()
         self.sprite = self.animations[self.facing][0]
+        
+        self.isDebug = False
     
     def reset(self) -> None:
-        self.position = pygame.Vector2(self.screen.get_width() / 2, self.screen.get_height() / 2)
+        #So that the player sprite doesn't start on an object
+        self.position = pygame.Vector2(self.screen.get_width() / 6, self.screen.get_height() / 2)
 
     #Getters
 
@@ -95,22 +102,60 @@ class Player():
     #Methods
 
     # TODO find which type of Event to import
-    def move(self, holdingKeys):#call in main loop.
+    def move(self, holdingKeys, objects: list[GameObject]):#call in main loop.
         # TODO retrieve events only once in game main loop and pass them as
         # parameters to subsequent methods to avoid double triggers.
+        obstructedDirections = self.checkCollisionWithScreen()
+        
         for key in holdingKeys:
-            if key == pygame.K_UP:
-                self.position.y -= self.speed  # Move up
+            temp_x = self.position.x
+            temp_y = self.position.y    
+            
+            if key == pygame.K_UP and "N" not in obstructedDirections:
+                temp_y -= self.speed  # Move up
                 self.facing = "N"
-            elif key == pygame.K_DOWN:
-                self.position.y += self.speed  # Move down
+            elif key == pygame.K_DOWN and "S" not in obstructedDirections:
+                temp_y += self.speed  # Move down
                 self.facing = "S"
-            elif key == pygame.K_LEFT:
-                self.position.x -= self.speed  # Move left
+            elif key == pygame.K_LEFT and "W" not in obstructedDirections:
+                temp_x -= self.speed  # Move left
                 self.facing = "W"
-            elif key == pygame.K_RIGHT:
-                self.position.x += self.speed  # Move right
+            elif key == pygame.K_RIGHT and "E" not in obstructedDirections:
+                temp_x += self.speed  # Move right
                 self.facing = "E"
+            
+            # Do this here for scenario (obj to the right but both -> and up arrows are pressed so we still move up)    
+            #Update hitbox position
+            temp_hitbox = pygame.Rect(temp_x + 55, temp_y + 40, 90, 130 )
+            
+            collisions = [obj for obj in objects if temp_hitbox.colliderect(obj.getPosition().x, obj.getPosition().y, 128, 128)]
+            if collisions == []:
+                self.position.x = temp_x
+                self.position.y = temp_y
+                self.hitbox = temp_hitbox
+        
+        if self.isDebug:
+            # draw hitboxes around objects
+            for obj in objects:
+                pygame.draw.rect(self.screen, (255,0,0), pygame.Rect(obj.getPosition().x, obj.getPosition().y, 128, 128), 2)
+    
+    #After player has moved, check for collision
+    #If collision is detected, check from which direction the collision is
+    #Return the direction(s) which are obstructed by an object/the screen as a list
+    def checkCollisionWithScreen(self) -> list[str]:
+        obstructedDirections = []
+
+        #Check collision with sides of the screen
+        if self.hitbox.top < 0:
+            obstructedDirections.append("N")
+        if self.hitbox.bottom > self.screen.get_height():
+            obstructedDirections.append("S")
+        if self.hitbox.left < 0:
+            obstructedDirections.append("W")
+        if self.hitbox.right > self.screen.get_width():
+            obstructedDirections.append("E")
+
+        return obstructedDirections
 
     #Animate method (returns next sprite image)
     #Each walking animation in each direction had a 4 frame animation (1st and 3rd being the same image)
@@ -153,10 +198,11 @@ class Player():
 
     def animate(self, moving:bool, currentFrame) -> None:
         if not moving:
-            self.sprite = self.animations[self.facing][0]
+            #Scaled the images for that the sprite is smaller
+            self.sprite = pygame.transform.scale(self.animations[self.facing][0], (self.width, self.height))
         else:
             #Each image lasts 15 frames so animation loops every 60 frames (maybe be too fast - will have to see when testing)))
-            self.sprite = self.animations[self.facing][(currentFrame//15) % 4]
+            self.sprite = pygame.transform.scale(self.animations[self.facing][(currentFrame//15) % 4], (self.width, self.height))
 
     def draw(self) -> None:
         self.screen.blit(self.sprite, (int(self.position.x), int(self.position.y)))
@@ -165,6 +211,9 @@ class Player():
         text_rect = text.get_rect()
         text_rect.topright = (self.screen.get_width() - 10, 10)
         self.screen.blit(text, text_rect)
+        #Used to check the size of the hitbox
+        if self.isDebug:
+            pygame.draw.rect(self.screen, (255,0,0), self.hitbox, 2)
 
     def toJson(self) -> dict:
         player_dict = {

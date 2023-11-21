@@ -177,7 +177,9 @@ class Game:
         Draws the game screen and handles mouse clicks on the buttons
         '''
         draw_game_screen(self.screen, self.currentScene)
-        self.player.move(self.holdingKeys)
+        #Pass objects into the player.move method
+        objects = self.currentScene.getObjects()
+        self.player.move(self.holdingKeys, objects)
         self.player.animate(self.checkMoving(), self.currentFrame)
         self.player.draw()
         self.handleGameScreenEvents(events)
