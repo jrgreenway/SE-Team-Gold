@@ -1,5 +1,6 @@
 from typing import Callable
 import pygame
+from gameObject import GameObject
 from scene import Scene
 from screens.avatarScreen import draw_avatar_screen
 from screens.gameScreen import draw_game_screen
@@ -176,6 +177,7 @@ class Game:
         Draws the game screen and handles mouse clicks on the buttons
         '''
         draw_game_screen(self.screen, self.currentScene)
+
         #Pass objects into the player.move method
         objects = self.currentScene.getObjects()
         self.player.move(self.holdingKeys, objects)
