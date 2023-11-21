@@ -3,6 +3,8 @@ import pickle
 from typing import Optional
 import pygame
 
+from metrics import Metrics
+
 
 class GameObject:
     '''
@@ -39,13 +41,37 @@ class GameObject:
         interact with the object - returns a boolean - if true update the interactable attribute
     '''
 
-    def __init__(self, id: int, position: pygame.Vector2 = pygame.Vector2(0, 0), sprite: Optional[pygame.Surface] = None) -> None:
+    def __init__(self, 
+                 id: int,
+                 happiness_effect=0,
+                 health_effect=0,
+                 time_effect=0,
+                 interactive: bool=False,
+                 position: pygame.Vector2 = pygame.Vector2(0, 0), 
+                 sprite: Optional[pygame.Surface] = None
+                 ) -> None:
         self.id = id
         self.position = position
         self.sprite = sprite
-
+        self.interactive = interactive
+        self.happiness_effect = happiness_effect
+        self.time_effect = time_effect
+        self.health_effect = health_effect
+        
     def getID(self) -> int:
         return self.id
+    
+    def getInteractive(self):
+        return self.interactive
+    
+    def getHappinessEffect(self):
+        return self.happiness_effect
+    
+    def getTimeEffect(self):
+        return self.time_effect
+    
+    def getHealthEffect(self):
+        return self.health_effect
     
     def getPosition(self) -> pygame.Vector2:
         return self.position
@@ -60,6 +86,9 @@ class GameObject:
     
     def setSprite(self, sprite: pygame.Surface) -> None:
         self.sprite = sprite
+    
+    def getInteractionDirection(self):#for seeing if player is facing right direction
+        return
 
     def toJson(self) -> dict:
         if self.sprite is None:

@@ -1,6 +1,6 @@
 from typing import Callable
-from numpy import save
 import pygame
+from gameObject import GameObject
 from scene import Scene
 from screens.avatarScreen import draw_avatar_screen
 from screens.gameScreen import draw_game_screen
@@ -81,8 +81,8 @@ class Game:
         self.currentFrame = currentFrame
 
     def checkMoving(self):
-        if pygame.K_UP in self.holdingKeys or pygame.K_DOWN in self.holdingKeys or \
-            pygame.K_LEFT in self.holdingKeys or pygame.K_RIGHT in self.holdingKeys:
+        if pygame.K_w in self.holdingKeys or pygame.K_s in self.holdingKeys or \
+            pygame.K_a in self.holdingKeys or pygame.K_d in self.holdingKeys:
             return True
         else:
             return False
@@ -177,9 +177,11 @@ class Game:
         Draws the game screen and handles mouse clicks on the buttons
         '''
         draw_game_screen(self.screen, self.currentScene)
+
         #Pass objects into the player.move method
         objects = self.currentScene.getObjects()
         self.player.move(self.holdingKeys, objects)
+        self.player.interact(self.holdingKeys, self.giveInteractable())
         self.player.animate(self.checkMoving(), self.currentFrame)
         self.player.draw()
         self.handleGameScreenEvents(events)
@@ -285,6 +287,24 @@ class Game:
             'currentScene': self.currentScene.toJson(),
             'player': self.player.toJson()
         }
+    
+    def giveInteractable(self):
+        ''' Game.giveInteractable() -> gameObject|None
+        Returns the closest interactable object in the interaction threshold
+        TODO add facing right direction condition
+        '''
+        objects = self.currentScene.getInteractableObjects()
+        if objects == []:
+            return None
+        player_position = self.player.getPosition()
+        distance_to_func = lambda obj: player_position.distance_to(obj.getPosition())
+        close_object = min(objects, key=distance_to_func)
+        if distance_to_func(close_object) <= self.player.interaction_threshold:
+            return close_object
+        else: return None
+        
+
+
 
     def start(self) -> None:
         ''' Game.start() -> None

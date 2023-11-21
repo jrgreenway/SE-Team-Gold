@@ -1,7 +1,6 @@
 import json
 import math
 import pickle
-
 import pygame
 
 from gameObject import GameObject
@@ -31,8 +30,19 @@ def scene_loader_data(sceneData: dict) -> Scene:
                 surf_array = pickle.load(f)
             gameSprite = pygame.surfarray.make_surface(surf_array)
             gameSprite = pygame.transform.scale(gameSprite, (128, 128))
+        
+        isInteractive = object['interactive']
+        happiness_effect = object['happiness-effect'] if isInteractive else 0
+        time_effect = object['time-effect'] if isInteractive else 0
+        health_effect = object['health-effect'] if isInteractive else 0
+        gameObject = GameObject(object['id'],
+                                happiness_effect=happiness_effect,
+                                time_effect=time_effect,
+                                health_effect=health_effect,
+                                interactive=isInteractive,
+                                sprite=gameSprite)
 
-        gameObject = GameObject(object['id'], sprite=gameSprite)
+        
         try:
             pos = object['position-absolute']
             gameObject.setPosition(pygame.Vector2(pos['x'], pos['y']))

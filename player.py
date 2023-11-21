@@ -1,8 +1,7 @@
 import json
-from typing import Any
+from typing import Optional
 import pygame
 from gameObject import GameObject
-
 from metrics import Metrics
 
 class Player():
@@ -48,11 +47,16 @@ class Player():
         self.facing = facing
         self.speed = speed
         self.gender = gender
-        self.metrics = Metrics(15, 0, 0)
+
         #New
         self.width = 200
         self.height = 200
         self.hitbox = pygame.Rect(self.position.x + 55, self.position.y + 40, 90, 130 )  
+        self.metrics = Metrics(15, 0, 0, 10)
+
+        self.interaction_threshold = 128
+        self.not_interacting = True
+
         # animations is dict with keys S, N, E, W
         # every key has a list of sprites as its value
         self.loadAnimations()
@@ -101,6 +105,21 @@ class Player():
     
     #Methods
 
+    def interact(self, holdingKeys, object: Optional[GameObject]=None):#TODO sort out event that happens as a result of key press
+        
+        if object is None:
+            return
+        
+        if holdingKeys.count(pygame.K_e) == 0:
+            self.not_interacting = True
+        
+        canInteract = pygame.K_e in holdingKeys and self.not_interacting \
+                        and object is not None #and facing direction
+        if canInteract:
+            self.not_interacting = False
+            self.metrics.changeMetrics(object.getHappinessEffect(), object.getTimeEffect(), object.getHealthEffect())
+            #print(f"interacted with {object.getID()}")
+
     # TODO find which type of Event to import
     def move(self, holdingKeys, objects: list[GameObject]):#call in main loop.
         # TODO retrieve events only once in game main loop and pass them as
@@ -111,16 +130,16 @@ class Player():
             temp_x = self.position.x
             temp_y = self.position.y    
             
-            if key == pygame.K_UP and "N" not in obstructedDirections:
+            if key == pygame.K_w and "N" not in obstructedDirections:
                 temp_y -= self.speed  # Move up
                 self.facing = "N"
-            elif key == pygame.K_DOWN and "S" not in obstructedDirections:
+            elif key == pygame.K_s and "S" not in obstructedDirections:
                 temp_y += self.speed  # Move down
                 self.facing = "S"
-            elif key == pygame.K_LEFT and "W" not in obstructedDirections:
+            elif key == pygame.K_a and "W" not in obstructedDirections:
                 temp_x -= self.speed  # Move left
                 self.facing = "W"
-            elif key == pygame.K_RIGHT and "E" not in obstructedDirections:
+            elif key == pygame.K_d and "E" not in obstructedDirections:
                 temp_x += self.speed  # Move right
                 self.facing = "E"
             
