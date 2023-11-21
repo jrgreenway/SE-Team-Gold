@@ -106,6 +106,10 @@ class Player():
     #Methods
 
     def interact(self, holdingKeys, object: Optional[GameObject]=None):#TODO sort out event that happens as a result of key press
+        
+        if object is None:
+            return
+        
         if holdingKeys.count(pygame.K_e) == 0:
             self.not_interacting = True
         
