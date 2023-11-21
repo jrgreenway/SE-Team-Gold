@@ -47,12 +47,13 @@ class Player():
         self.facing = facing
         self.speed = speed
         self.gender = gender
-        self.metrics = Metrics(15, 0, 0)
 
         #New
         self.width = 200
         self.height = 200
         self.hitbox = pygame.Rect(self.position.x + 55, self.position.y + 40, 90, 130 )  
+        self.metrics = Metrics(15, 0, 0, 10)
+
         self.interaction_threshold = 128
         self.not_interacting = True
 
