@@ -1,6 +1,7 @@
 import json
 from typing import Any
 import pygame
+from gameObject import GameObject
 
 from metrics import Metrics
 
@@ -101,30 +102,47 @@ class Player():
     #Methods
 
     # TODO find which type of Event to import
-    def move(self, holdingKeys, objects):#call in main loop.
+    def move(self, holdingKeys, objects: list[GameObject]):#call in main loop.
         # TODO retrieve events only once in game main loop and pass them as
         # parameters to subsequent methods to avoid double triggers.
-        obstructedDirections = self.checkCollision(objects)
+        obstructedDirections = self.checkCollisionWithScreen()
+        
         for key in holdingKeys:
+            temp_x = self.position.x
+            temp_y = self.position.y    
+            
             if key == pygame.K_UP and "N" not in obstructedDirections:
-                self.position.y -= self.speed  # Move up
+                temp_y -= self.speed  # Move up
                 self.facing = "N"
             elif key == pygame.K_DOWN and "S" not in obstructedDirections:
-                self.position.y += self.speed  # Move down
+                temp_y += self.speed  # Move down
                 self.facing = "S"
             elif key == pygame.K_LEFT and "W" not in obstructedDirections:
-                self.position.x -= self.speed  # Move left
+                temp_x -= self.speed  # Move left
                 self.facing = "W"
             elif key == pygame.K_RIGHT and "E" not in obstructedDirections:
-                self.position.x += self.speed  # Move right
+                temp_x += self.speed  # Move right
                 self.facing = "E"
-        #Update hitbox position
-        self.hitbox = pygame.Rect(self.position.x + 55, self.position.y + 40, 90, 130 )
+            
+            # Do this here for scenario (obj to the right but both -> and up arrows are pressed so we still move up)    
+            #Update hitbox position
+            temp_hitbox = pygame.Rect(temp_x + 55, temp_y + 40, 90, 130 )
+            
+            collisions = [obj for obj in objects if temp_hitbox.colliderect(obj.getPosition().x, obj.getPosition().y, 128, 128)]
+            if collisions == []:
+                self.position.x = temp_x
+                self.position.y = temp_y
+                self.hitbox = temp_hitbox
+        
+        if self.isDebug:
+            # draw hitboxes around objects
+            for obj in objects:
+                pygame.draw.rect(self.screen, (255,0,0), pygame.Rect(obj.getPosition().x, obj.getPosition().y, 128, 128), 2)
     
     #After player has moved, check for collision
     #If collision is detected, check from which direction the collision is
     #Return the direction(s) which are obstructed by an object/the screen as a list
-    def checkCollision(self, objects):
+    def checkCollisionWithScreen(self) -> list[str]:
         obstructedDirections = []
 
         #Check collision with sides of the screen
@@ -136,22 +154,6 @@ class Player():
             obstructedDirections.append("W")
         if self.hitbox.right > self.screen.get_width():
             obstructedDirections.append("E")
-
-        #Check collision with object
-        for object in objects:
-            rect = pygame.Rect(object.position.x, object.position.y, 128, 128)
-            if self.isDebug:    
-                pygame.draw.rect(self.screen, (255,0,0), rect, 2)
-            collisionTolerance = 3
-            if self.hitbox.colliderect(rect):
-                if abs(self.hitbox.top - rect.bottom) < collisionTolerance and "N" not in obstructedDirections:
-                    obstructedDirections.append("N")
-                if abs(self.hitbox.bottom - rect.top) < collisionTolerance and "S" not in obstructedDirections:
-                    obstructedDirections.append("S")
-                if abs(self.hitbox.left - rect.right) < collisionTolerance and "W" not in obstructedDirections:
-                    obstructedDirections.append("W")
-                if abs(self.hitbox.right - rect.left) < collisionTolerance and "E" not in obstructedDirections:
-                    obstructedDirections.append("E")
 
         return obstructedDirections
 
