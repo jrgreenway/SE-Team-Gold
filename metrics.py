@@ -52,7 +52,7 @@ class Metrics:
     #Methods
 
     # TODO Increment stays 4
-    def updateTime(self, increment=100) -> Boolean:
+    def updateTime(self, increment=4) -> Boolean:
         self.time += increment
         return self.time >= 1320
     
@@ -130,8 +130,12 @@ class Metrics:
     def changeMetrics(self, happiness_change=0, time_change=0, health_change=0, money_change=0):
         #if we add buffs/debuffs, suggest storing it in this class, then adding as modifier
         self.happiness += happiness_change
-        self.time -= time_change #time alterations stored as +ve
+        if self.happiness > 100:
+            self.happiness = 100
+        self.time += time_change #time alterations stored as +ve
         self.health += health_change
+        if self.health > 100:
+            self.health = 100
         self.money += money_change
 
     
