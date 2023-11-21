@@ -1,8 +1,6 @@
 import json
 import math
 import pickle
-from matplotlib.pyplot import isinteractive
-
 import pygame
 
 from gameObject import GameObject

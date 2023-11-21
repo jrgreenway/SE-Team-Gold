@@ -1,7 +1,5 @@
 from typing import Callable
-from numpy import save
 import pygame
-from gameObject import GameObject
 from scene import Scene
 from screens.avatarScreen import draw_avatar_screen
 from screens.gameScreen import draw_game_screen
