@@ -107,7 +107,7 @@ class Player():
         if canInteract:
             self.not_interacting = False
             self.metrics.changeMetrics(object.getHappinessEffect(), object.getTimeEffect(), object.getHealthEffect())
-            print(f"interacted with {object.getID()}")
+            #print(f"interacted with {object.getID()}")
 
     # TODO find which type of Event to import
     def move(self, holdingKeys):#call in main loop.
