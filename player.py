@@ -49,7 +49,7 @@ class Player():
         self.facing = facing
         self.speed = speed
         self.gender = gender
-        self.metrics = Metrics(15, 0, 0)
+        self.metrics = Metrics(15, 0, 0, 10)
         self.interaction_threshold = 128
         self.not_interacting = True
 
