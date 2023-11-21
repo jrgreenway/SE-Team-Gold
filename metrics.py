@@ -1,3 +1,4 @@
+from xmlrpc.client import Boolean
 import pygame
 
 class Metrics:
@@ -45,15 +46,26 @@ class Metrics:
     def getHealth(self):
         return self.health
     
+    def getMoney(self):
+        return self.money
+    
     #Methods
 
-    def updateTime(self, increment=4):
+    # TODO Increment stays 4
+    def updateTime(self, increment=100) -> Boolean:
         self.time += increment
+        return self.time >= 1320
+    
+    def updateHappiness(self, increment=0) -> None:
+        self.happiness = max(0, min(100, self.happiness + increment))
     
     def formatTime(self):
         hours = self.time // 60
         minutes = (self.time % 60) // 10 * 10
         return f"{hours:02d}:{minutes:02d}"
+    
+    def resetTime(self):
+        self.time = 480
     
     def draw(self, screen: pygame.Surface) -> None:
         # Draw the happiness bar chart

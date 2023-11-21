@@ -9,6 +9,7 @@ PAUSE_SCREEN = "pause"
 LOAD_SCREEN = "load"
 ORACLE_QUESTION_SCREEN = "oracleQuestion"
 ORACLE_ANSWER_SCREEN = "oracleAnswer"
+DAY_END_SCREEN = "dayEnd"
 
 def nextScreen(currentScreen: str) -> str:
     ''' nextScreen: str -> str
