@@ -19,7 +19,7 @@
                 "interactive": true,
                 "happiness-effect":10,
                 "health-effect":10,
-                "time-effect":10,
+                "time-effect":120,
                 "position-relative": {
                     "direction": "S",
                     "relativeTo": 0
