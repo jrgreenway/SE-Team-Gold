@@ -1,12 +1,16 @@
 from typing import Callable
 import pygame
 from gameObject import GameObject
+from buttons.button import Button
+from oracle import Oracle
 from scene import Scene
 from screens.avatarScreen import draw_avatar_screen
 from screens.gameScreen import draw_game_screen
 from screens.loadScreen import draw_load_screen
+from screens.oracleAnswerScreen import draw_oracle_answer_screen
+from screens.oracleQuestionScreen import draw_oracle_question_screen
 from screens.pauseScreen import draw_pause_screen
-from screens.screenConstants import CREATE_AVATAR_SCREEN, GAME_SCREEN, LOAD_SCREEN, PAUSE_SCREEN, START_SCREEN, WELCOME_SCREEN, nextScreen
+from screens.screenConstants import *
 from screens.startScreen import draw_start_screen
 
 from screens.welcomeScreen import draw_welcome_screen
@@ -52,7 +56,7 @@ class Game:
             player: Player, 
             scene: Scene, 
             buttonCBs: dict[str, Callable], 
-            savedGames: list[str]
+            savedGames: list[str],
     ) -> None:
         self.screen = screen
         self.currentFrame = 0
@@ -61,6 +65,9 @@ class Game:
         self.player = player
         self.currentScene = scene
         self.holdingKeys = []
+        self.oracle = Oracle(screen, callBacks=buttonCBs)
+
+        self.textAnimationStartFrame = 0
 
         self.buttonCBs = buttonCBs
         self.savedGames = savedGames
@@ -184,13 +191,18 @@ class Game:
         self.player.interact(self.holdingKeys, self.giveInteractable())
         self.player.animate(self.checkMoving(), self.currentFrame)
         self.player.draw()
-        self.handleGameScreenEvents(events)
+        oracleButton = self.oracle.draw()
+        self.handleGameScreenEvents(events, [oracleButton])
 
-    def handleGameScreenEvents(self, events) -> None:
+    def handleGameScreenEvents(self, events, buttons: list[Button]) -> None:
         ''' Game.handleGameScreenEvents(events) -> None
         Handles mouse clicks on the game screen
         '''
         for event in events:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                clicked = [button for button in buttons if button.rect.collidepoint(event.pos)]
+                if len(clicked) > 0:
+                    self.running, self.currentScreen = clicked[0].onClick(game=self, currentScreen=self.currentScreen)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE and not self.keyDown:
                     self.currentScreen = PAUSE_SCREEN
@@ -258,11 +270,67 @@ class Game:
                 elif event.button == 5:
                     self.scrollPos = min(len(self.savedGames) - 1, self.scrollPos + 1)
 
+    def drawQuestionScreen(self, events) -> None:
+        ''' Game.drawQuestionScreen(events) -> None
+        Draws the question screen and handles mouse clicks on the buttons
+        '''
+        draw_game_screen(self.screen, self.currentScene)
+        self.player.draw()
+        buttons = draw_oracle_question_screen(
+            self.screen, 
+            self.oracle.getQuestions(), 
+            self.buttonCBs['clickOracleQuestion'],
+            self.buttonCBs['back']
+        )
+        self.handleQuestionScreenEvents(events, buttons)
+
+    def handleQuestionScreenEvents(self, events, buttons) -> None:
+        ''' Game.handleQuestionScreenEvents(events, buttons) -> None
+        Handles mouse clicks on the question screen
+        '''
+        for event in events:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                clicked = [button for button in buttons if button.rect.collidepoint(event.pos)]
+                index = buttons.index(clicked[0]) if len(clicked) > 0 else -1
+                if len(clicked) > 0:
+                    self.running, self.currentScreen = clicked[0].onClick(
+                        game=self, 
+                        currentScreen=self.currentScreen,
+                        oracle=self.oracle,
+                        question=self.oracle.getQuestions()[index] if index < len(self.oracle.getQuestions()) else None
+                    )
+
+    def drawAnswerScreen(self, events) -> None:
+        draw_game_screen(self.screen, self.currentScene)
+        self.player.draw()
+        buttons = draw_oracle_answer_screen(
+            self.screen,
+            self.oracle.getAnswer(),
+            self.buttonCBs['back'],
+            self.buttonCBs['next'],
+            self.textAnimationStartFrame,
+            self.currentFrame
+        )
+        self.handleAnswerScreenEvents(events, buttons)
+
+    def handleAnswerScreenEvents(self, events, buttons) -> None:
+        ''' Game.handleAnswerScreenEvents(events, buttons) -> None
+        Handles mouse clicks on the answer screen
+        '''
+        for event in events:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                clicked = [button for button in buttons if button.rect.collidepoint(event.pos)]
+                if len(clicked) > 0:
+                    self.running, self.currentScreen = clicked[0].onClick(currentScreen=self.currentScreen)
 
     def handleCurrentScreen(self, events) -> None:
         ''' Game.handleCurrentScreen(events) -> None
         Handles the current screen
         '''
+
+        if self.currentScreen is not ORACLE_ANSWER_SCREEN:
+            self.textAnimationStartFrame = 0
+
         if self.currentScreen == WELCOME_SCREEN:
             self.welcomeScreen()
         elif self.currentScreen == START_SCREEN:
@@ -275,6 +343,12 @@ class Game:
             self.createPauseScreen(events)
         elif self.currentScreen == LOAD_SCREEN:
             self.createLoadScreen(events)
+        elif self.currentScreen == ORACLE_QUESTION_SCREEN:
+            self.drawQuestionScreen(events)
+        elif self.currentScreen == ORACLE_ANSWER_SCREEN:
+            if self.textAnimationStartFrame == 0:
+                self.textAnimationStartFrame = self.currentFrame
+            self.drawAnswerScreen(events)
         else:
             raise Exception("Invalid Screen")
         
@@ -312,18 +386,17 @@ class Game:
         '''
         clock = pygame.time.Clock()
 
-        pygame.mixer.init()
-        pygame.mixer.music.load("assets/audio/soundtrack.mp3")
-        pygame.mixer.music.play(-1)
+        # pygame.mixer.init()
+        # pygame.mixer.music.load("assets/audio/soundtrack.mp3")
+        # pygame.mixer.music.play(-1)
 
         # Game loop
         while self.running:
             self.currentFrame += 1
             
-            if self.currentFrame == 60 and self.currentScreen == GAME_SCREEN:
+            if self.currentFrame % 60 == 0 and self.currentScreen == GAME_SCREEN:
                 self.player.metrics.updateTime()
             
-            self.currentFrame %= 60
             # Handle events - keyPresses
             events = pygame.event.get()
             for event in events:
