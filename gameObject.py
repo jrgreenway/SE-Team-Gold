@@ -51,6 +51,7 @@ class GameObject:
                  interactive: bool=False,
                  position: pygame.Vector2 = pygame.Vector2(0, 0), 
                  sprite: Optional[pygame.Surface] = None,
+                 size: tuple = (128,128),
                  isCollidable = True
                  ) -> None:
         self.id = id
@@ -62,6 +63,7 @@ class GameObject:
         self.time_effect = time_effect
         self.next_day = next_day
         self.health_effect = health_effect
+        self.size = size # placeholder for if we make larger objects
         self.isCollidable = isCollidable
         
     def getID(self) -> int:
@@ -99,8 +101,8 @@ class GameObject:
     def setSprite(self, sprite: pygame.Surface) -> None:
         self.sprite = sprite
     
-    def getInteractionDirection(self):#for seeing if player is facing right direction
-        return
+    def getHitbox(self):
+        return pygame.Rect(self.position.x,self.position.y,self.size[0],self.size[1])
 
     def toJson(self) -> dict:
         if self.sprite is None:
