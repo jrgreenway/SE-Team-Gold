@@ -46,6 +46,7 @@ class Player():
         self.width = 200
         self.height = 200 
         self.hitbox = pygame.Rect(self.screen.get_width() / 6, self.screen.get_height() / 2, self.width//4, self.height//4)
+        #self.position = pygame.Vector2(self.screen.get_width() / 6, self.screen.get_height() / 2)
         self.facing = facing
         self.speed = speed
         self.gender = gender
@@ -64,7 +65,7 @@ class Player():
         self.loadAnimations()
         self.sprite = self.animations[self.facing][0]
         
-        self.isDebug = False
+        self.isDebug = True
     
     def reset(self) -> None:
         #So that the player sprite doesn't start on an object
@@ -222,8 +223,7 @@ class Player():
             #Update hitbox position
             temp_hitbox = pygame.Rect(temp_x, temp_y, 64, 64)
             
-            
-            collisions = [obj for obj in objects if obj.isCollidable and temp_hitbox.colliderect(obj.getPosition().x, obj.getPosition().y, 128, 128)]
+            collisions = [obj for obj in objects if obj.isCollidable and temp_hitbox.colliderect(obj.getHitbox())]
             if collisions == []:
                 self.hitbox = temp_hitbox
         
