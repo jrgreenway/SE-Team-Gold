@@ -50,8 +50,8 @@ class GameObject:
                  interactive: bool=False,
                  position: pygame.Vector2 = pygame.Vector2(0, 0), 
                  sprite: Optional[pygame.Surface] = None,
-                 size: tuple = (128,128),
-                 isCollidable = True
+                 isCollidable = True,
+                 size: tuple = (128,128)
                  ) -> None:
         self.id = id
         self.position = position
