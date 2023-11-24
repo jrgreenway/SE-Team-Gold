@@ -48,7 +48,8 @@ class GameObject:
                  time_effect=0,
                  interactive: bool=False,
                  position: pygame.Vector2 = pygame.Vector2(0, 0), 
-                 sprite: Optional[pygame.Surface] = None
+                 sprite: Optional[pygame.Surface] = None,
+                 isCollidable = True
                  ) -> None:
         self.id = id
         self.position = position
@@ -57,6 +58,7 @@ class GameObject:
         self.happiness_effect = happiness_effect
         self.time_effect = time_effect
         self.health_effect = health_effect
+        self.isCollidable = isCollidable
         
     def getID(self) -> int:
         return self.id

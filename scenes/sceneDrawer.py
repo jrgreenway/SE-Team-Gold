@@ -35,13 +35,15 @@ def scene_loader_data(sceneData: dict) -> Scene:
         happiness_effect = object['happiness-effect'] if isInteractive else 0
         time_effect = object['time-effect'] if isInteractive else 0
         health_effect = object['health-effect'] if isInteractive else 0
+        isCollidable = object['isCollidable']
         gameObject = GameObject(object['id'],
                                 happiness_effect=happiness_effect,
                                 time_effect=time_effect,
                                 health_effect=health_effect,
                                 interactive=isInteractive,
-                                sprite=gameSprite)
-
+                                sprite=gameSprite,
+                                isCollidable=isCollidable
+                                )
         
         try:
             pos = object['position-absolute']
