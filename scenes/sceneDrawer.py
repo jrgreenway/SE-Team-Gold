@@ -32,7 +32,9 @@ def scene_loader_data(sceneData: dict) -> Scene:
             gameSprite = pygame.surfarray.make_surface(surf_array)
             gameSprite = pygame.transform.scale(gameSprite, (128, 128))
 
-        gameObject = GameObject(object['id'], sprite=gameSprite)
+        isCollidable = object['isCollidable']
+
+        gameObject = GameObject(object['id'], sprite=gameSprite, isCollidable=isCollidable)
         try:
             pos = object['position-absolute']
             gameObject.setPosition(pygame.Vector2(pos['x'], pos['y']))

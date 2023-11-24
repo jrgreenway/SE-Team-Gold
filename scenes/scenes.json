@@ -10,7 +10,8 @@
                 "position-absolute": {
                     "x": 312,
                     "y": 214
-                }
+                },
+                "isCollidable": true
             },
             {
                 "id": 1,
@@ -18,7 +19,8 @@
                 "position-relative": {
                     "direction": "S",
                     "relativeTo": 0
-                }
+                },
+                "isCollidable": true
             },
             {
                 "id": 2,
@@ -26,7 +28,8 @@
                 "position-relative": {
                     "direction": "E",
                     "relativeTo": 1
-                }
+                },
+                "isCollidable": true
             },
             {
                 "id": 3,
@@ -34,7 +37,8 @@
                 "position-relative": {
                     "direction": "E",
                     "relativeTo": 2
-                }
+                },
+                "isCollidable": true
             },
             {
                 "id": 4,
@@ -42,7 +46,8 @@
                 "position-relative": {
                     "direction": "E",
                     "relativeTo": 3
-                }
+                },
+                "isCollidable": true
             },
             {
                 "id": 5,
@@ -50,7 +55,8 @@
                 "position-relative": {
                     "direction": "S",
                     "relativeTo": 4
-                }
+                },
+                "isCollidable": true
             }
         ]
     }

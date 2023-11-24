@@ -39,10 +39,11 @@ class GameObject:
         interact with the object - returns a boolean - if true update the interactable attribute
     '''
 
-    def __init__(self, id: int, position: pygame.Vector2 = pygame.Vector2(0, 0), sprite: Optional[pygame.Surface] = None) -> None:
+    def __init__(self, id: int, position: pygame.Vector2 = pygame.Vector2(0, 0), sprite: Optional[pygame.Surface] = None, isCollidable = True) -> None:
         self.id = id
         self.position = position
         self.sprite = sprite
+        self.isCollidable = isCollidable
 
     def getID(self) -> int:
         return self.id
