@@ -64,7 +64,7 @@ class Player():
         self.loadAnimations()
         self.sprite = self.animations[self.facing][0]
         
-        self.isDebug = False
+        self.isDebug = True
     
     def reset(self) -> None:
         #So that the player sprite doesn't start on an object
