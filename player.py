@@ -189,7 +189,8 @@ class Player():
             self.metrics.changeMetrics(
                 object.getHappinessEffect(), 
                 1320 - self.metrics.getTime() if object.getNextDay() else object.getTimeEffect(), 
-                object.getHealthEffect(), object.getMoneyEffect()
+                object.getHealthEffect(),
+                object.getMoneyEffect()
             )
             # click_object = pygame.Rect()
             # if object.navigateTo():

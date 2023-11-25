@@ -46,6 +46,7 @@ class GameObject:
                  time_effect=0,
                  money_effect=0,
                  next_day: bool=False,
+                 money_effect=0,
                  navigateTo: Optional[int] = None,
                  interactive: bool=False,
                  position: pygame.Vector2 = pygame.Vector2(0, 0), 
