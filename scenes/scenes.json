@@ -21,6 +21,7 @@
                 "happiness-effect":10,
                 "health-effect":10,
                 "time-effect":120,
+                "money-effect":0,
                 "position-relative": {
                     "direction": "S",
                     "relativeTo": 0

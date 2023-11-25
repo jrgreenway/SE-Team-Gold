@@ -136,7 +136,7 @@ class Player():
         
         if canInteract:
             self.not_interacting = False
-            self.metrics.changeMetrics(object.getHappinessEffect(), object.getTimeEffect(), object.getHealthEffect())
+            self.metrics.changeMetrics(object.getHappinessEffect(), object.getTimeEffect(), object.getHealthEffect(), object.getMoneyEffect())
             # click_object = pygame.Rect()
             # if object.navigateTo():
             #     navigateTo = object.navigateTo()
