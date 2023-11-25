@@ -47,6 +47,7 @@ class GameObject:
                  health_effect=0,
                  time_effect=0,
                  next_day: bool=False,
+                 money_effect=0,
                  navigateTo: Optional[int] = None,
                  interactive: bool=False,
                  position: pygame.Vector2 = pygame.Vector2(0, 0), 
@@ -63,6 +64,7 @@ class GameObject:
         self.time_effect = time_effect
         self.next_day = next_day
         self.health_effect = health_effect
+        self.money_effect = money_effect
         self.size = size # placeholder for if we make larger objects
         self.isCollidable = isCollidable
         
