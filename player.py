@@ -46,7 +46,6 @@ class Player():
         self.width = 200
         self.height = 200 
         self.hitbox = pygame.Rect(self.screen.get_width() / 6, self.screen.get_height() / 2, self.width//4, self.height//4)
-        #self.position = pygame.Vector2(self.screen.get_width() / 6, self.screen.get_height() / 2)
         self.facing = facing
         self.speed = speed
         self.gender = gender
@@ -123,17 +122,70 @@ class Player():
     
     #Methods
 
+    def makePopUp(self):
+        object = self.close_object
+        buffer = 4
+        icon_size = 36
+        popup_size = ((icon_size+buffer)*4+buffer,(icon_size+buffer)*2+buffer)
+        alpha = 200
+        popup = pygame.Rect(self.hitbox.topright[0]+10, self.hitbox.topright[1]-100, popup_size[0], popup_size[1])
+        popup_surface = pygame.Surface((popup.width, popup.height))
+        popup_surface.fill((255, 255, 255, 200))
+        popup_surface.set_alpha(alpha)
+        self.screen.blit(popup_surface, popup.topleft)
+
+        font = pygame.font.Font(None, 36)
+        isPos = lambda x: 0 if x>0 else 1 if x==0 else 2
+        colours = [pygame.Color("chartreuse2"), pygame.Color("black"), pygame.Color("red")]
+        colours_time = [pygame.Color("red"), pygame.Color("black"), pygame.Color("chartreuse2")]
+
+        # Happiness
+        happiness_container = pygame.Rect(popup.topleft[0]+buffer,popup.topleft[1]+buffer, icon_size, icon_size*2+buffer)
+        happiness_colour = colours[isPos(object.getHappinessEffect())]
+        happiness_text = font.render(f"{object.getHappinessEffect()}", True, happiness_colour)
+        happiness_image = pygame.transform.scale(pygame.image.load("assets/happy.png"), (36,36))
+        happiness_image.set_alpha(alpha)
+        self.screen.blit(happiness_text, (happiness_container.bottomleft[0], happiness_container.bottomleft[1]-icon_size))
+        self.screen.blit(happiness_image, happiness_container.topleft)
+
+        # Time
+        time_container = pygame.Rect(happiness_container.topright[0]+buffer, happiness_container.topright[1], icon_size, icon_size*2+buffer)
+        time_colour = colours_time[isPos(object.getTimeEffect())]
+        time_text = font.render(f"{object.getTimeEffect()}", True, time_colour)
+        time_image = pygame.transform.scale(pygame.image.load("assets/clock.png"), (36,36))
+        time_image.set_alpha(alpha)
+        self.screen.blit(time_text, (time_container.bottomleft[0], time_container.bottomleft[1]-icon_size))
+        self.screen.blit(time_image, time_container.topleft)
+
+        # Health
+        health_container = pygame.Rect(time_container.topright[0] + buffer, time_container.topright[1], icon_size, icon_size * 2 + buffer)
+        health_colour = colours[isPos(object.getHealthEffect())]
+        health_text = font.render(f"{object.getHealthEffect()}", True, health_colour)
+        health_image = pygame.transform.scale(pygame.image.load("assets/health.png"), (36, 36))
+        health_image.set_alpha(alpha)
+        self.screen.blit(health_text, (health_container.bottomleft[0], health_container.bottomleft[1] - icon_size))
+        self.screen.blit(health_image, health_container.topleft)
+
+        # Money
+        money_container = pygame.Rect(health_container.topright[0] + buffer, health_container.topright[1], icon_size, icon_size * 2 + buffer)
+        money_colour = colours[isPos(object.getMoneyEffect())]
+        money_text = font.render(f"{object.getMoneyEffect()}", True, money_colour)
+        money_image = pygame.transform.scale(pygame.image.load("assets/money.png"), (36, 36))
+        money_image.set_alpha(alpha)
+        self.screen.blit(money_text, (money_container.bottomleft[0], money_container.bottomleft[1] - icon_size))
+        self.screen.blit(money_image, money_container.topleft)
+        
+
+
     def interact(self, holdingKeys, object: Optional[GameObject]=None) -> int | None:
         
         if object is None:
             if self.close_object is not None:
-                self.close_object.removeInfo()
                 self.close_object = None
             return
         
         self.close_object = object #makes and sets close object to the parsed object to make pop up
-        self.close_object.addInfo()
-        self.close_object.checkInfo(self.screen)
+        self.makePopUp()
 
         if holdingKeys.count(pygame.K_e) == 0:
             self.not_interacting = True
