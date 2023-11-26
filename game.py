@@ -412,7 +412,7 @@ class Game:
         if objects == []:
             return None
         player_position = self.player.getPosition()
-        distance_to_func = lambda obj: player_position.distance_to(obj.getPosition())
+        distance_to_func = lambda obj: player_position.distance_to(obj.getHitbox().center)
         close_object = min(objects, key=distance_to_func)
         if distance_to_func(close_object) <= self.player.interaction_threshold:
             return close_object
