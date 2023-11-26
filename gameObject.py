@@ -1,10 +1,8 @@
 import os
 import pickle
+import re
 from typing import Optional
 import pygame
-
-from metrics import Metrics
-
 
 class GameObject:
     '''
@@ -66,8 +64,9 @@ class GameObject:
         self.health_effect = health_effect
         self.money_effect = money_effect
         self.size = size # placeholder for if we make larger objects
+        self.info_status = False #determines whether pop up exists
         self.isCollidable = isCollidable
-        
+
     def getID(self) -> int:
         return self.id
     
@@ -89,11 +88,32 @@ class GameObject:
     def getHealthEffect(self):
         return self.health_effect
     
+    def getMoneyEffect(self):
+        return self.money_effect
+
     def getPosition(self) -> pygame.Vector2:
         return self.position
     
     def setPosition(self, position: pygame.Vector2) -> None:
         self.position = position
+
+    def getInfoStatus(self):#true(showing metric infomation), false(is not showing infomation)
+        return self.info_status
+
+    def checkInfo(self, screen):
+        if self.info_status:
+            self.draw(screen)
+    
+    def draw(self, screen):
+        popup = pygame.Rect(self.position.x, self.position.y, 200, 100)
+        pygame.draw.rect(screen, (255, 255, 255), popup)
+    
+    def removeInfo(self):
+        self.info_status = False
+        
+    def addInfo(self):
+        if not self.info_status:
+            self.info_status = True
 
     def getSprite(self) -> pygame.Surface:
         if self.sprite is None:

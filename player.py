@@ -58,6 +58,7 @@ class Player():
 
         self.interaction_threshold = 128
         self.not_interacting = True
+        self.close_object = None
 
         # animations is dict with keys S, N, E, W
         # every key has a list of sprites as its value
@@ -125,8 +126,15 @@ class Player():
     def interact(self, holdingKeys, object: Optional[GameObject]=None) -> int | None:
         
         if object is None:
+            if self.close_object is not None:
+                self.close_object.removeInfo()
+                self.close_object = None
             return
         
+        self.close_object = object #makes and sets close object to the parsed object to make pop up
+        self.close_object.addInfo()
+        self.close_object.checkInfo(self.screen)
+
         if holdingKeys.count(pygame.K_e) == 0:
             self.not_interacting = True
         
