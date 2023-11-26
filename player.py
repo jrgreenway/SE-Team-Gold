@@ -46,7 +46,6 @@ class Player():
         self.width = 200
         self.height = 200 
         self.hitbox = pygame.Rect(self.screen.get_width() / 6, self.screen.get_height() / 2, self.width//4, self.height//4)
-        #self.position = pygame.Vector2(self.screen.get_width() / 6, self.screen.get_height() / 2)
         self.facing = facing
         self.speed = speed
         self.gender = gender

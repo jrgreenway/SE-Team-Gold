@@ -91,24 +91,6 @@ class GameObject:
     def setPosition(self, position: pygame.Vector2) -> None:
         self.position = position
 
-    def getInfoStatus(self):#true(showing metric infomation), false(is not showing infomation)
-        return self.info_status
-
-    def checkInfo(self, screen):
-        if self.info_status:
-            self.draw(screen)
-    
-    def draw(self, screen):
-        popup = pygame.Rect(self.position.x, self.position.y, 200, 100)
-        pygame.draw.rect(screen, (255, 255, 255), popup)
-    
-    def removeInfo(self):
-        self.info_status = False
-        
-    def addInfo(self):
-        if not self.info_status:
-            self.info_status = True
-
     def getSprite(self) -> pygame.Surface:
         if self.sprite is None:
             raise Exception("Sprite not set")
