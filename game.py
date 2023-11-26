@@ -402,6 +402,7 @@ class Game:
             'player': self.player.toJson()
         }
     
+
     def giveInteractable(self):
         ''' Game.giveInteractable() -> gameObject|None
         Returns the closest interactable object in the interaction threshold
@@ -417,8 +418,6 @@ class Game:
             return close_object
         else: return None
         
-
-
 
     def start(self) -> None:
         ''' Game.start() -> None
