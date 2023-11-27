@@ -121,7 +121,7 @@ class Player():
     
     #Methods
 
-    def interact(self, holdingKeys, object: Optional[GameObject]=None):#TODO sort out event that happens as a result of key press
+    def interact(self, holdingKeys, object: Optional[GameObject]=None) -> int | None:
         
         if object is None:
             return
@@ -135,7 +135,11 @@ class Player():
         
         if canInteract:
             self.not_interacting = False
-            self.metrics.changeMetrics(object.getHappinessEffect(), object.getTimeEffect(), object.getHealthEffect())
+            self.metrics.changeMetrics(
+                object.getHappinessEffect(), 
+                1320 - self.metrics.getTime() if object.getNextDay() else object.getTimeEffect(), 
+                object.getHealthEffect()
+            )
             # click_object = pygame.Rect()
             # if object.navigateTo():
             #     navigateTo = object.navigateTo()
