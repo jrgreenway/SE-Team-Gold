@@ -48,6 +48,16 @@ class Metrics:
     def getMoney(self):
         return self.money
     
+    def isTimeDanger(self):
+        # 30% of the day left
+        return self.time >= 1068
+    
+    def isHappinessDanger(self):
+        return self.happiness <= 30
+    
+    def isHealthDanger(self):
+        return self.health <= 30
+
     #Methods
 
     # TODO Increment stays 4

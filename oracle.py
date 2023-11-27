@@ -3,6 +3,7 @@ from typing import Callable
 import pygame
 
 from buttons.button import Button
+from metrics import Metrics
 
 QUESTIONS = [
     "How do I move?",
@@ -10,6 +11,9 @@ QUESTIONS = [
     "How can I interact with the world?",
     "What are the bars on the top?",
     "What is the goal of the game?",
+    "Why is my health red?",
+    "Why is my happiness red?",
+    "Why is my time red?",
 ]
 
 ANSWERS = [
@@ -27,7 +31,42 @@ ANSWERS = [
     " making the right choices. However, be careful, as your choices will have consequences. You can also" + \
     " interact with the oracle to get some hints on what to do next. Remember to watch your metrics and" + \
     " make sure you don't run out of time or money. Have Fun!",
+    "Your health is red because it is low. You should probably eat something or go to the doctor. Look around you and find objects" + \
+    " that can help you with that. You can know they are helpful as the popup will have a green square for the health metric to indicate" + \
+    " that it will increase.",
+    "Your happiness is red because it is low. You should probably do something fun. Look around you and find objects" + \
+    " that can help you with that. You can know they are helpful as the popup will have a green square for the happiness metric to indicate" + \
+    " that it will increase.",
+    "Your time is red because it is low and the day is coming to an end. Remember that the day ends at 22:00. You should go to bed before that" + \
+    " time to avoid waking up tired tomorrow.",
 ]
+
+
+class OracleCallPermission:
+
+    def __init__(self) -> None:
+        self.callForTime = True
+        self.callForHappiness = True
+        self.callForHealth = True
+
+    def setCallForTime(self, callForTime: bool) -> None:
+        self.callForTime = callForTime
+
+    def setCallForHappiness(self, callForHappiness: bool) -> None:
+        self.callForHappiness = callForHappiness
+
+    def setCallForHealth(self, callForHealth: bool) -> None:
+        self.callForHealth = callForHealth
+
+    def getCallForTime(self) -> bool:
+        return self.callForTime
+    
+    def getCallForHappiness(self) -> bool:
+        return self.callForHappiness
+    
+    def getCallForHealth(self) -> bool:
+        return self.callForHealth
+
 
 class Oracle:
 
@@ -44,21 +83,48 @@ class Oracle:
         self.answers = answers
         self.sprite = pygame.image.load("assets/oracleIcon.png")
         self.callbacks = callBacks
+        self.callPermissions = OracleCallPermission()
         pass
-
     
-    def draw(self) -> Button:
+    def resetNextDay(self) -> None:
+        # Very bad for memory management but we don't care about this now
+        self.callPermissions = OracleCallPermission() 
+
+    def draw(self, playerMetrics: Metrics, currentFrame: int) -> Button:
         x, y = self.screen.get_size()
 
-        buttonRect = pygame.Rect(
-            x - self.sprite.get_width(), 
-            y - self.sprite.get_height(), 
-            self.sprite.get_width(), 
-            self.sprite.get_height()
-        )
-        button = Button(buttonRect, self.callbacks['clickOracle'])
+        # Check if any of the metrics is below 30
+        danger = (playerMetrics.isHappinessDanger() and self.callPermissions.getCallForHappiness()) or \
+            (playerMetrics.isHealthDanger() and self.callPermissions.getCallForHealth()) or \
+            (playerMetrics.isTimeDanger() and self.callPermissions.getCallForTime())
 
-        self.screen.blit(self.sprite, buttonRect)
+        # Scale factor for animation
+        scale_factor = 1.0
+
+        if danger:
+            # Calculate scale factor based on currentFrame
+            scale_factor = 1.0 + abs((currentFrame % 60) - 30) / 120  # Adjust the values as needed
+
+        # Scale the sprite and button size
+        scaled_sprite = pygame.transform.scale(
+            self.sprite, 
+            (int(self.sprite.get_width() * scale_factor),
+            int(self.sprite.get_height() * scale_factor))
+        )
+        
+        scaled_button_rect = pygame.Rect(
+            x - scaled_sprite.get_width(),
+            y - scaled_sprite.get_height(),
+            scaled_sprite.get_width(),
+            scaled_sprite.get_height()
+        )
+
+        button = Button(scaled_button_rect, self.callbacks['clickOracle'])
+
+        if danger:
+            button.setAction(self.callbacks['clickOracleQuestion'])
+
+        self.screen.blit(scaled_sprite, scaled_button_rect)
         return button
     
     def setQuestion(self, question: str) -> None:
