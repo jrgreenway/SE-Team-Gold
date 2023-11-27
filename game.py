@@ -195,7 +195,7 @@ class Game:
         self.player.move(self.holdingKeys, objects)
         navigateto = self.player.interact(self.holdingKeys, self.giveInteractable())
         if navigateto:
-            self.scene = scene_loader(navigateto)
+            self.currentScene = scene_loader(navigateto)
         else: 
             self.player.interact(self.holdingKeys, self.giveInteractable())
         self.player.animate(self.checkMoving(), self.currentFrame)
