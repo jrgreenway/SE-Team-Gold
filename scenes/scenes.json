@@ -83,8 +83,8 @@
                 "interactive": true,
                 "navigateTo": 2,
                 "position-relative": {
-                    "direction": "E",
-                    "relativeTo": 2
+                    "direction": "W",
+                    "relativeTo": 0
                 }
             }
         ]
