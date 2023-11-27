@@ -139,8 +139,8 @@ class Player():
         colours = [pygame.Color(0,100,0,alpha), pygame.Color(255,255,255,alpha), pygame.Color(255,192,0, alpha), pygame.Color(255,0,0,200)]#green,white,amber,red 
 
         obj_metrics = [object.getHappinessEffect(), object.getHealthEffect(), object.getTimeEffect(), object.getMoneyEffect()]
-        metric_colours = [colours[isPos(obj_metrics[i])] for i in range(3)]
-        metric_colours.append(colours[isPosTime(obj_metrics[-1])])
+        metric_colours = [colours[isPos(obj_metrics[i])] for i in [0,1,3]]
+        metric_colours.insert(2,colours[isPosTime(obj_metrics[2])])
         images = [pygame.image.load("assets/happy.png"), pygame.image.load("assets/health.png"), pygame.image.load("assets/clock.png"), pygame.image.load("assets/money.png")]
 
         locx, locy = popup.topleft
