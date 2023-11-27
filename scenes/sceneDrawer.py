@@ -1,6 +1,7 @@
 import json
 import math
 import pickle
+from typing import Any
 import pygame
 
 from gameObject import GameObject
@@ -12,6 +13,15 @@ directionCoordMap = {
     'W': (-128, 0),
     'N': (0, -128)
 }
+
+def load_attribute(attribute: str, object: dict, default=None) -> Any:
+    ''' loadAttribute: str, dict, Any -> Any
+    Loads the given attribute from the given object and returns it. If the attribute is not found, returns the default value
+    '''
+    try:
+        return object[attribute]
+    except KeyError:
+        return default
 
 def scene_loader_data(sceneData: dict) -> Scene:
     ''' sceneLoaderData: dict -> Scene
@@ -31,15 +41,12 @@ def scene_loader_data(sceneData: dict) -> Scene:
             gameSprite = pygame.surfarray.make_surface(surf_array)
             gameSprite = pygame.transform.scale(gameSprite, (128, 128))
         
-        isInteractive = object['interactive']
-        happiness_effect = object['happiness-effect'] if isInteractive else 0
-        time_effect = object['time-effect'] if isInteractive else 0
-        health_effect = object['health-effect'] if isInteractive else 0
-        isCollidable = object['isCollidable']
-        try:
-            navigateTo = object['navigateTo']
-        except KeyError:
-            navigateTo = None
+        isInteractive = load_attribute('interactive', object, False)
+        happiness_effect = load_attribute('happiness-effect', object, 0)
+        time_effect = load_attribute('time-effect', object, 0)
+        health_effect = load_attribute('health-effect', object, 0)
+        isCollidable = load_attribute('collidable', object, True)
+        navigateTo = load_attribute('navigateTo', object, None)
 
         gameObject = GameObject(object['id'],
             happiness_effect=happiness_effect,
