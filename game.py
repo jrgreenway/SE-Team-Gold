@@ -211,7 +211,12 @@ class Game:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 clicked = [button for button in buttons if button.rect.collidepoint(event.pos)]
                 if len(clicked) > 0:
-                    self.running, self.currentScreen = clicked[0].onClick(game=self, currentScreen=self.currentScreen)
+                    self.running, self.currentScreen = clicked[0].onClick(
+                        game=self, 
+                        currentScreen=self.currentScreen,
+                        oracle=self.oracle,
+                        question=None
+                    )
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE and not self.keyDown:
                     self.currentScreen = PAUSE_SCREEN
@@ -316,7 +321,7 @@ class Game:
             self.screen,
             self.oracle.getAnswer(),
             self.buttonCBs['back'],
-            self.buttonCBs['next'],
+            self.buttonCBs['closeOracle'],
             self.textAnimationStartFrame,
             self.currentFrame
         )
@@ -330,7 +335,10 @@ class Game:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 clicked = [button for button in buttons if button.rect.collidepoint(event.pos)]
                 if len(clicked) > 0:
-                    self.running, self.currentScreen = clicked[0].onClick(currentScreen=self.currentScreen)
+                    self.running, self.currentScreen = clicked[0].onClick(
+                        currentScreen=self.currentScreen,
+                        oracle=self.oracle,
+                    )
 
     def createDayEndScreen(self, events) -> None:
         ''' Game.createDayEndScreen(events) -> None
@@ -355,7 +363,7 @@ class Game:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 clicked = [button for button in buttons if button.rect.collidepoint(event.pos)]
                 if len(clicked) > 0:
-                    self.running, self.currentScreen = clicked[0].onClick(player = self.player)
+                    self.running, self.currentScreen = clicked[0].onClick(player = self.player, oracle=self.oracle)
 
     def handleCurrentScreen(self, events) -> None:
         ''' Game.handleCurrentScreen(events) -> None
