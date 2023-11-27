@@ -1,4 +1,5 @@
 from gc import callbacks
+import re
 from typing import Callable
 import pygame
 
@@ -11,9 +12,6 @@ QUESTIONS = [
     "How can I interact with the world?",
     "What are the bars on the top?",
     "What is the goal of the game?",
-    "Why is my health red?",
-    "Why is my happiness red?",
-    "Why is my time red?",
 ]
 
 ANSWERS = [
@@ -66,6 +64,25 @@ class OracleCallPermission:
     
     def getCallForHealth(self) -> bool:
         return self.callForHealth
+    
+    def getOracleHints(self, metrics: Metrics) -> list[str]:
+        hints = []
+        if metrics.isHappinessDanger() and self.callForHappiness:
+            hints.append("Ha")
+        if metrics.isHealthDanger() and self.callForHealth:
+            hints.append("He")
+        if metrics.isTimeDanger() and self.callForTime:
+            hints.append("Ti")
+        return hints
+    
+    def cancel(self, oracleQuestions: list[str]):
+        for question in oracleQuestions:
+            if question == "Ha":
+                self.setCallForHappiness(False)
+            elif question == "He":
+                self.setCallForHealth(False)
+            elif question == "Ti":
+                self.setCallForTime(False)
 
 
 class Oracle:
@@ -84,26 +101,32 @@ class Oracle:
         self.sprite = pygame.image.load("assets/oracleIcon.png")
         self.callbacks = callBacks
         self.callPermissions = OracleCallPermission()
+        self.oracleHelpQuestions = []
+        self.question = ""
         pass
     
     def resetNextDay(self) -> None:
         # Very bad for memory management but we don't care about this now
         self.callPermissions = OracleCallPermission() 
 
+    def cancelIncomingCall(self) -> None:
+        self.callPermissions.cancel(self.oracleHelpQuestions)
+
     def draw(self, playerMetrics: Metrics, currentFrame: int) -> Button:
         x, y = self.screen.get_size()
 
         # Check if any of the metrics is below 30
-        danger = (playerMetrics.isHappinessDanger() and self.callPermissions.getCallForHappiness()) or \
-            (playerMetrics.isHealthDanger() and self.callPermissions.getCallForHealth()) or \
-            (playerMetrics.isTimeDanger() and self.callPermissions.getCallForTime())
+        self.oracleHelpQuestions = self.callPermissions.getOracleHints(playerMetrics)
 
         # Scale factor for animation
         scale_factor = 1.0
 
-        if danger:
+        if len(self.oracleHelpQuestions) > 0:
             # Calculate scale factor based on currentFrame
             scale_factor = 1.0 + abs((currentFrame % 60) - 30) / 120  # Adjust the values as needed
+        
+        else:
+            self.oracleHelpQuestions = []
 
         # Scale the sprite and button size
         scaled_sprite = pygame.transform.scale(
@@ -121,7 +144,7 @@ class Oracle:
 
         button = Button(scaled_button_rect, self.callbacks['clickOracle'])
 
-        if danger:
+        if len(self.oracleHelpQuestions) > 0:
             button.setAction(self.callbacks['clickOracleQuestion'])
 
         self.screen.blit(scaled_sprite, scaled_button_rect)
@@ -136,4 +159,17 @@ class Oracle:
         return self.questions
     
     def getAnswer(self) -> str:
-        return self.answers[self.questions.index(self.question)]
+        try:
+            answer = "Paul: " + self.answers[self.questions.index(self.question)]
+        except ValueError:
+            # This means the oracle is calling based on the metrics
+            answer = "Paul: "
+            for hint in self.oracleHelpQuestions:
+                if hint == "He":
+                    answer += self.answers[5] + " "
+                elif hint == "Ha":
+                    answer += self.answers[6] + " "
+                elif hint == "Ti":
+                    answer += self.answers[7] + " "
+
+        return answer
