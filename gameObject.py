@@ -46,6 +46,7 @@ class GameObject:
                  happiness_effect=0,
                  health_effect=0,
                  time_effect=0,
+                 next_day: bool=False,
                  navigateTo: Optional[int] = None,
                  interactive: bool=False,
                  position: pygame.Vector2 = pygame.Vector2(0, 0), 
@@ -59,6 +60,7 @@ class GameObject:
         self.navigateTo = navigateTo
         self.happiness_effect = happiness_effect
         self.time_effect = time_effect
+        self.next_day = next_day
         self.health_effect = health_effect
         self.isCollidable = isCollidable
         
@@ -76,6 +78,9 @@ class GameObject:
     
     def getTimeEffect(self):
         return self.time_effect
+    
+    def getNextDay(self):
+        return self.next_day
     
     def getHealthEffect(self):
         return self.health_effect
