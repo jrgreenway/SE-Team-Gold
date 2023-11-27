@@ -126,7 +126,7 @@
                 "id": 3,
                 "texture": "assets/gate.png",
                 "interactive": false,
-                "navigateTo": 2,
+                "navigateTo": 1,
                 "position-relative": {
                     "direction": "S",
                     "relativeTo": 4
