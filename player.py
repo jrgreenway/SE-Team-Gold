@@ -135,10 +135,12 @@ class Player():
         self.screen.blit(popup_surface, popup.topleft)
 
         isPos = lambda x: 0 if x>0 else 1 if x==0 else 2 if -21<x<0 else 3
-        colours = [pygame.Color(0,100,0,alpha), pygame.Color(255,255,255,alpha), pygame.Color(255,192,0, alpha), pygame.Color(255,0,0,200)]
+        isPosTime = lambda x: 0 if x<0 else 1 if x==0 else 2 if 91>x>0 else 3
+        colours = [pygame.Color(0,100,0,alpha), pygame.Color(255,255,255,alpha), pygame.Color(255,192,0, alpha), pygame.Color(255,0,0,200)]#green,white,amber,red 
 
-        obj_metrics = [object.getHappinessEffect(), object.getHealthEffect(), -object.getTimeEffect(), object.getMoneyEffect()]
-        metric_colours = [colours[isPos(obj_metrics[i])] for i in range(4)]#TODO sort out for time metric
+        obj_metrics = [object.getHappinessEffect(), object.getHealthEffect(), object.getTimeEffect(), object.getMoneyEffect()]
+        metric_colours = [colours[isPos(obj_metrics[i])] for i in range(3)]
+        metric_colours.append(colours[isPosTime(obj_metrics[-1])])
         images = [pygame.image.load("assets/happy.png"), pygame.image.load("assets/health.png"), pygame.image.load("assets/clock.png"), pygame.image.load("assets/money.png")]
 
         locx, locy = popup.topleft
