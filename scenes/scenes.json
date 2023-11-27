@@ -80,7 +80,7 @@
             {
                 "id": 7,
                 "texture": "assets/gate.png",
-                "interactive": false,
+                "interactive": true,
                 "navigateTo": 2,
                 "position-relative": {
                     "direction": "E",
@@ -125,7 +125,7 @@
             {
                 "id": 3,
                 "texture": "assets/gate.png",
-                "interactive": false,
+                "interactive": true,
                 "navigateTo": 1,
                 "position-relative": {
                     "direction": "S",
