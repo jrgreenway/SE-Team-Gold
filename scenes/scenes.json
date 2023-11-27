@@ -110,7 +110,7 @@
                 "interactive": false,
                 "position-relative": {
                     "direction": "E",
-                    "relativeTo": 3
+                    "relativeTo": 0
                 }
             },
             {
@@ -119,7 +119,7 @@
                 "interactive": false,
                 "position-relative": {
                     "direction": "S",
-                    "relativeTo": 4
+                    "relativeTo": 1
                 }
             },
             {
@@ -128,8 +128,8 @@
                 "interactive": true,
                 "navigateTo": 1,
                 "position-relative": {
-                    "direction": "S",
-                    "relativeTo": 4
+                    "direction": "E",
+                    "relativeTo": 2
                 }
             }
         ]
