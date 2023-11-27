@@ -7,7 +7,11 @@
             {
                 "id": 0,
                 "texture": "assets/Cupboard.png",
-                "interactive": false,
+                "interactive": true,
+                "happiness-effect":-10,
+                "health-effect":-10,
+                "time-effect":60,
+                "money-effect":40,
                 "position-absolute": {
                     "x": 312,
                     "y": 214
