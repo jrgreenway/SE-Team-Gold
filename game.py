@@ -200,7 +200,7 @@ class Game:
             self.player.interact(self.holdingKeys, self.giveInteractable())
         self.player.animate(self.checkMoving(), self.currentFrame)
         self.player.draw()
-        oracleButton = self.oracle.draw()
+        oracleButton = self.oracle.draw(self.player.getMetrics(), self.currentFrame)
         self.handleGameScreenEvents(events, [oracleButton])
 
     def handleGameScreenEvents(self, events, buttons: list[Button]) -> None:
