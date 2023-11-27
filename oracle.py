@@ -13,13 +13,16 @@ QUESTIONS = [
 ]
 
 ANSWERS = [
-    "Use the arrow keys to move around.",
+    "In order to move around, you can use the W A S D keys. You can use W to move up, A to move left, S to move down" + \
+    " and D to move right.",
     "Imagine you are a real person. What would you do at this time? Note the effect actions have on your metrics" + \
-    " the bars on the top).",
-    "You can interact with the world by pressing the space bar. You can interact with an object if you are close enough" + \
-    " to it and are facing its direction. A pointer for this would be the name of the object popping up.",
-    "The bars on the top are your metrics. The first one is your happines, the second one is the time left in the day. Below" + \
-    " these you can also see your current funds as well as the time of the day.",
+    " (the bars on the top).",
+    "You can interact with the world by pressing E. You can interact with an object if you are close enough" + \
+    " to it and are facing its direction. You will know you can interact with an object when a popup appears on the" + \
+    " character's top right. The popup will tell you the effect the object will have on your metrics.",
+    "The bars on the top are your metrics. The first one is your happines, the second one is the time left in the day. Finally," + \
+    " there is the health bar. Below these you can also see your current funds. Note that you can see the current time of the " + \
+    " day in the top right corner of the screen.",
     "The goal of the game is to live your life to the fullest. You can do this by interacting with the world and" + \
     " making the right choices. However, be careful, as your choices will have consequences. You can also" + \
     " interact with the oracle to get some hints on what to do next. Remember to watch your metrics and" + \
