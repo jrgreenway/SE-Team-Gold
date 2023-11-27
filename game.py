@@ -1,12 +1,12 @@
+from tkinter import END
 from typing import Callable
 import pygame
 from gameObject import GameObject
 from buttons.button import Button
 from oracle import Oracle
 from scene import Scene
-from scenes.sceneDrawer import scene_loader
-from change_screen import Change_screen
 from screens.avatarScreen import draw_avatar_screen
+from screens.endOfDayScreen import draw_end_of_day_screen
 from screens.gameScreen import draw_game_screen
 from screens.loadScreen import draw_load_screen
 from screens.oracleAnswerScreen import draw_oracle_answer_screen
@@ -14,8 +14,9 @@ from screens.oracleQuestionScreen import draw_oracle_question_screen
 from screens.pauseScreen import draw_pause_screen
 from screens.screenConstants import *
 from screens.startScreen import draw_start_screen
-# from screens.transitionScreen import draw_transition_screen
+
 from screens.welcomeScreen import draw_welcome_screen
+
 from player import Player
 
 
@@ -59,7 +60,6 @@ class Game:
             buttonCBs: dict[str, Callable], 
             savedGames: list[str],
     ) -> None:
-        self.scene = scene
         self.screen = screen
         self.currentFrame = 0
         self.currentScreen = WELCOME_SCREEN
@@ -68,11 +68,13 @@ class Game:
         self.currentScene = scene
         self.holdingKeys = []
         self.oracle = Oracle(screen, callBacks=buttonCBs)
-        self.screentransition = Change_screen(screen)
+
         self.textAnimationStartFrame = 0
 
         self.buttonCBs = buttonCBs
         self.savedGames = savedGames
+
+        self.dayEndFrame = 0
 
         self.scrollPos = 0
         self.keyDown = False
@@ -190,18 +192,11 @@ class Game:
         #Pass objects into the player.move method
         objects = self.currentScene.getObjects()
         self.player.move(self.holdingKeys, objects)
-        navigateto = self.player.interact(self.holdingKeys, self.giveInteractable())
-        if navigateto:
-            self.scene = scene_loader(navigateto)
-        else: 
-            self.player.interact(self.holdingKeys, self.giveInteractable())
+        self.player.interact(self.holdingKeys, self.giveInteractable())
         self.player.animate(self.checkMoving(), self.currentFrame)
         self.player.draw()
         oracleButton = self.oracle.draw()
-        # screentransitionButton = self.screentransition.draw(self.screen)
         self.handleGameScreenEvents(events, [oracleButton])
-
-    
 
     def handleGameScreenEvents(self, events, buttons: list[Button]) -> None:
         ''' Game.handleGameScreenEvents(events) -> None
@@ -219,8 +214,6 @@ class Game:
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_ESCAPE:
                     self.keyDown = False
-
-
 
     def createPauseScreen(self, events) -> None:
         ''' Game.createPauseScreen(events) -> None
@@ -334,34 +327,31 @@ class Game:
                 if len(clicked) > 0:
                     self.running, self.currentScreen = clicked[0].onClick(currentScreen=self.currentScreen)
 
-    # def drawOptionScreen(self, events) -> None:
-    #     ''' Game.drawoptionScreen(events) -> None
-    #     Draws the option screen and handles mouse clicks on the buttons
-    #     '''
-    #     draw_game_screen(self.screen, self.currentScene)
-    #     self.player.draw()
-    #     buttons = draw_transition_screen(
-    #         self.screen, 
-    #         self.oracle.getQuestions(), 
-    #         self.buttonCBs['clickOption'],
-    #     )
-    #     self.handleOptionScreenEvents(events, buttons)
+    def createDayEndScreen(self, events) -> None:
+        ''' Game.createDayEndScreen(events) -> None
+        Draws the end of day screen and handles mouse clicks on the buttons
+        '''
+        buttons = draw_end_of_day_screen(
+            self.screen,
+            self.dayEndFrame, 
+            self.currentFrame, 
+            self.player.getOldMetrics(),
+            self.player.getMetrics(),
+            self.buttonCBs['nextDay']
+        )
+        self.handleDayEndScreenEvents(events, buttons)
 
-    # def handleOptionScreenEvents(self, events, buttons) -> None:
-    #     ''' Game.handleQuestionScreenEvents(events, buttons) -> None
-    #     Handles mouse clicks on the question screen
-    #     '''
-    #     for event in events:
-    #         if event.type == pygame.MOUSEBUTTONDOWN:
-    #             clicked = [button for button in buttons if button.rect.collidepoint(event.pos)]
-    #             index = buttons.index(clicked[0]) if len(clicked) > 0 else -1
-    #             #change screen to bedroom
-    #             if index == 2:
-    #                 self.scene = 2
-    #             elif index == 3:
-    #                 self.scene = 3
-                
-                
+
+    def handleDayEndScreenEvents(self, events, buttons) -> None:
+        ''' Game.handleDayEndScreenEvents(events, buttons) -> None
+        Handles mouse clicks on the end of day screen
+        '''
+        for event in events:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                clicked = [button for button in buttons if button.rect.collidepoint(event.pos)]
+                if len(clicked) > 0:
+                    self.running, self.currentScreen = clicked[0].onClick(player = self.player)
+
     def handleCurrentScreen(self, events) -> None:
         ''' Game.handleCurrentScreen(events) -> None
         Handles the current screen
@@ -369,6 +359,8 @@ class Game:
 
         if self.currentScreen is not ORACLE_ANSWER_SCREEN:
             self.textAnimationStartFrame = 0
+        if self.currentScreen is not DAY_END_SCREEN:
+            self.dayEndFrame = 0
 
         if self.currentScreen == WELCOME_SCREEN:
             self.welcomeScreen()
@@ -388,8 +380,10 @@ class Game:
             if self.textAnimationStartFrame == 0:
                 self.textAnimationStartFrame = self.currentFrame
             self.drawAnswerScreen(events)
-        # elif self.currentScreen == SCREEN_TRANSITION_SCREEN:
-        #     self.drawOptionScreen(events)
+        elif self.currentScreen == DAY_END_SCREEN:
+            if self.dayEndFrame == 0:
+                self.dayEndFrame = self.currentFrame
+            self.createDayEndScreen(events)
         else:
             raise Exception("Invalid Screen")
         
@@ -436,8 +430,9 @@ class Game:
             self.currentFrame += 1
             
             if self.currentFrame % 60 == 0 and self.currentScreen == GAME_SCREEN:
-                self.player.metrics.updateTime()
+                self.currentScreen = self.player.metrics.updateTime() and DAY_END_SCREEN or GAME_SCREEN
             
+            # self.currentFrame %= 60
             # Handle events - keyPresses
             events = pygame.event.get()
             for event in events:
