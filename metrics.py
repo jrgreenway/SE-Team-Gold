@@ -1,4 +1,3 @@
-from xmlrpc.client import Boolean
 import pygame
 
 class Metrics:
@@ -52,7 +51,7 @@ class Metrics:
     #Methods
 
     # TODO Increment stays 4
-    def updateTime(self, increment=4) -> Boolean:
+    def updateTime(self, increment=4) -> bool:
         self.time += increment
         return self.time >= 1320
     

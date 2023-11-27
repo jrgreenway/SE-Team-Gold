@@ -66,6 +66,71 @@
                     "relativeTo": 4
                 },
                 "isCollidable": true
+            },
+            {
+                "id": 6,
+                "texture": "assets/Cupboard.png",
+                "interactive": false,
+                "navigateTo": 2,
+                "position-relative": {
+                    "direction": "S",
+                    "relativeTo": 4
+                }
+            },
+            {
+                "id": 7,
+                "texture": "assets/gate.png",
+                "interactive": true,
+                "navigateTo": 2,
+                "position-relative": {
+                    "direction": "W",
+                    "relativeTo": 0
+                }
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "name": "Bedroom",
+        "texture": "assets/Floor.png",
+        "objects": [
+            {
+                "id": 0,
+                "texture": "assets/Cupboard.png",
+                "interactive": false,
+                "position-absolute": {
+                    "x": 312,
+                    "y": 214
+                }
+            },
+            
+            {
+                "id": 1,
+                "texture": "assets/Cupboard.png",
+                "interactive": false,
+                "position-relative": {
+                    "direction": "E",
+                    "relativeTo": 0
+                }
+            },
+            {
+                "id": 2,
+                "texture": "assets/Cupboard.png",
+                "interactive": false,
+                "position-relative": {
+                    "direction": "S",
+                    "relativeTo": 1
+                }
+            },
+            {
+                "id": 3,
+                "texture": "assets/gate.png",
+                "interactive": true,
+                "navigateTo": 1,
+                "position-relative": {
+                    "direction": "E",
+                    "relativeTo": 2
+                }
             }
         ]
     }

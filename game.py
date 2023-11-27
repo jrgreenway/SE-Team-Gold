@@ -5,6 +5,7 @@ from gameObject import GameObject
 from buttons.button import Button
 from oracle import Oracle
 from scene import Scene
+from scenes.sceneDrawer import scene_loader
 from screens.avatarScreen import draw_avatar_screen
 from screens.endOfDayScreen import draw_end_of_day_screen
 from screens.gameScreen import draw_game_screen
@@ -192,7 +193,11 @@ class Game:
         #Pass objects into the player.move method
         objects = self.currentScene.getObjects()
         self.player.move(self.holdingKeys, objects)
-        self.player.interact(self.holdingKeys, self.giveInteractable())
+        navigateto = self.player.interact(self.holdingKeys, self.giveInteractable())
+        if navigateto:
+            self.currentScene = scene_loader(navigateto)
+        else: 
+            self.player.interact(self.holdingKeys, self.giveInteractable())
         self.player.animate(self.checkMoving(), self.currentFrame)
         self.player.draw()
         oracleButton = self.oracle.draw()
