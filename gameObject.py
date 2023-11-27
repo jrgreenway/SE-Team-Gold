@@ -46,6 +46,7 @@ class GameObject:
                  happiness_effect=0,
                  health_effect=0,
                  time_effect=0,
+                 navigateTo = 1,
                  interactive: bool=False,
                  position: pygame.Vector2 = pygame.Vector2(0, 0), 
                  sprite: Optional[pygame.Surface] = None
@@ -54,15 +55,26 @@ class GameObject:
         self.position = position
         self.sprite = sprite
         self.interactive = interactive
+        self.navigateTo = navigateTo
         self.happiness_effect = happiness_effect
         self.time_effect = time_effect
         self.health_effect = health_effect
+        self.clickable = False
         
     def getID(self) -> int:
         return self.id
     
     def getInteractive(self):
         return self.interactive
+
+    def getNavigateTo(self):
+        return self.navigateTo
+
+    def getClickable(self) -> bool:
+        return self.clickable
+
+    def setClickable(self, clickable: bool) -> None:
+        self.clickable = clickable
     
     def getHappinessEffect(self):
         return self.happiness_effect
@@ -116,4 +128,6 @@ class GameObject:
             },
             'texture': fileName
         }
+
+    
 

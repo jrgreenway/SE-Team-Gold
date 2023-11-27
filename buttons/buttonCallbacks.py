@@ -7,6 +7,7 @@ from json import load
 from typing import Callable
 from urllib.request import CacheFTPHandler
 from oracle import Oracle
+from change_screen import Change_screen
 from screens.screenConstants import *
 from utils.gameLoader import load_game
 from utils.gameSaver import save_game
@@ -43,6 +44,9 @@ def backToMainMenuButtonCB(**_) -> tuple[bool, str]:
 def clickOracleCB(**_) -> tuple[bool, str]:
     return True, ORACLE_QUESTION_SCREEN
 
+def clickOptionCB(**_) -> tuple[bool, str]:
+    return True, SCREEN_TRANSITION_SCREEN
+
 def clickOracleQuestionCB(**kwargs) -> tuple[bool, str]:
     kwargs['oracle'].setQuestion(kwargs['question'])
     return True, ORACLE_ANSWER_SCREEN
@@ -50,10 +54,6 @@ def clickOracleQuestionCB(**kwargs) -> tuple[bool, str]:
 def nextButtonCB(**kwargs) -> tuple[bool, str]:
     currentScreen = kwargs['currentScreen']
     return True, nextScreen(currentScreen)
-def nextDayCB(**kwargs) -> tuple[bool, str]:
-    player = kwargs['player']
-    player.resetNextDay()
-    return True, GAME_SCREEN
 
 def createButtonCBDict() -> dict[str, Callable]:
     ''' createButtonCBDict: None -> dict[str, Callable]
@@ -69,7 +69,7 @@ def createButtonCBDict() -> dict[str, Callable]:
         'save': saveButtonCB,
         'backToMainMenu': backToMainMenuButtonCB,
         'clickOracle': clickOracleCB,
+        'clickOption': clickOptionCB,
         'clickOracleQuestion': clickOracleQuestionCB,
         'next': nextButtonCB,
-        'nextDay': nextDayCB,
     }
