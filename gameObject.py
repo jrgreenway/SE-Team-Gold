@@ -46,7 +46,7 @@ class GameObject:
                  happiness_effect=0,
                  health_effect=0,
                  time_effect=0,
-                 navigateTo = -1,
+                 navigateTo: Optional[int] = -1,
                  interactive: bool=False,
                  position: pygame.Vector2 = pygame.Vector2(0, 0), 
                  sprite: Optional[pygame.Surface] = None,
@@ -121,5 +121,7 @@ class GameObject:
                 'x': self.position.x,
                 'y': self.position.y
             },
-            'texture': fileName
+            'texture': fileName,
+            'navigateTo': self.navigateTo,
         }
+
