@@ -131,10 +131,28 @@ class Player():
         
         canInteract = pygame.K_e in holdingKeys and self.not_interacting \
                         and object is not None #and facing direction
+        navigateTo = 1
+        
         if canInteract:
             self.not_interacting = False
             self.metrics.changeMetrics(object.getHappinessEffect(), object.getTimeEffect(), object.getHealthEffect())
-            #print(f"interacted with {object.getID()}")
+            click_object = pygame.Rect()
+            # if object.navigateTo():
+            #     navigateTo = object.navigateTo()
+
+            for key in holdingKeys:
+                x = self.position.x
+                y = self.position.y
+                mouse_clicked = pygame.mouse.get_pressed()[0]
+                if key == mouse_clicked:
+                    for obj in object:
+                        pygame.draw.rect(self.screen, pygame.Rect(obj.getPosition().x, obj.getPosition().y, 128, 128), 2)
+                        if obj.navigateTo():
+                            navigateTo = obj.navigateTo()
+
+            
+        return navigateTo
+
 
     # TODO find which type of Event to import
     def move(self, holdingKeys, objects: list[GameObject]):#call in main loop.
