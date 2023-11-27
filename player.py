@@ -161,7 +161,7 @@ class Player():
             #Update hitbox position
             temp_hitbox = pygame.Rect(temp_x + 55, temp_y + 40, 90, 130 )
             
-            collisions = [obj for obj in objects if temp_hitbox.colliderect(obj.getPosition().x, obj.getPosition().y, 128, 128)]
+            collisions = [obj for obj in objects if obj.isCollidable and temp_hitbox.colliderect(obj.getPosition().x, obj.getPosition().y, 128, 128)]
             if collisions == []:
                 self.position.x = temp_x
                 self.position.y = temp_y
