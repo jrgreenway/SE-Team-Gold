@@ -1,6 +1,60 @@
 [
     {
         "id": 1,
+        "name": "Bedroom",
+        "texture": "assets/Floor.png",
+        "objects": [
+            {
+                "id": 0,
+                "texture": "assets/Cupboard.png",
+                "interactive": false,
+                "position-absolute": {
+                    "x": 0,
+                    "y": 0
+                }
+            },
+            {
+                "id": 4,
+                "texture": "assets/Bed.png",
+                "interactive": true,
+                "next-day": true,
+                "position-relative": {
+                    "direction": "S",
+                    "relativeTo": 0
+                }
+            },
+            {
+                "id": 1,
+                "texture": "assets/Cupboard.png",
+                "interactive": false,
+                "position-relative": {
+                    "direction": "E",
+                    "relativeTo": 0
+                }
+            },
+            {
+                "id": 2,
+                "texture": "assets/Cupboard.png",
+                "interactive": false,
+                "position-relative": {
+                    "direction": "S",
+                    "relativeTo": 1
+                }
+            },
+            {
+                "id": 3,
+                "texture": "assets/gate.png",
+                "interactive": true,
+                "navigateTo": 2,
+                "position-relative": {
+                    "direction": "E",
+                    "relativeTo": 2
+                }
+            }
+        ]
+    },
+    {
+        "id": 2,
         "name": "Kitchen",
         "texture": "assets/Floor.png",
         "objects": [
@@ -81,55 +135,10 @@
                 "id": 7,
                 "texture": "assets/gate.png",
                 "interactive": true,
-                "navigateTo": 2,
+                "navigateTo": 1,
                 "position-relative": {
                     "direction": "W",
                     "relativeTo": 0
-                }
-            }
-        ]
-    },
-    {
-        "id": 2,
-        "name": "Bedroom",
-        "texture": "assets/Floor.png",
-        "objects": [
-            {
-                "id": 0,
-                "texture": "assets/Cupboard.png",
-                "interactive": false,
-                "position-absolute": {
-                    "x": 312,
-                    "y": 214
-                }
-            },
-            
-            {
-                "id": 1,
-                "texture": "assets/Cupboard.png",
-                "interactive": false,
-                "position-relative": {
-                    "direction": "E",
-                    "relativeTo": 0
-                }
-            },
-            {
-                "id": 2,
-                "texture": "assets/Cupboard.png",
-                "interactive": false,
-                "position-relative": {
-                    "direction": "S",
-                    "relativeTo": 1
-                }
-            },
-            {
-                "id": 3,
-                "texture": "assets/gate.png",
-                "interactive": true,
-                "navigateTo": 1,
-                "position-relative": {
-                    "direction": "E",
-                    "relativeTo": 2
                 }
             }
         ]
