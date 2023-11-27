@@ -46,7 +46,7 @@ class GameObject:
                  happiness_effect=0,
                  health_effect=0,
                  time_effect=0,
-                 navigateTo = 1,
+                 navigateTo = -1,
                  interactive: bool=False,
                  position: pygame.Vector2 = pygame.Vector2(0, 0), 
                  sprite: Optional[pygame.Surface] = None,
