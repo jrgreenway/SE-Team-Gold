@@ -93,8 +93,5 @@ def scene_drawer(screen: pygame.Surface, scene: Scene) -> None:
     for obj in scene.getObjects():
         screen.blit(obj.getSprite(), obj.getPosition())
 
-
-
-
     
             

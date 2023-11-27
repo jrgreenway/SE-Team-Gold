@@ -1,3 +1,4 @@
+from xmlrpc.client import Boolean
 import pygame
 
 class Metrics:
@@ -18,7 +19,7 @@ class Metrics:
         updateTime: Updates the time by increment (default 1).
         formatTime: Formats the time into a string.
         '''
-    def __init__(self, time: int, happiness: int, health: int, money:int) -> None:
+    def __init__(self, time: int = 480, happiness: int = 100, health: int = 100, money: int = 0) -> None:
         self.time = time
         self.happiness = happiness
         self.health = health
@@ -45,21 +46,96 @@ class Metrics:
     def getHealth(self):
         return self.health
     
+    def getMoney(self):
+        return self.money
+    
     #Methods
 
-    def updateTime(self, increment=-1):
+    # TODO Increment stays 4
+    def updateTime(self, increment=4) -> Boolean:
         self.time += increment
+        return self.time >= 1320
+    
+    def updateHappiness(self, increment=0) -> None:
+        self.happiness = max(0, min(100, self.happiness + increment))
     
     def formatTime(self):
-        minutes = self.time // 60
-        seconds = self.time % 60
-        return f"{minutes:02d}:{seconds:02d}"
+        hours = self.time // 60
+        minutes = (self.time % 60) // 10 * 10
+        return f"{hours:02d}:{minutes:02d}"
+    
+    def resetTime(self):
+        self.time = 480
+    
+    def draw(self, screen: pygame.Surface) -> None:
+        # Draw the happiness bar chart
+        happiness_bar_width = 100  # Adjust the width based on the happiness value
+        hapinness_bar_value = self.happiness
+        happiness_bar_height = 20
+        happiness_bar_color = (0, 255, 0)  # Gray color for happiness
+        hapoiness_bar_container_color = (128, 128, 128)  # Black color for the container
+        happiness_bar_container_rect = pygame.Rect(10, 10, happiness_bar_width, happiness_bar_height)
+        happiness_bar_rect = pygame.Rect(10, 10, hapinness_bar_value, happiness_bar_height)
+        happiness_icon = pygame.image.load("assets/happy.png")  # Replace "happiness_icon.png" with the actual filename of the icon image
+        happiness_icon_rect = happiness_icon.get_rect()
+        happiness_icon_rect.left = happiness_bar_container_rect.right + 5  # Adjust the position of the icon
+        happiness_icon_rect.centery = happiness_bar_container_rect.centery
+        screen.blit(happiness_icon, happiness_icon_rect)
+        pygame.draw.rect(screen, hapoiness_bar_container_color, happiness_bar_container_rect)
+        pygame.draw.rect(screen, happiness_bar_color, happiness_bar_rect)
+
+        # Draw the time bar chart
+        time_bar_width = 100
+        time_bar_value = (1320 - self.time) / (840) * 100
+        time_bar_height = 20
+        time_bar_color = (time_bar_value > 60 and (0, 255, 0)) or (time_bar_value > 30 and (255, 255, 0)) or ((255, 0, 0))
+        time_bar_container_color = (128, 128, 128)
+        time_bar_container_rect = pygame.Rect(10, 40, time_bar_width, time_bar_height)
+        time_bar_rect = pygame.Rect(10, 40, time_bar_value, time_bar_height)
+        time_icon = pygame.image.load("assets/clock.png")
+        time_icon_rect = time_icon.get_rect()
+        time_icon_rect.left = time_bar_container_rect.right + 5
+        time_icon_rect.centery = time_bar_container_rect.centery
+        screen.blit(time_icon, time_icon_rect)
+        pygame.draw.rect(screen, time_bar_container_color, time_bar_container_rect)
+        pygame.draw.rect(screen, time_bar_color, time_bar_rect)
+
+        # Draw the health bar chart
+        health_bar_width = 100
+        health_bar_value = self.health
+        health_bar_height = 20
+        health_bar_color = (health_bar_value > 60 and (0, 255, 0)) or (health_bar_value > 30 and (255, 255, 0)) or ((255, 0, 0))
+        health_bar_container_color = (128, 128, 128)
+        health_bar_container_rect = pygame.Rect(10, 70, health_bar_width, health_bar_height)
+        health_bar_rect = pygame.Rect(10, 70, health_bar_value, health_bar_height)
+        health_icon = pygame.image.load("assets/health.png")
+        health_icon_rect = health_icon.get_rect()
+        health_icon_rect.left = health_bar_container_rect.right + 5
+        health_icon_rect.centery = health_bar_container_rect.centery
+        screen.blit(health_icon, health_icon_rect)
+        pygame.draw.rect(screen, health_bar_container_color, health_bar_container_rect)
+        pygame.draw.rect(screen, health_bar_color, health_bar_rect)
+
+        # Draw the money value
+        money_value = self.money
+        money_font = pygame.font.Font(None, 24)
+        money_text = money_font.render(f"${money_value}", True, (255, 255, 255))
+        money_text_rect = money_text.get_rect()
+        money_text_rect.left = 10
+        money_text_rect.top = 100
+        screen.blit(money_text, money_text_rect)
+
+    
     
     def changeMetrics(self, happiness_change=0, time_change=0, health_change=0, money_change=0):
         #if we add buffs/debuffs, suggest storing it in this class, then adding as modifier
         self.happiness += happiness_change
-        self.time -= time_change #time alterations stored as +ve
+        if self.happiness > 100:
+            self.happiness = 100
+        self.time += time_change #time alterations stored as +ve
         self.health += health_change
+        if self.health > 100:
+            self.health = 100
         self.money += money_change
 
     
