@@ -117,8 +117,6 @@ class Player():
 
     def setGender(self, gender: str):
         self.gender = gender
-        self.loadAnimations()
-        self.sprite = self.animations[self.facing][0]
     
     #Methods
 
