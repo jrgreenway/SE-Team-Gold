@@ -125,8 +125,8 @@ class Player():
 
     def makePopUp(self):
         object = self.close_object
-        buffer = 4
-        icon_size = 36
+        buffer = 2
+        icon_size = 18
         popup_size = ((icon_size+buffer)*4+buffer,(icon_size+buffer)*2+buffer)
         alpha = 200
         popup = pygame.Rect(self.hitbox.topright[0]+10, self.hitbox.topright[1]-100, popup_size[0], popup_size[1])
@@ -136,7 +136,6 @@ class Player():
         self.screen.blit(popup_surface, popup.topleft)
         pygame.draw.rect(self.screen, (255,255,255), object.getHitbox(), width=4, border_radius=6)
         
-
         isPos = lambda x: 0 if x>0 else 1 if x==0 else 2
         isPosTime = lambda x: 0 if x<0 else 1 if x==0 else 2
         value = lambda x: 0 if x==0 else 1 if 0<abs(x)<34 else 2 if 33<abs(x)<67 else 3
