@@ -52,12 +52,11 @@ class Player():
         self.width = 200
         self.height = 200
         self.hitbox = pygame.Rect(self.position.x + 55, self.position.y + 40, 90, 130 )  
-        self.oldMetrics = Metrics(money=10)
-        self.metrics = Metrics()
+        self.metrics = Metrics(15, 0, 0, 10)
 
         self.interaction_threshold = 128
         self.not_interacting = True
-
+        self.click_object = False
         # animations is dict with keys S, N, E, W
         # every key has a list of sprites as its value
         self.loadAnimations()
@@ -68,16 +67,6 @@ class Player():
     def reset(self) -> None:
         #So that the player sprite doesn't start on an object
         self.position = pygame.Vector2(self.screen.get_width() / 6, self.screen.get_height() / 2)
-
-    def resetNextDay(self) -> None:
-        if (self.metrics.getMoney() < self.oldMetrics.getMoney()):
-            self.oldMetrics = self.metrics
-            self.metrics.updateHappiness(-15)
-        else:
-            self.oldMetrics = self.metrics
-        
-        self.metrics.resetTime()
-        self.reset()
 
     #Getters
 
@@ -95,9 +84,6 @@ class Player():
     
     def getMetrics(self):
         return self.metrics
-    
-    def getOldMetrics(self):
-        return self.oldMetrics
     
     #Setters
 
@@ -123,16 +109,34 @@ class Player():
         
         if object is None:
             return
-        
+
         if holdingKeys.count(pygame.K_e) == 0:
             self.not_interacting = True
         
         canInteract = pygame.K_e in holdingKeys and self.not_interacting \
                         and object is not None #and facing direction
+        navigateTo = 1
+        
         if canInteract:
             self.not_interacting = False
             self.metrics.changeMetrics(object.getHappinessEffect(), object.getTimeEffect(), object.getHealthEffect())
-            #print(f"interacted with {object.getID()}")
+            click_object = pygame.Rect()
+            # if object.navigateTo():
+            #     navigateTo = object.navigateTo()
+
+            for key in holdingKeys:
+                x = self.position.x
+                y = self.position.y
+                mouse_clicked = pygame.mouse.get_pressed()[0]
+                if key == mouse_clicked:
+                    for obj in object:
+                        pygame.draw.rect(self.screen, pygame.Rect(obj.getPosition().x, obj.getPosition().y, 128, 128), 2)
+                        if obj.navigateTo():
+                            navigateTo = obj.navigateTo()
+
+            
+        return navigateTo
+
 
     # TODO find which type of Event to import
     def move(self, holdingKeys, objects: list[GameObject]):#call in main loop.
@@ -244,12 +248,9 @@ class Player():
         text_rect = text.get_rect()
         text_rect.topright = (self.screen.get_width() - 10, 10)
         self.screen.blit(text, text_rect)
-
         #Used to check the size of the hitbox
         if self.isDebug:
             pygame.draw.rect(self.screen, (255,0,0), self.hitbox, 2)
-
-        self.metrics.draw(self.screen)
 
     def toJson(self) -> dict:
         player_dict = {
