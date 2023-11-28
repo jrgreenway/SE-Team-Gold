@@ -134,5 +134,13 @@ class GameObject:
             'texture': fileName,
             'navigateTo': self.navigateTo,
             'interactive': self.interactive,
+            'metrics': {'happiness-effect': self.happiness_effect,
+                        'time-effect': self.time_effect,
+                        'health-effect': self.health_effect,
+                        'money-effect': self.money_effect
+                        },
+            'next-day': self.next_day,
+            'size': self.size,
+            'collidable': self.isCollidable
         }
 
