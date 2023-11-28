@@ -36,6 +36,7 @@ def load_game(currentInstace: Game, gameName: str) -> None:
     scene = scene_loader_data(game_data['currentScene'])
 
     playerData = game_data['player']
+    metricData = game_data['metrics']
 
     currentInstace.setCurrentScreen(game_data['currentScreen'])
     currentInstace.setCurrentScene(scene)
@@ -43,6 +44,12 @@ def load_game(currentInstace: Game, gameName: str) -> None:
         playerData['name'],
         playerData['gender'],
         pygame.Vector2(playerData['position']['x'], playerData['position']['y']),
-        playerData['speed'],
+        playerData['speed']
+    )
+    currentInstace.loadMetrics(
+        metricData['happiness'],
+        metricData['time'],
+        metricData['health'],
+        metricData['money']
     )
     

@@ -133,5 +133,6 @@ class GameObject:
             },
             'texture': fileName,
             'navigateTo': self.navigateTo,
+            'interactive': self.interactive,
         }
 

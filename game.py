@@ -3,6 +3,7 @@ from typing import Callable
 import pygame
 from gameObject import GameObject
 from buttons.button import Button
+from metrics import Metrics
 from oracle import Oracle
 from scene import Scene
 from scenes.sceneDrawer import scene_loader
@@ -94,6 +95,14 @@ class Game:
         self.player.setGender(playerGender)
         self.player.setPosition(playerPosition)
         self.player.setSpeed(speed)
+    
+    def loadMetrics(self, happiness: int, time: int, health: int, money: int) -> None:
+        self.player.setMetrics(
+            happiness=happiness,
+            time=time,
+            health=health,
+            money=money
+        )
 
     def setcurrentFrame(self, currentFrame):
         self.currentFrame = currentFrame
@@ -416,7 +425,8 @@ class Game:
         return {
             'currentScreen': self.currentScreen,
             'currentScene': self.currentScene.toJson(),
-            'player': self.player.toJson()
+            'player': self.player.toJson(),
+            'metrics': self.player.getMetrics().toJson()
         }
     
 
