@@ -47,7 +47,7 @@ def scene_loader_data(sceneData: dict) -> Scene:
         health_effect = load_attribute('health-effect', object, 0)
         isCollidable = load_attribute('collidable', object, True)
         navigateTo = load_attribute('navigateTo', object, None)
-        money_effect = object['money-effect'] if isInteractive else 0
+        money_effect = load_attribute('money-effect', object, 0)
         gameObject = GameObject(object['id'],
             happiness_effect=happiness_effect,
             time_effect=time_effect,
