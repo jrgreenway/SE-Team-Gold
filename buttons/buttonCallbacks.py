@@ -58,6 +58,8 @@ def oracleCancelIncomingCall(**kwargs) -> tuple[bool, str]:
 def nextDayCB(**kwargs) -> tuple[bool, str]:
     player = kwargs['player']
     oracle = kwargs['oracle']
+    game = kwargs['game']
+    game.nextDay()
     player.resetNextDay()
     oracle.resetNextDay()
     return True, GAME_SCREEN

@@ -261,13 +261,20 @@ class Player():
             #Each image lasts 15 frames so animation loops every 60 frames (maybe be too fast - will have to see when testing)))
             self.sprite = pygame.transform.scale(self.animations[self.facing][((currentFrame % 60)//15) % 4], (self.width, self.height))
 
-    def draw(self) -> None:
+    def draw(self, currentDay: str) -> None:
         self.screen.blit(self.sprite, (int(self.position.x), int(self.position.y)))
         font = pygame.font.Font(None, 24)
         text = font.render(self.metrics.formatTime(), True, (255, 255, 255))
         text_rect = text.get_rect()
-        text_rect.topright = (self.screen.get_width() - 10, 10)
+        text_rect.topright = (self.screen.get_width() - 10, 40)
         self.screen.blit(text, text_rect)
+
+        # Draw current day name
+        day_font = pygame.font.Font(None, 24)
+        day_text = day_font.render(currentDay, True, (255, 255, 255))
+        day_text_rect = day_text.get_rect()
+        day_text_rect.topright = (self.screen.get_width() - 10, 10)
+        self.screen.blit(day_text, day_text_rect)
 
         #Used to check the size of the hitbox
         if self.isDebug:
