@@ -379,7 +379,8 @@ class Game:
                 clicked = [button for button in buttons if button.rect.collidepoint(event.pos)]
                 if len(clicked) > 0:
                     self.running, self.currentScreen = clicked[0].onClick(
-                        player = self.player, oracle=self.oracle,
+                        player = self.player,
+                        oracle=self.oracle,
                         game = self
                     )
 
