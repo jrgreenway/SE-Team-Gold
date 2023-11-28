@@ -48,11 +48,12 @@ def scene_loader_data(sceneData: dict) -> Scene:
         isCollidable = load_attribute('collidable', object, True)
         navigateTo = load_attribute('navigateTo', object, None)
         nextDay = load_attribute('next-day', object, False)
-
+        money_effect = load_attribute('money-effect', object, 0)
         gameObject = GameObject(object['id'],
             happiness_effect=happiness_effect,
             time_effect=time_effect,
             health_effect=health_effect,
+            money_effect=money_effect,
             interactive=isInteractive,
             sprite=gameSprite,
             isCollidable=isCollidable,

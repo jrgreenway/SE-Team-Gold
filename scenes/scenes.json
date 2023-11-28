@@ -21,7 +21,8 @@
                 "position-relative": {
                     "direction": "E",
                     "relativeTo": 0
-                }
+                },
+                "isCollidable": true
             },
             {
                 "id": 1,

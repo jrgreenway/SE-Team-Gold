@@ -164,7 +164,7 @@ class Game:
 
     # TODO these will be moved to Player Class
     def setMale(self, **_) -> tuple[bool, str]:
-        self.player.setGender("M")
+        # TODO call this on the Player object after male animation is implemented
         return True, self.currentScreen
 
     # TODO these will be moved to Player Class
@@ -419,6 +419,7 @@ class Game:
             'player': self.player.toJson()
         }
     
+
     def giveInteractable(self):
         ''' Game.giveInteractable() -> gameObject|None
         Returns the closest interactable object in the interaction threshold
@@ -428,14 +429,12 @@ class Game:
         if objects == []:
             return None
         player_position = self.player.getPosition()
-        distance_to_func = lambda obj: player_position.distance_to(obj.getPosition())
+        distance_to_func = lambda obj: player_position.distance_to(obj.getHitbox().center)
         close_object = min(objects, key=distance_to_func)
         if distance_to_func(close_object) <= self.player.interaction_threshold:
             return close_object
         else: return None
         
-
-
 
     def start(self) -> None:
         ''' Game.start() -> None

@@ -1,10 +1,8 @@
 import os
 import pickle
+import re
 from typing import Optional
 import pygame
-
-from metrics import Metrics
-
 
 class GameObject:
     '''
@@ -46,12 +44,14 @@ class GameObject:
                  happiness_effect=0,
                  health_effect=0,
                  time_effect=0,
+                 money_effect=0,
                  next_day: bool=False,
                  navigateTo: Optional[int] = None,
                  interactive: bool=False,
                  position: pygame.Vector2 = pygame.Vector2(0, 0), 
                  sprite: Optional[pygame.Surface] = None,
-                 isCollidable = True
+                 isCollidable = True,
+                 size: tuple = (128,128)
                  ) -> None:
         self.id = id
         self.position = position
@@ -62,8 +62,10 @@ class GameObject:
         self.time_effect = time_effect
         self.next_day = next_day
         self.health_effect = health_effect
+        self.money_effect = money_effect
+        self.size = size # placeholder for if we make larger objects
         self.isCollidable = isCollidable
-        
+
     def getID(self) -> int:
         return self.id
     
@@ -85,6 +87,9 @@ class GameObject:
     def getHealthEffect(self):
         return self.health_effect
     
+    def getMoneyEffect(self):
+        return self.money_effect
+
     def getPosition(self) -> pygame.Vector2:
         return self.position
     
@@ -99,8 +104,8 @@ class GameObject:
     def setSprite(self, sprite: pygame.Surface) -> None:
         self.sprite = sprite
     
-    def getInteractionDirection(self):#for seeing if player is facing right direction
-        return
+    def getHitbox(self):
+        return pygame.Rect(self.position.x,self.position.y,self.size[0],self.size[1])
 
     def toJson(self) -> dict:
         if self.sprite is None:

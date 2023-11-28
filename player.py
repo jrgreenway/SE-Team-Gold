@@ -43,20 +43,21 @@ class Player():
     ) -> None:
         self.name = name
         self.screen = screen
-        self.position = pygame.Vector2(self.screen.get_width() / 6, self.screen.get_height() / 2)
+        self.width = 200
+        self.height = 200 
+        self.hitbox = pygame.Rect(self.screen.get_width() / 6, self.screen.get_height() / 2, self.width//4, self.height//4)
         self.facing = facing
         self.speed = speed
         self.gender = gender
 
         #New
-        self.width = 200
-        self.height = 200
-        self.hitbox = pygame.Rect(self.position.x + 55, self.position.y + 40, 90, 130 )  
+         
         self.oldMetrics = Metrics(money=10)
         self.metrics = Metrics()
 
         self.interaction_threshold = 128
         self.not_interacting = True
+        self.close_object = None
 
         # animations is dict with keys S, N, E, W
         # every key has a list of sprites as its value
@@ -67,7 +68,7 @@ class Player():
     
     def reset(self) -> None:
         #So that the player sprite doesn't start on an object
-        self.position = pygame.Vector2(self.screen.get_width() / 6, self.screen.get_height() / 2)
+        self.hitbox = pygame.Rect(self.screen.get_width() / 6, self.screen.get_height() / 2, self.width//4, self.height//4)
 
     def resetNextDay(self) -> None:
         if (self.metrics.getMoney() < self.oldMetrics.getMoney()):
@@ -88,7 +89,7 @@ class Player():
         return self.gender
     
     def getPosition(self):
-        return self.position
+        return pygame.Vector2(self.hitbox.centerx, self.hitbox.centery)
     
     def getFacing(self):
         return self.facing
@@ -105,27 +106,65 @@ class Player():
         self.name = name
 
     def setPosition(self, position: pygame.Vector2):
-        self.position = position
+        self.hitbox = pygame.Rect(position.x, position.y, self.width//4, self.height//4)
     
     def setFacing(self, facing:str):
         if facing in {"N", "E", "S", "W"}:
-            self.facing = facing # could add a raise ValueError if not in {}.
+            self.facing = facing
 
     def setSpeed(self, speed: int):
         self.speed = speed
 
     def setGender(self, gender: str):
         self.gender = gender
-        self.loadAnimations()
-        self.sprite = self.animations[self.facing][0]
     
     #Methods
 
-    def interact(self, holdingKeys, object: Optional[GameObject]=None) -> int | None:
+    def makePopUp(self):
+        object = self.close_object
+        buffer = 2
+        icon_size = 18
+        popup_size = ((icon_size+buffer)*4+buffer,(icon_size+buffer)*2+buffer)
+        alpha = 200
+        popup = pygame.Rect(self.hitbox.topright[0]+10, self.hitbox.topright[1]-100, popup_size[0], popup_size[1])
+        popup_surface = pygame.Surface((popup.width, popup.height))
+        popup_surface.fill((255, 255, 255, 200))
+        popup_surface.set_alpha(alpha)
+        self.screen.blit(popup_surface, popup.topleft)
+
+        isPos = lambda x: 0 if x>0 else 1 if x==0 else 2 if -21<x<0 else 3
+        isPosTime = lambda x: 0 if x<0 else 1 if x==0 else 2 if 91>x>0 else 3
+        colours = [pygame.Color(0,100,0,alpha), pygame.Color(255,255,255,alpha), pygame.Color(255,192,0, alpha), pygame.Color(255,0,0,200)]#green,white,amber,red 
+
+        obj_metrics = [object.getHappinessEffect(), object.getHealthEffect(), object.getTimeEffect(), object.getMoneyEffect()]
+        metric_colours = [colours[isPos(obj_metrics[i])] for i in [0,1,3]]
+        metric_colours.insert(2,colours[isPosTime(obj_metrics[2])])
+        images = [pygame.image.load("assets/happy.png"), pygame.image.load("assets/health.png"), pygame.image.load("assets/clock.png"), pygame.image.load("assets/money.png")]
+
+        locx, locy = popup.topleft
+        locy+=buffer
+        for colour, image in zip(metric_colours, images):
+            container = pygame.Rect(locx+buffer,locy, icon_size, icon_size*2+buffer)
+            locx,locy = container.topright
+            image = pygame.transform.scale(image, (icon_size,icon_size))
+            image.set_alpha(alpha)
+            colour_surface = pygame.Surface((icon_size,icon_size))
+            colour_surface.fill(colour)
+            colour_surface.set_alpha(alpha)
+            self.screen.blit(colour_surface, (container.bottomleft[0], container.bottomleft[1]-icon_size))
+            self.screen.blit(image, container.topleft)
+
+
+    def interact(self, holdingKeys, object: Optional[GameObject]=None):#TODO sort out event that happens as a result of key press
         
         if object is None:
+            if self.close_object is not None:
+                self.close_object = None
             return
         
+        self.close_object = object #makes and sets close object to the parsed object to make pop up
+        self.makePopUp()
+
         if holdingKeys.count(pygame.K_e) == 0:
             self.not_interacting = True
         
@@ -138,7 +177,7 @@ class Player():
             self.metrics.changeMetrics(
                 object.getHappinessEffect(), 
                 1320 - self.metrics.getTime() if object.getNextDay() else object.getTimeEffect(), 
-                object.getHealthEffect()
+                object.getHealthEffect(), object.getMoneyEffect()
             )
             # click_object = pygame.Rect()
             # if object.navigateTo():
@@ -165,8 +204,8 @@ class Player():
         obstructedDirections = self.checkCollisionWithScreen()
         
         for key in holdingKeys:
-            temp_x = self.position.x
-            temp_y = self.position.y    
+            temp_x, temp_y = self.hitbox.topleft
+               
             
             if key == pygame.K_w and "N" not in obstructedDirections:
                 temp_y -= self.speed  # Move up
@@ -183,18 +222,16 @@ class Player():
             
             # Do this here for scenario (obj to the right but both -> and up arrows are pressed so we still move up)    
             #Update hitbox position
-            temp_hitbox = pygame.Rect(temp_x + 55, temp_y + 40, 90, 130 )
+            temp_hitbox = pygame.Rect(temp_x, temp_y, 64, 64)
             
-            collisions = [obj for obj in objects if obj.isCollidable and temp_hitbox.colliderect(obj.getPosition().x, obj.getPosition().y, 128, 128)]
+            collisions = [obj for obj in objects if obj.isCollidable and temp_hitbox.colliderect(obj.getHitbox())]
             if collisions == []:
-                self.position.x = temp_x
-                self.position.y = temp_y
                 self.hitbox = temp_hitbox
         
         if self.isDebug:
             # draw hitboxes around objects
             for obj in objects:
-                pygame.draw.rect(self.screen, (255,0,0), pygame.Rect(obj.getPosition().x, obj.getPosition().y, 128, 128), 2)
+                pygame.draw.rect(self.screen, (255,0,0), obj.getHitbox(), 2)
     
     #After player has moved, check for collision
     #If collision is detected, check from which direction the collision is
@@ -262,7 +299,8 @@ class Player():
             self.sprite = pygame.transform.scale(self.animations[self.facing][((currentFrame % 60)//15) % 4], (self.width, self.height))
 
     def draw(self, currentDay: str) -> None:
-        self.screen.blit(self.sprite, (int(self.position.x), int(self.position.y)))
+        blit_location = pygame.Vector2(self.hitbox.centerx - self.width/2, self.hitbox.centery-((3/4)*self.height))
+        self.screen.blit(self.sprite, blit_location)
         font = pygame.font.Font(None, 24)
         text = font.render(self.metrics.formatTime(), True, (255, 255, 255))
         text_rect = text.get_rect()
@@ -289,8 +327,8 @@ class Player():
             "facing": self.facing,
             "speed": self.speed,
             "position": {
-                "x": self.position.x, 
-                "y": self.position.y
+                "x": self.hitbox.centerx, 
+                "y": self.hitbox.centery
             }
         }
         return player_dict
