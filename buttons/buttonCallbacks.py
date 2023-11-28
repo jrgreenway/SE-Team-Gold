@@ -55,11 +55,15 @@ def oracleCancelIncomingCall(**kwargs) -> tuple[bool, str]:
     kwargs['oracle'].cancelIncomingCall()
     return True, GAME_SCREEN
 
+
 def nextDayCB(**kwargs) -> tuple[bool, str]:
     player = kwargs['player']
     oracle = kwargs['oracle']
+    game = kwargs['game']
+    game.nextDay()
     player.resetNextDay()
     oracle.resetNextDay()
+    # TODO add save game
     return True, GAME_SCREEN
 
 def createButtonCBDict() -> dict[str, Callable]:

@@ -12,7 +12,7 @@ from utils.gameSaver import save_game
 pygame.init()
 
 # Set up the display
-screen = pygame.display.set_mode((800, 640))
+screen = pygame.display.set_mode((896, 640))
 
 # Set up the scenes and objects - will use a json for this
 defaultScene = scene_loader(1) # use default scene 1 for now

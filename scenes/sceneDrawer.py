@@ -47,6 +47,7 @@ def scene_loader_data(sceneData: dict) -> Scene:
         health_effect = load_attribute('health-effect', object, 0)
         isCollidable = load_attribute('collidable', object, True)
         navigateTo = load_attribute('navigateTo', object, None)
+        nextDay = load_attribute('next-day', object, False)
 
         gameObject = GameObject(object['id'],
             happiness_effect=happiness_effect,
@@ -55,7 +56,8 @@ def scene_loader_data(sceneData: dict) -> Scene:
             interactive=isInteractive,
             sprite=gameSprite,
             isCollidable=isCollidable,
-            navigateTo=navigateTo
+            navigateTo=navigateTo,
+            next_day=nextDay
         )
         try:
             pos = object['position-absolute']
