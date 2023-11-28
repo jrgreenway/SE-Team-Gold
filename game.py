@@ -20,6 +20,7 @@ from screens.welcomeScreen import draw_welcome_screen
 
 from player import Player
 
+daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 
 class Game:
     '''
@@ -80,8 +81,13 @@ class Game:
         self.scrollPos = 0
         self.keyDown = False
 
+        self.currentDay = "Monday"
+
     def setSavedGames(self, savedGames: list[str]) -> None:
         self.savedGames = savedGames
+
+    def nextDay(self):
+        self.currentDay = daysOfWeek[(daysOfWeek.index(self.currentDay) + 1) % len(daysOfWeek)]
 
     def loadPlayer(self, playerName: str, playerGender: str, playerPosition: pygame.Vector2, speed: int) -> None:
         self.player.setName(playerName)
@@ -199,7 +205,7 @@ class Game:
         else: 
             self.player.interact(self.holdingKeys, self.giveInteractable())
         self.player.animate(self.checkMoving(), self.currentFrame)
-        self.player.draw()
+        self.player.draw(self.currentDay)
         oracleButton = self.oracle.draw()
         self.handleGameScreenEvents(events, [oracleButton])
 
@@ -226,7 +232,7 @@ class Game:
         '''
         # draw the game screen so we can display the overlay effect
         draw_game_screen(self.screen, self.currentScene)
-        self.player.draw()
+        self.player.draw(self.currentDay)
         buttons = draw_pause_screen(self.screen, self.buttonCBs['save'], self.buttonCBs['exit'], self.buttonCBs['backToMainMenu'])
         self.handlePauseScreenEvents(events, buttons)
 
@@ -284,7 +290,7 @@ class Game:
         Draws the question screen and handles mouse clicks on the buttons
         '''
         draw_game_screen(self.screen, self.currentScene)
-        self.player.draw()
+        self.player.draw(self.currentDay)
         buttons = draw_oracle_question_screen(
             self.screen, 
             self.oracle.getQuestions(), 
@@ -311,7 +317,7 @@ class Game:
 
     def drawAnswerScreen(self, events) -> None:
         draw_game_screen(self.screen, self.currentScene)
-        self.player.draw()
+        self.player.draw(self.currentDay)
         buttons = draw_oracle_answer_screen(
             self.screen,
             self.oracle.getAnswer(),
@@ -355,7 +361,10 @@ class Game:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 clicked = [button for button in buttons if button.rect.collidepoint(event.pos)]
                 if len(clicked) > 0:
-                    self.running, self.currentScreen = clicked[0].onClick(player = self.player)
+                    self.running, self.currentScreen = clicked[0].onClick(
+                        player = self.player,
+                        game = self
+                    )
 
     def handleCurrentScreen(self, events) -> None:
         ''' Game.handleCurrentScreen(events) -> None

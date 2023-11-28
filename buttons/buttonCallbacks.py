@@ -52,6 +52,8 @@ def nextButtonCB(**kwargs) -> tuple[bool, str]:
     return True, nextScreen(currentScreen)
 def nextDayCB(**kwargs) -> tuple[bool, str]:
     player = kwargs['player']
+    game = kwargs['game']
+    game.nextDay()
     player.resetNextDay()
     return True, GAME_SCREEN
 
