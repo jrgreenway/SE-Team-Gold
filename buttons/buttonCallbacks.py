@@ -50,11 +50,13 @@ def clickOracleQuestionCB(**kwargs) -> tuple[bool, str]:
 def nextButtonCB(**kwargs) -> tuple[bool, str]:
     currentScreen = kwargs['currentScreen']
     return True, nextScreen(currentScreen)
+
 def nextDayCB(**kwargs) -> tuple[bool, str]:
     player = kwargs['player']
     game = kwargs['game']
     game.nextDay()
     player.resetNextDay()
+    # TODO add save game
     return True, GAME_SCREEN
 
 def createButtonCBDict() -> dict[str, Callable]:
