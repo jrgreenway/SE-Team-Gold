@@ -62,6 +62,7 @@ def nextDayCB(**kwargs) -> tuple[bool, str]:
     game.nextDay()
     player.resetNextDay()
     oracle.resetNextDay()
+    # TODO add save game
     return True, GAME_SCREEN
 
 def createButtonCBDict() -> dict[str, Callable]:
