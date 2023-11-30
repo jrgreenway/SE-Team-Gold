@@ -36,7 +36,7 @@ def load_game(currentInstace: Game, gameName: str) -> None:
     scene = scene_loader(game_data['currentScene'])
 
     playerData = game_data['player']
-    metricData = game_data['metrics']
+    metricData = playerData['metrics']
 
     currentInstace.setCurrentScreen(game_data['currentScreen'])
     currentInstace.setCurrentScene(scene)
