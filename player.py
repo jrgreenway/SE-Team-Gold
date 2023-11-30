@@ -333,7 +333,8 @@ class Player():
             "position": {
                 "x": self.hitbox.centerx, 
                 "y": self.hitbox.centery
-            }
+            },
+            "metrics": self.metrics.toJson()
         }
         return player_dict
 

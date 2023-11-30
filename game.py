@@ -425,8 +425,7 @@ class Game:
         return {
             'currentScreen': self.currentScreen,
             'currentScene': self.currentScene.getID(),
-            'player': self.player.toJson(),
-            'metrics': self.player.getMetrics().toJson()
+            'player': self.player.toJson()
         }
     
 
