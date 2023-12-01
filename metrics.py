@@ -147,5 +147,13 @@ class Metrics:
             self.health = 100
         self.money += money_change
 
+    def toJson(self) -> dict:
+        return {
+            "time": self.time,
+            "happiness": self.happiness,
+            "health": self.health,
+            "money": self.money
+        }
+
     
 

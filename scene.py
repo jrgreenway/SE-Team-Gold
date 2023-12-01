@@ -84,5 +84,5 @@ class Scene:
             'id': self.id,
             'name': self.name,
             'texture': fileName,
-            'objects': [obj.toJson() for obj in self.objects]
+            'objects': [obj.toJson() for obj in self.getObjects()]
         }

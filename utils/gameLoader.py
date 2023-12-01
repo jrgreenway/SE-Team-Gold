@@ -5,7 +5,7 @@ from turtle import st
 import pygame
 
 from game import Game
-from scenes.sceneDrawer import scene_loader_data
+from scenes.sceneDrawer import scene_loader
 
 
 def get_saved_games() -> list[str]:
@@ -33,9 +33,10 @@ def load_game(currentInstace: Game, gameName: str) -> None:
     with open(selected_file) as f:
         game_data = json.load(f)
     
-    scene = scene_loader_data(game_data['currentScene'])
+    scene = scene_loader(game_data['currentScene'])
 
     playerData = game_data['player']
+    metricData = playerData['metrics']
 
     currentInstace.setCurrentScreen(game_data['currentScreen'])
     currentInstace.setCurrentScene(scene)
@@ -43,6 +44,12 @@ def load_game(currentInstace: Game, gameName: str) -> None:
         playerData['name'],
         playerData['gender'],
         pygame.Vector2(playerData['position']['x'], playerData['position']['y']),
-        playerData['speed'],
+        playerData['speed']
+    )
+    currentInstace.loadMetrics(
+        metricData['happiness'],
+        metricData['time'],
+        metricData['health'],
+        metricData['money']
     )
     

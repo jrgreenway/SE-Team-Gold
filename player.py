@@ -117,6 +117,9 @@ class Player():
 
     def setGender(self, gender: str):
         self.gender = gender
+
+    def setMetrics(self, happiness:int, health:int, time:int, money:int) -> None:
+        self.metrics = Metrics(time, happiness, health, money)
     
     #Methods
 
@@ -329,7 +332,8 @@ class Player():
             "position": {
                 "x": self.hitbox.centerx, 
                 "y": self.hitbox.centery
-            }
+            },
+            "metrics": self.metrics.toJson()
         }
         return player_dict
 
