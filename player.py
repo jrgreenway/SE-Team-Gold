@@ -127,35 +127,44 @@ class Player():
         object = self.close_object
         buffer = 2
         icon_size = 18
-        popup_size = ((icon_size+buffer)*4+buffer,(icon_size+buffer)*2+buffer)
+        popup_size = ((icon_size+buffer)*8+buffer,(icon_size+buffer)*2+buffer)
         alpha = 200
         popup = pygame.Rect(self.hitbox.topright[0]+10, self.hitbox.topright[1]-100, popup_size[0], popup_size[1])
         popup_surface = pygame.Surface((popup.width, popup.height))
         popup_surface.fill((255, 255, 255, 200))
         popup_surface.set_alpha(alpha)
         self.screen.blit(popup_surface, popup.topleft)
+        pygame.draw.rect(self.screen, (255,255,255), object.getHitbox(), width=4, border_radius=6)
+        
 
-        isPos = lambda x: 0 if x>0 else 1 if x==0 else 2 if -21<x<0 else 3
-        isPosTime = lambda x: 0 if x<0 else 1 if x==0 else 2 if 91>x>0 else 3
-        colours = [pygame.Color(0,100,0,alpha), pygame.Color(255,255,255,alpha), pygame.Color(255,192,0, alpha), pygame.Color(255,0,0,200)]#green,white,amber,red 
+        isPos = lambda x: 0 if x>0 else 1 if x==0 else 2
+        isPosTime = lambda x: 0 if x<0 else 1 if x==0 else 2
+        value = lambda x: 0 if x==0 else 1 if 0<abs(x)<34 else 2 if 33<abs(x)<67 else 3
+        colours = [pygame.Color(0,100,0,alpha), pygame.Color(255,255,255,alpha), pygame.Color(255,0,0,200)]#green,white,amber,red 
 
         obj_metrics = [object.getHappinessEffect(), object.getHealthEffect(), object.getTimeEffect(), object.getMoneyEffect()]
-        metric_colours = [colours[isPos(obj_metrics[i])] for i in [0,1,3]]
+        scale = [value(obj_metrics[i]) for i in [0,1,2,3]]#number of squares
+
+        metric_colours = [colours[isPos(obj_metrics[i])] for i in [0,1,3]]#TODO fix
         metric_colours.insert(2,colours[isPosTime(obj_metrics[2])])
         images = [pygame.image.load("assets/happy.png"), pygame.image.load("assets/health.png"), pygame.image.load("assets/clock.png"), pygame.image.load("assets/money.png")]
 
         locx, locy = popup.topleft
         locy+=buffer
-        for colour, image in zip(metric_colours, images):
-            container = pygame.Rect(locx+buffer,locy, icon_size, icon_size*2+buffer)
-            locx,locy = container.topright
+        locs = [(locx,locy),
+                (locx+4*(icon_size+buffer),locy),
+                (locx, locy+(icon_size+buffer)),
+                (locx+4*(icon_size+buffer),locy+(icon_size+buffer))]
+        for colour, image, boxes, loc in zip(metric_colours, images, scale, locs):
             image = pygame.transform.scale(image, (icon_size,icon_size))
             image.set_alpha(alpha)
             colour_surface = pygame.Surface((icon_size,icon_size))
             colour_surface.fill(colour)
             colour_surface.set_alpha(alpha)
-            self.screen.blit(colour_surface, (container.bottomleft[0], container.bottomleft[1]-icon_size))
-            self.screen.blit(image, container.topleft)
+            self.screen.blit(image, loc)
+            for i in range(boxes):
+                self.screen.blit(colour_surface, (loc[0]+(icon_size+buffer)+i*(icon_size+buffer), loc[1]))
+            
 
 
     def interact(self, holdingKeys, object: Optional[GameObject]=None) -> int | None:
