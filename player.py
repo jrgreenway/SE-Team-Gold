@@ -127,7 +127,7 @@ class Player():
         object = self.close_object
         buffer = 2
         icon_size = 18
-        popup_size = ((icon_size+buffer)*4+buffer,(icon_size+buffer)*2+buffer)
+        popup_size = ((icon_size+buffer)*8+buffer,(icon_size+buffer)*2+buffer)
         alpha = 200
         popup = pygame.Rect(self.hitbox.topright[0]+10, self.hitbox.topright[1]-100, popup_size[0], popup_size[1])
         popup_surface = pygame.Surface((popup.width, popup.height))
