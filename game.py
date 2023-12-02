@@ -13,6 +13,7 @@ from screens.oracleQuestionScreen import draw_oracle_question_screen
 from screens.pauseScreen import draw_pause_screen
 from screens.screenConstants import *
 from screens.startScreen import draw_start_screen
+from screens.gameOverScreen import draw_game_over_screen
 
 from screens.welcomeScreen import draw_welcome_screen
 
@@ -386,6 +387,19 @@ class Game:
                         game = self
                     )
 
+    def createGameOverScreen(self, events):
+
+        buttons = draw_game_over_screen(self.screen, exitToTitleCB=self.buttonCBs['toTitle'], exitToDesktopCB=self.buttonCBs['exit'])
+        self.handleGameOverScreenEvents(events, buttons)
+
+    def handleGameOverScreenEvents(self, events, buttons):
+
+        for event in events:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                clicked = [button for button in buttons if button.rect.collidepoint(event.pos)]
+                if len(clicked) > 0:
+                    self.running, self.currentScreen = clicked[0].onClick(game=self)
+
     def handleCurrentScreen(self, events) -> None:
         ''' Game.handleCurrentScreen(events) -> None
         Handles the current screen
@@ -418,6 +432,8 @@ class Game:
             if self.dayEndFrame == 0:
                 self.dayEndFrame = self.currentFrame
             self.createDayEndScreen(events)
+        elif self.currentScreen == GAME_OVER_SCREEN:
+            self.createGameOverScreen(events)
         else:
             raise Exception("Invalid Screen")
         

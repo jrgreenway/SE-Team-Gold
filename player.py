@@ -65,12 +65,16 @@ class Player():
         self.sprite = self.animations[self.facing][0]
         
         self.isDebug = False
+        self.gameOver = False
     
     def reset(self) -> None:
         #So that the player sprite doesn't start on an object
         self.hitbox = pygame.Rect(self.screen.get_width() / 6, self.screen.get_height() / 2, self.width//4, self.height//4)
 
     def resetNextDay(self) -> None:
+        if (self.metrics.getMoney()<=0) or (self.metrics.getHappiness()<=0) or (self.metrics.getHealth()<=0):
+            self.gameOver = True
+
         if (self.metrics.getMoney() < self.oldMetrics.getMoney()):
             self.oldMetrics = self.metrics
             self.metrics.updateHappiness(-15)
