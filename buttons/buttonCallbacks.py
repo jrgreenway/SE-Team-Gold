@@ -55,6 +55,8 @@ def oracleCancelIncomingCall(**kwargs) -> tuple[bool, str]:
     kwargs['oracle'].cancelIncomingCall()
     return True, GAME_SCREEN
 
+def toTitleCB(**_) -> tuple[bool, str]:
+    return True, START_SCREEN
 
 def nextDayCB(**kwargs) -> tuple[bool, str]:
     player = kwargs['player']
@@ -84,4 +86,5 @@ def createButtonCBDict() -> dict[str, Callable]:
         'closeOracle': oracleCancelIncomingCall,
         'next': nextButtonCB,
         'nextDay': nextDayCB,
+        'toTitle': toTitleCB,
     }
