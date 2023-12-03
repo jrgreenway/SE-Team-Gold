@@ -383,6 +383,7 @@ class Game:
                 if len(clicked) > 0:
                     self.running, self.currentScreen = clicked[0].onClick(
                         player = self.player,
+                        oracle = self.oracle,
                         game = self
                     )
 
