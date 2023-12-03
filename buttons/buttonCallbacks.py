@@ -6,7 +6,9 @@ the game.
 from json import load
 from typing import Callable
 from urllib.request import CacheFTPHandler
+from game import Game
 from oracle import Oracle
+from player import Player
 from screens.screenConstants import *
 from utils.gameLoader import load_game
 from utils.gameSaver import save_game
@@ -57,9 +59,9 @@ def oracleCancelIncomingCall(**kwargs) -> tuple[bool, str]:
 
 
 def nextDayCB(**kwargs) -> tuple[bool, str]:
-    player = kwargs['player']
-    oracle = kwargs['oracle']
-    game = kwargs['game']
+    player: Player = kwargs['player']
+    oracle: Oracle = kwargs['oracle']
+    game: Game = kwargs['game']
     game.nextDay()
     player.resetNextDay()
     oracle.resetNextDay()
