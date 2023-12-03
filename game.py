@@ -176,7 +176,7 @@ class Game:
 
     # TODO these will be moved to Player Class
     def setMale(self, **_) -> tuple[bool, str]:
-        # TODO call this on the Player object after male animation is implemented
+        self.player.setGender("M")
         return True, self.currentScreen
 
     # TODO these will be moved to Player Class
