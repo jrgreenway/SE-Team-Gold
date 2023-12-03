@@ -176,6 +176,16 @@ class Player():
             if self.close_object is not None:
                 self.close_object = None
             return
+        buffer = 2
+        icon_size = 18
+        popup_size = ((icon_size+buffer)*8+buffer,(icon_size+buffer)*2+buffer)
+        alpha = 200
+        popup = pygame.Rect(self.hitbox.topright[0]+10, self.hitbox.topright[1]-100, popup_size[0], popup_size[1])
+        popup_surface = pygame.Surface((popup.width, popup.height))
+        popup_surface.fill((255, 255, 255, 200))
+        popup_surface.set_alpha(alpha)
+        self.screen.blit(popup_surface, popup.topleft)
+        pygame.draw.rect(self.screen, (255,255,255), object.getHitbox(), width=4, border_radius=6)
         
         self.close_object = object #makes and sets close object to the parsed object to make pop up
         self.makePopUp()
