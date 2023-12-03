@@ -59,7 +59,7 @@ class Game:
             self, 
             screen: pygame.Surface, 
             player: Player, 
-            scene: Scene, 
+            defaultScene: Scene, 
             buttonCBs: dict[str, Callable], 
             savedGames: list[str],
     ) -> None:
@@ -68,7 +68,8 @@ class Game:
         self.currentScreen = WELCOME_SCREEN
         self.running = True
         self.player = player
-        self.currentScene = scene
+        self.currentScene = defaultScene
+        self.defaultScene = defaultScene
         self.holdingKeys = []
         self.oracle = Oracle(screen, callBacks=buttonCBs)
 
@@ -89,6 +90,7 @@ class Game:
 
     def nextDay(self):
         self.currentDay = daysOfWeek[(daysOfWeek.index(self.currentDay) + 1) % len(daysOfWeek)]
+        self.currentScene = self.defaultScene
 
     def loadPlayer(self, playerName: str, playerGender: str, playerPosition: pygame.Vector2, speed: int) -> None:
         self.player.setName(playerName)
