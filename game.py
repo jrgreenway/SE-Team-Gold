@@ -120,6 +120,9 @@ class Game:
     def setCurrentScene(self, currentScene: Scene) -> None:
         self.currentScene = currentScene
 
+    def setCurrentDay(self, currentDay: str) -> None:
+        self.currentDay = currentDay
+
     def awaitExitWelcomeScreen(self) -> None:
         ''' Game.awaitExitWelcomeScreen() -> None
         Waits for the user to press the space bar to exit the welcome screen
@@ -425,6 +428,7 @@ class Game:
         return {
             'currentScreen': self.currentScreen,
             'currentScene': self.currentScene.getID(),
+            'currentDay': self.currentDay,
             'player': self.player.toJson()
         }
     
