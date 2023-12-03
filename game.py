@@ -477,3 +477,10 @@ class Game:
             self.handleCurrentScreen(events)
             pygame.display.flip()
             clock.tick(60)
+
+    def get_game_state(self):
+        player_name = self.player.getName()
+        day_of_week = self.currentDay
+        player_time = self.player.getMetrics().formatTime()
+        game_state = f"{player_name}, {day_of_week}, {player_time}"
+        return game_state
