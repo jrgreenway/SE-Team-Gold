@@ -1,6 +1,7 @@
 import json
 from typing import Optional
 import pygame
+from assets.assetsConstants import ANIMATION_ASSET
 from gameObject import GameObject
 from metrics import Metrics
 
@@ -275,7 +276,7 @@ class Player():
     # TODO - include images in assets folder
     def loadAnimations(self) -> None:
         #Arrays of all of the images for the animation
-        prefix = "assets/animations/"
+        prefix = ANIMATION_ASSET
         walkDown = [
             pygame.image.load(prefix + 'S_' + self.gender + "/S0.png"),
             pygame.image.load(prefix + 'S_' + self.gender + "/S1.png"),
