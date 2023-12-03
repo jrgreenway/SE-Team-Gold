@@ -117,6 +117,8 @@ class Player():
 
     def setGender(self, gender: str):
         self.gender = gender
+        self.loadAnimations()
+        self.sprite = self.animations[self.facing][0]
 
     def setMetrics(self, happiness:int, health:int, time:int, money:int) -> None:
         self.metrics = Metrics(time, happiness, health, money)
