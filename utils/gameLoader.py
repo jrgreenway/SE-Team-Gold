@@ -40,6 +40,7 @@ def load_game(currentInstace: Game, gameName: str) -> None:
 
     currentInstace.setCurrentScreen(game_data['currentScreen'])
     currentInstace.setCurrentScene(scene)
+    currentInstace.setCurrentDay(game_data['currentDay'])
     currentInstace.loadPlayer(
         playerData['name'],
         playerData['gender'],
