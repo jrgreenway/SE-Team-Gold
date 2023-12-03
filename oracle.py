@@ -1,5 +1,3 @@
-from gc import callbacks
-import re
 from typing import Callable
 import pygame
 

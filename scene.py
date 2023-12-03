@@ -4,7 +4,6 @@ import pygame
 
 from gameObject import GameObject
 
-
 class Scene:
     '''
     Scene class - Has a background and contains a list of all objects in the scene

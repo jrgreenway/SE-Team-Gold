@@ -1,6 +1,5 @@
 import os
 import pickle
-import re
 from typing import Optional
 import pygame
 

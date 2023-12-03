@@ -1,7 +1,5 @@
 import json
 import os
-from turtle import st
-
 import pygame
 
 from game import Game

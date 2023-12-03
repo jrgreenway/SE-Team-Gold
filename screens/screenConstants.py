@@ -1,6 +1,3 @@
-from poplib import CR
-
-
 WELCOME_SCREEN = "welcome"
 START_SCREEN = "start"
 CREATE_AVATAR_SCREEN = "createAvatar"
