@@ -7,11 +7,16 @@
             {
                 "id": 0,
                 "texture": "assets/Cupboard.png",
-                "interactive": false,
+                "interactive": true,
+                "happiness-effect":-10,
+                "health-effect":-10,
+                "time-effect":60,
+                "money-effect":40,
                 "position-absolute": {
                     "x": 312,
                     "y": 214
-                }
+                },
+                "isCollidable": true
             },
             {
                 "id": 1,
@@ -24,7 +29,8 @@
                 "position-relative": {
                     "direction": "S",
                     "relativeTo": 0
-                }
+                },
+                "isCollidable": true
             },
             {
                 "id": 2,
@@ -33,7 +39,8 @@
                 "position-relative": {
                     "direction": "E",
                     "relativeTo": 1
-                }
+                },
+                "isCollidable": true
             },
             {
                 "id": 3,
@@ -42,7 +49,8 @@
                 "position-relative": {
                     "direction": "E",
                     "relativeTo": 2
-                }
+                },
+                "isCollidable": true
             },
             {
                 "id": 4,
@@ -51,7 +59,8 @@
                 "position-relative": {
                     "direction": "E",
                     "relativeTo": 3
-                }
+                },
+                "isCollidable": true
             },
             {
                 "id": 5,
