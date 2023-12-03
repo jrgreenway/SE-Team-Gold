@@ -179,8 +179,6 @@ class Player():
         
         self.close_object = object #makes and sets close object to the parsed object to make pop up
         self.makePopUp()
-        self.close_object.addInfo()
-        self.close_object.checkInfo(self.screen)
 
         if holdingKeys.count(pygame.K_e) == 0:
             self.not_interacting = True
