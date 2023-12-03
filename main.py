@@ -1,4 +1,3 @@
-
 import pygame
 from requests import get
 from buttons.buttonCallbacks import createButtonCBDict

@@ -3,9 +3,7 @@ All button callbacks return the state of the running variable from the Game clas
 after their action has been performed. Also, they should return the next screen of
 the game.
 '''
-from json import load
 from typing import Callable
-from urllib.request import CacheFTPHandler
 from game import Game
 from oracle import Oracle
 from player import Player

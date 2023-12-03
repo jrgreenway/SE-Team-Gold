@@ -1,4 +1,3 @@
-import json
 from typing import Optional
 import pygame
 from assets.assetsConstants import ANIMATION_ASSET
