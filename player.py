@@ -127,6 +127,8 @@ class Player():
 
     def makePopUp(self):
         object = self.close_object
+        if object is None:
+            return
         buffer = 2
         icon_size = 18
         popup_size = ((icon_size+buffer)*8+buffer,(icon_size+buffer)*2+buffer)
