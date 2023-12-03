@@ -104,7 +104,7 @@ class GameObject:
     def setSprite(self, sprite: pygame.Surface) -> None:
         self.sprite = sprite
     
-    def getHitbox(self):
+    def getHitbox(self) -> pygame.Rect:
         return pygame.Rect(self.position.x,self.position.y,self.size[0],self.size[1])
 
     def toJson(self) -> dict:
