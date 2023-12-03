@@ -476,7 +476,7 @@ class Game:
             self.currentFrame += 1
             
             if self.currentFrame % 60 == 0 and self.currentScreen == GAME_SCREEN:
-                self.currentScreen = self.player.metrics.updateTime() and DAY_END_SCREEN or GAME_SCREEN
+                self.currentScreen = (self.player.gameOver and self.player.metrics.updateTime() and GAME_OVER_SCREEN) or (self.player.metrics.updateTime() and DAY_END_SCREEN) or GAME_SCREEN
             
             # self.currentFrame %= 60
             # Handle events - keyPresses
