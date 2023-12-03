@@ -72,15 +72,13 @@ class Player():
         self.hitbox = pygame.Rect(self.screen.get_width() / 6, self.screen.get_height() / 2, self.width//4, self.height//4)
 
     def resetNextDay(self) -> None:
-        if (self.metrics.getMoney()<=0) or (self.metrics.getHappiness()<=0) or (self.metrics.getHealth()<=0):
-            self.gameOver = True
-
         if (self.metrics.getMoney() < self.oldMetrics.getMoney()):
             self.oldMetrics = self.metrics
             self.metrics.updateHappiness(-15)
         else:
             self.oldMetrics = self.metrics
         
+        self.checkGameOver()
         self.metrics.resetTime()
         self.reset()
 
@@ -126,6 +124,10 @@ class Player():
 
     def setMetrics(self, happiness:int, health:int, time:int, money:int) -> None:
         self.metrics = Metrics(time, happiness, health, money)
+
+    def checkGameOver(self):
+        if (self.metrics.getMoney()<=0) or (self.metrics.getHappiness()<=0) or (self.metrics.getHealth()<=0):
+            self.gameOver = True
     
     #Methods
 
@@ -209,6 +211,7 @@ class Player():
                 object.getHealthEffect(),
                 object.getMoneyEffect()
             )
+            self.checkGameOver()
             # click_object = pygame.Rect()
             # if object.navigateTo():
             #     navigateTo = object.navigateTo()
