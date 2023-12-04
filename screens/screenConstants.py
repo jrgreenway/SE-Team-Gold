@@ -7,6 +7,7 @@ LOAD_SCREEN = "load"
 ORACLE_QUESTION_SCREEN = "oracleQuestion"
 ORACLE_ANSWER_SCREEN = "oracleAnswer"
 DAY_END_SCREEN = "dayEnd"
+GAME_OVER_SCREEN = "gameOver"
 
 def nextScreen(currentScreen: str) -> str:
     ''' nextScreen: str -> str
@@ -21,6 +22,7 @@ def nextScreen(currentScreen: str) -> str:
         LOAD_SCREEN: GAME_SCREEN,
         ORACLE_QUESTION_SCREEN: ORACLE_ANSWER_SCREEN,
         ORACLE_ANSWER_SCREEN: GAME_SCREEN,
+        GAME_OVER_SCREEN: START_SCREEN
     }[currentScreen]
 
 def previousScreen(currentScreen: str) -> str:
@@ -36,4 +38,5 @@ def previousScreen(currentScreen: str) -> str:
         GAME_SCREEN: START_SCREEN,
         ORACLE_QUESTION_SCREEN: GAME_SCREEN,
         ORACLE_ANSWER_SCREEN: ORACLE_QUESTION_SCREEN,
+        GAME_OVER_SCREEN: GAME_SCREEN
     }[currentScreen]

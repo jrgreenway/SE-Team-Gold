@@ -53,7 +53,7 @@ class Player():
         #New
          
         self.oldMetrics = Metrics(money=10)
-        self.metrics = Metrics()
+        self.metrics = Metrics(money=100)
 
         self.interaction_threshold = 128
         self.not_interacting = True
@@ -65,6 +65,7 @@ class Player():
         self.sprite = self.animations[self.facing][0]
         
         self.isDebug = False
+        self.gameOver = False
     
     def reset(self) -> None:
         #So that the player sprite doesn't start on an object
@@ -77,6 +78,7 @@ class Player():
         else:
             self.oldMetrics = self.metrics
         
+        self.checkGameOver()
         self.metrics.resetTime()
         self.reset()
 
@@ -122,6 +124,10 @@ class Player():
 
     def setMetrics(self, happiness:int, health:int, time:int, money:int) -> None:
         self.metrics = Metrics(time, happiness, health, money)
+
+    def checkGameOver(self):
+        if (self.metrics.getMoney()<=0) or (self.metrics.getHappiness()<=0) or (self.metrics.getHealth()<=0):
+            self.gameOver = True
     
     #Methods
 
@@ -205,6 +211,7 @@ class Player():
                 object.getHealthEffect(),
                 object.getMoneyEffect()
             )
+            self.checkGameOver()
             # click_object = pygame.Rect()
             # if object.navigateTo():
             #     navigateTo = object.navigateTo()
