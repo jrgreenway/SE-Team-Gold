@@ -38,6 +38,7 @@
                 "texture": "assets/gate.png",
                 "interactive": true,
                 "navigateTo": 2,
+                "switch_to_scene": 3, 
                 "position-relative": {
                     "direction": "E",
                     "relativeTo": 1

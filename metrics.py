@@ -68,7 +68,7 @@ class Metrics:
     def updateHappiness(self, increment=0) -> None:
         self.happiness = max(0, min(100, self.happiness + increment))
     
-    def formatTime(self) -> str:
+    def formatTime(self):
         hours = self.time // 60
         minutes = (self.time % 60) // 10 * 10
         return f"{hours:02d}:{minutes:02d}"
@@ -146,14 +146,6 @@ class Metrics:
         if self.health > 100:
             self.health = 100
         self.money += money_change
-
-    def toJson(self) -> dict:
-        return {
-            "time": self.time,
-            "happiness": self.happiness,
-            "health": self.health,
-            "money": self.money
-        }
 
     
 

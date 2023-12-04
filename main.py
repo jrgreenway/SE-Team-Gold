@@ -1,3 +1,4 @@
+
 import pygame
 from requests import get
 from buttons.buttonCallbacks import createButtonCBDict
@@ -24,4 +25,5 @@ game = Game(screen, player, defaultScene, createButtonCBDict(), get_saved_games(
 
 # initialize the callbacks
 game.start()
+
 pygame.quit()

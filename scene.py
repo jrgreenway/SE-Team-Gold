@@ -4,6 +4,7 @@ import pygame
 
 from gameObject import GameObject
 
+
 class Scene:
     '''
     Scene class - Has a background and contains a list of all objects in the scene
@@ -83,5 +84,5 @@ class Scene:
             'id': self.id,
             'name': self.name,
             'texture': fileName,
-            'objects': [obj.toJson() for obj in self.getObjects()]
+            'objects': [obj.toJson() for obj in self.objects]
         }

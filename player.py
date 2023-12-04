@@ -1,8 +1,9 @@
+import json
 from typing import Optional
 import pygame
-from assets.assetsConstants import ANIMATION_ASSET
 from gameObject import GameObject
 from metrics import Metrics
+
 
 class Player():
     ''' Player Class for the Avatar - could be renamed later
@@ -53,11 +54,12 @@ class Player():
         #New
          
         self.oldMetrics = Metrics(money=10)
-        self.metrics = Metrics(money=100)
+        self.metrics = Metrics()
 
         self.interaction_threshold = 128
         self.not_interacting = True
         self.close_object = None
+        self.showMapScreen = False
 
         # animations is dict with keys S, N, E, W
         # every key has a list of sprites as its value
@@ -65,7 +67,6 @@ class Player():
         self.sprite = self.animations[self.facing][0]
         
         self.isDebug = False
-        self.gameOver = False
     
     def reset(self) -> None:
         #So that the player sprite doesn't start on an object
@@ -78,7 +79,6 @@ class Player():
         else:
             self.oldMetrics = self.metrics
         
-        self.checkGameOver()
         self.metrics.resetTime()
         self.reset()
 
@@ -119,61 +119,43 @@ class Player():
 
     def setGender(self, gender: str):
         self.gender = gender
-        self.loadAnimations()
-        self.sprite = self.animations[self.facing][0]
-
-    def setMetrics(self, happiness:int, health:int, time:int, money:int) -> None:
-        self.metrics = Metrics(time, happiness, health, money)
-
-    def checkGameOver(self):
-        if (self.metrics.getMoney()<=0) or (self.metrics.getHappiness()<=0) or (self.metrics.getHealth()<=0):
-            self.gameOver = True
     
     #Methods
 
     def makePopUp(self):
         object = self.close_object
-        if object is None:
-            return
         buffer = 2
         icon_size = 18
-        popup_size = ((icon_size+buffer)*8+buffer,(icon_size+buffer)*2+buffer)
+        popup_size = ((icon_size+buffer)*4+buffer,(icon_size+buffer)*2+buffer)
         alpha = 200
         popup = pygame.Rect(self.hitbox.topright[0]+10, self.hitbox.topright[1]-100, popup_size[0], popup_size[1])
         popup_surface = pygame.Surface((popup.width, popup.height))
         popup_surface.fill((255, 255, 255, 200))
         popup_surface.set_alpha(alpha)
         self.screen.blit(popup_surface, popup.topleft)
-        pygame.draw.rect(self.screen, (255,255,255), object.getHitbox(), width=4, border_radius=6)
-        
-        isPos = lambda x: 0 if x>0 else 1 if x==0 else 2
-        isPosTime = lambda x: 0 if x<0 else 1 if x==0 else 2
-        value = lambda x: 0 if x==0 else 1 if 0<abs(x)<34 else 2 if 33<abs(x)<67 else 3
-        colours = [pygame.Color(0,100,0,alpha), pygame.Color(255,255,255,alpha), pygame.Color(255,0,0,200)]#green,white,amber,red 
+
+        isPos = lambda x: 0 if x>0 else 1 if x==0 else 2 if -21<x<0 else 3
+        isPosTime = lambda x: 0 if x<0 else 1 if x==0 else 2 if 91>x>0 else 3
+        colours = [pygame.Color(0,100,0,alpha), pygame.Color(255,255,255,alpha), pygame.Color(255,192,0, alpha), pygame.Color(255,0,0,200)]#green,white,amber,red 
 
         obj_metrics = [object.getHappinessEffect(), object.getHealthEffect(), object.getTimeEffect(), object.getMoneyEffect()]
-        scale = [value(obj_metrics[i]) for i in [0,1,2,3]]#number of squares
-
-        metric_colours = [colours[isPos(obj_metrics[i])] for i in [0,1,3]]#TODO fix
+        metric_colours = [colours[isPos(obj_metrics[i])] for i in [0,1,3]]
         metric_colours.insert(2,colours[isPosTime(obj_metrics[2])])
         images = [pygame.image.load("assets/happy.png"), pygame.image.load("assets/health.png"), pygame.image.load("assets/clock.png"), pygame.image.load("assets/money.png")]
 
         locx, locy = popup.topleft
         locy+=buffer
-        locs = [(locx,locy),
-                (locx+4*(icon_size+buffer),locy),
-                (locx, locy+(icon_size+buffer)),
-                (locx+4*(icon_size+buffer),locy+(icon_size+buffer))]
-        for colour, image, boxes, loc in zip(metric_colours, images, scale, locs):
+        for colour, image in zip(metric_colours, images):
+            container = pygame.Rect(locx+buffer,locy, icon_size, icon_size*2+buffer)
+            locx,locy = container.topright
             image = pygame.transform.scale(image, (icon_size,icon_size))
             image.set_alpha(alpha)
             colour_surface = pygame.Surface((icon_size,icon_size))
             colour_surface.fill(colour)
             colour_surface.set_alpha(alpha)
-            self.screen.blit(image, loc)
-            for i in range(boxes):
-                self.screen.blit(colour_surface, (loc[0]+(icon_size+buffer)+i*(icon_size+buffer), loc[1]))
-            
+            self.screen.blit(colour_surface, (container.bottomleft[0], container.bottomleft[1]-icon_size))
+            self.screen.blit(image, container.topleft)
+
 
 
     def interact(self, holdingKeys, object: Optional[GameObject]=None):#TODO sort out event that happens as a result of key press
@@ -182,16 +164,6 @@ class Player():
             if self.close_object is not None:
                 self.close_object = None
             return
-        buffer = 2
-        icon_size = 18
-        popup_size = ((icon_size+buffer)*8+buffer,(icon_size+buffer)*2+buffer)
-        alpha = 200
-        popup = pygame.Rect(self.hitbox.topright[0]+10, self.hitbox.topright[1]-100, popup_size[0], popup_size[1])
-        popup_surface = pygame.Surface((popup.width, popup.height))
-        popup_surface.fill((255, 255, 255, 200))
-        popup_surface.set_alpha(alpha)
-        self.screen.blit(popup_surface, popup.topleft)
-        pygame.draw.rect(self.screen, (255,255,255), object.getHitbox(), width=4, border_radius=6)
         
         self.close_object = object #makes and sets close object to the parsed object to make pop up
         self.makePopUp()
@@ -208,26 +180,13 @@ class Player():
             self.metrics.changeMetrics(
                 object.getHappinessEffect(), 
                 1320 - self.metrics.getTime() if object.getNextDay() else object.getTimeEffect(), 
-                object.getHealthEffect(),
-                object.getMoneyEffect()
+                object.getHealthEffect(), object.getMoneyEffect()
             )
-            self.checkGameOver()
-            # click_object = pygame.Rect()
-            # if object.navigateTo():
-            #     navigateTo = object.navigateTo()
-
-            # for key in holdingKeys:
-            #     x = self.position.x
-            #     y = self.position.y
-            #     mouse_clicked = pygame.mouse.get_pressed()[0]
-            #     if key == mouse_clicked:
-            #         for obj in object:
-            #             pygame.draw.rect(self.screen, pygame.Rect(obj.getPosition().x, obj.getPosition().y, 128, 128), 2)
-            #             if obj.navigateTo():
-            #                 navigateTo = obj.navigateTo()
-
+            if object.getNavigateTo():
+                self.showMapScreen = True
             
-        return object.getNavigateTo() if canInteract else None
+                
+        return self.showMapScreen if canInteract else None
 
 
     # TODO find which type of Event to import
@@ -292,7 +251,7 @@ class Player():
     # TODO - include images in assets folder
     def loadAnimations(self) -> None:
         #Arrays of all of the images for the animation
-        prefix = ANIMATION_ASSET
+        prefix = "assets/animations/"
         walkDown = [
             pygame.image.load(prefix + 'S_' + self.gender + "/S0.png"),
             pygame.image.load(prefix + 'S_' + self.gender + "/S1.png"),
@@ -362,8 +321,7 @@ class Player():
             "position": {
                 "x": self.hitbox.centerx, 
                 "y": self.hitbox.centery
-            },
-            "metrics": self.metrics.toJson()
+            }
         }
         return player_dict
 

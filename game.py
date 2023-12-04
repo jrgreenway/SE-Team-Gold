@@ -1,5 +1,7 @@
+from tkinter import END
 from typing import Callable
 import pygame
+from gameObject import GameObject
 from buttons.button import Button
 from oracle import Oracle
 from scene import Scene
@@ -10,11 +12,10 @@ from screens.gameScreen import draw_game_screen
 from screens.loadScreen import draw_load_screen
 from screens.oracleAnswerScreen import draw_oracle_answer_screen
 from screens.oracleQuestionScreen import draw_oracle_question_screen
+from screens.mapScreen import draw_map_screen
 from screens.pauseScreen import draw_pause_screen
 from screens.screenConstants import *
 from screens.startScreen import draw_start_screen
-from screens.gameOverScreen import draw_game_over_screen
-
 from screens.welcomeScreen import draw_welcome_screen
 
 from player import Player
@@ -57,17 +58,18 @@ class Game:
             self, 
             screen: pygame.Surface, 
             player: Player, 
-            defaultScene: Scene, 
+            scene: Scene, 
             buttonCBs: dict[str, Callable], 
             savedGames: list[str],
     ) -> None:
         self.screen = screen
+        self.position =  pygame.Vector2(0, 0)
+        self.size = (128,128)
         self.currentFrame = 0
         self.currentScreen = WELCOME_SCREEN
         self.running = True
         self.player = player
-        self.currentScene = defaultScene
-        self.defaultScene = defaultScene
+        self.currentScene = scene
         self.holdingKeys = []
         self.oracle = Oracle(screen, callBacks=buttonCBs)
 
@@ -82,27 +84,19 @@ class Game:
         self.keyDown = False
 
         self.currentDay = "Monday"
+        self.rect = pygame.Rect(self.position.x, self.position.y, self.size[0], self.size[1])
 
     def setSavedGames(self, savedGames: list[str]) -> None:
         self.savedGames = savedGames
 
     def nextDay(self):
         self.currentDay = daysOfWeek[(daysOfWeek.index(self.currentDay) + 1) % len(daysOfWeek)]
-        self.currentScene = self.defaultScene
 
     def loadPlayer(self, playerName: str, playerGender: str, playerPosition: pygame.Vector2, speed: int) -> None:
         self.player.setName(playerName)
         self.player.setGender(playerGender)
         self.player.setPosition(playerPosition)
         self.player.setSpeed(speed)
-    
-    def loadMetrics(self, happiness: int, time: int, health: int, money: int) -> None:
-        self.player.setMetrics(
-            happiness=happiness,
-            time=time,
-            health=health,
-            money=money
-        )
 
     def setcurrentFrame(self, currentFrame):
         self.currentFrame = currentFrame
@@ -119,9 +113,6 @@ class Game:
 
     def setCurrentScene(self, currentScene: Scene) -> None:
         self.currentScene = currentScene
-
-    def setCurrentDay(self, currentDay: str) -> None:
-        self.currentDay = currentDay
 
     def awaitExitWelcomeScreen(self) -> None:
         ''' Game.awaitExitWelcomeScreen() -> None
@@ -176,7 +167,7 @@ class Game:
 
     # TODO these will be moved to Player Class
     def setMale(self, **_) -> tuple[bool, str]:
-        self.player.setGender("M")
+        # TODO call this on the Player object after male animation is implemented
         return True, self.currentScreen
 
     # TODO these will be moved to Player Class
@@ -211,15 +202,47 @@ class Game:
         #Pass objects into the player.move method
         objects = self.currentScene.getObjects()
         self.player.move(self.holdingKeys, objects)
-        navigateto = self.player.interact(self.holdingKeys, self.giveInteractable())
-        if navigateto:
-            self.currentScene = scene_loader(navigateto)
+        showMapScreen = self.player.interact(self.holdingKeys, self.giveInteractable())
+        if showMapScreen:
+            self.drawMapScreen(events)
         else: 
             self.player.interact(self.holdingKeys, self.giveInteractable())
         self.player.animate(self.checkMoving(), self.currentFrame)
         self.player.draw(self.currentDay)
         oracleButton = self.oracle.draw(self.player.getMetrics(), self.currentFrame)
         self.handleGameScreenEvents(events, [oracleButton])
+
+    def handleMapClickEvents(self,events,buttons: list[Button]):
+        for event in events:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                clicked = [button for button in buttons if button.rect.collidepoint(event.pos)]
+                index = buttons.index(clicked[0]) if len(clicked) > 0 else -1
+                if index:
+                    self.currentScreen = scene_loader(index)
+
+    def drawMapScreen(self, events) -> None:
+        ''' Game.drawMapScreen(events) -> None
+        Draws the question screen and handles mouse clicks on the buttons
+        '''
+        draw_game_screen(self.screen, self.currentScene)
+        self.player.draw(self.currentDay)
+        buttons = draw_map_screen(
+            self.screen, 
+            self.buttonCBs['office'],
+            self.buttonCBs['back']
+        )
+        self.handleMapScreenEvents(events, buttons)
+
+    def handleMapScreenEvents(self,events, buttons: list[Button]) -> None:
+        for event in events:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                clicked = [button for button in buttons if button.rect.collidepoint(event.pos)]
+                index = buttons.index(clicked[0]) if len(clicked) > 0 else -1
+                if len(clicked) > 0:
+                    if index:
+                        self.currentScreen = scene_loader(index)
+                        print(f" {clicked}")
+    
 
     def handleGameScreenEvents(self, events, buttons: list[Button]) -> None:
         ''' Game.handleGameScreenEvents(events) -> None
@@ -382,23 +405,9 @@ class Game:
                 clicked = [button for button in buttons if button.rect.collidepoint(event.pos)]
                 if len(clicked) > 0:
                     self.running, self.currentScreen = clicked[0].onClick(
-                        player = self.player,
-                        oracle=self.oracle,
+                        player = self.player, oracle=self.oracle,
                         game = self
                     )
-
-    def createGameOverScreen(self, events):
-
-        buttons = draw_game_over_screen(self.screen, exitToTitleCB=self.buttonCBs['toTitle'], exitToDesktopCB=self.buttonCBs['exit'])
-        self.handleGameOverScreenEvents(events, buttons)
-
-    def handleGameOverScreenEvents(self, events, buttons):
-
-        for event in events:
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                clicked = [button for button in buttons if button.rect.collidepoint(event.pos)]
-                if len(clicked) > 0:
-                    self.running, self.currentScreen = clicked[0].onClick(game=self)
 
     def handleCurrentScreen(self, events) -> None:
         ''' Game.handleCurrentScreen(events) -> None
@@ -428,12 +437,12 @@ class Game:
             if self.textAnimationStartFrame == 0:
                 self.textAnimationStartFrame = self.currentFrame
             self.drawAnswerScreen(events)
+        elif self.currentScreen == MAP_SCREEN:
+            self.drawMapScreen(events)
         elif self.currentScreen == DAY_END_SCREEN:
             if self.dayEndFrame == 0:
                 self.dayEndFrame = self.currentFrame
             self.createDayEndScreen(events)
-        elif self.currentScreen == GAME_OVER_SCREEN:
-            self.createGameOverScreen(events)
         else:
             raise Exception("Invalid Screen")
         
@@ -443,8 +452,7 @@ class Game:
         '''
         return {
             'currentScreen': self.currentScreen,
-            'currentScene': self.currentScene.getID(),
-            'currentDay': self.currentDay,
+            'currentScene': self.currentScene.toJson(),
             'player': self.player.toJson()
         }
     
@@ -480,7 +488,7 @@ class Game:
             self.currentFrame += 1
             
             if self.currentFrame % 60 == 0 and self.currentScreen == GAME_SCREEN:
-                self.currentScreen = (self.player.gameOver and GAME_OVER_SCREEN) or (self.player.metrics.updateTime() and DAY_END_SCREEN) or GAME_SCREEN
+                self.currentScreen = self.player.metrics.updateTime() and DAY_END_SCREEN or GAME_SCREEN
             
             # self.currentFrame %= 60
             # Handle events - keyPresses
@@ -496,10 +504,3 @@ class Game:
             self.handleCurrentScreen(events)
             pygame.display.flip()
             clock.tick(60)
-
-    def get_game_state(self):
-        player_name = self.player.getName()
-        day_of_week = self.currentDay
-        player_time = self.player.getMetrics().formatTime()
-        game_state = f"{player_name}, {day_of_week}, {player_time}"
-        return game_state

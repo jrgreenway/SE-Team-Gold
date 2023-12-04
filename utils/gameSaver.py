@@ -1,5 +1,7 @@
 import json
 import os
+from datetime import datetime
+
 from requests import get
 
 from game import Game
@@ -18,7 +20,8 @@ def save_game(game_instance: Game):
     game_json = json.dumps(game_instance.toJson())
 
     # Save the game to a file with the current date as the filename
-    filename = f"saved_games/{game_instance.get_game_state()}.json"
+    date_string = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    filename = f"saved_games/game_{date_string}.json"
     with open(filename, 'w') as f:
         f.write(game_json)
 

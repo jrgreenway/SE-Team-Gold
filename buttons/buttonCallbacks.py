@@ -3,10 +3,10 @@ All button callbacks return the state of the running variable from the Game clas
 after their action has been performed. Also, they should return the next screen of
 the game.
 '''
+from json import load
 from typing import Callable
-from game import Game
+from urllib.request import CacheFTPHandler
 from oracle import Oracle
-from player import Player
 from screens.screenConstants import *
 from utils.gameLoader import load_game
 from utils.gameSaver import save_game
@@ -47,6 +47,9 @@ def clickOracleQuestionCB(**kwargs) -> tuple[bool, str]:
     kwargs['oracle'].setQuestion(kwargs['question'])
     return True, ORACLE_ANSWER_SCREEN
 
+def clickMapScreen(**kwargs) -> tuple[bool, str]:
+    return True, MAP_SCREEN
+
 def nextButtonCB(**kwargs) -> tuple[bool, str]:
     currentScreen = kwargs['currentScreen']
     return True, nextScreen(currentScreen)
@@ -55,17 +58,15 @@ def oracleCancelIncomingCall(**kwargs) -> tuple[bool, str]:
     kwargs['oracle'].cancelIncomingCall()
     return True, GAME_SCREEN
 
-def toTitleCB(**_) -> tuple[bool, str]:
-    return True, START_SCREEN
 
 def nextDayCB(**kwargs) -> tuple[bool, str]:
-    player: Player = kwargs['player']
-    oracle: Oracle = kwargs['oracle']
-    game: Game = kwargs['game']
+    player = kwargs['player']
+    oracle = kwargs['oracle']
+    game = kwargs['game']
     game.nextDay()
     player.resetNextDay()
     oracle.resetNextDay()
-    save_game(game)
+    # TODO add save game
     return True, GAME_SCREEN
 
 def createButtonCBDict() -> dict[str, Callable]:
@@ -86,5 +87,4 @@ def createButtonCBDict() -> dict[str, Callable]:
         'closeOracle': oracleCancelIncomingCall,
         'next': nextButtonCB,
         'nextDay': nextDayCB,
-        'toTitle': toTitleCB,
     }

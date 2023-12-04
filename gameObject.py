@@ -1,8 +1,8 @@
 import os
 import pickle
+import re
 from typing import Optional
 import pygame
-
 class GameObject:
     '''
     The base class for all game objects. ex: laundry machine, oven, etc.
@@ -64,6 +64,7 @@ class GameObject:
         self.money_effect = money_effect
         self.size = size # placeholder for if we make larger objects
         self.isCollidable = isCollidable
+        self.rect = pygame.Rect(self.position.x, self.position.y, self.size[0], self.size[1])
 
     def getID(self) -> int:
         return self.id
@@ -103,7 +104,7 @@ class GameObject:
     def setSprite(self, sprite: pygame.Surface) -> None:
         self.sprite = sprite
     
-    def getHitbox(self) -> pygame.Rect:
+    def getHitbox(self):
         return pygame.Rect(self.position.x,self.position.y,self.size[0],self.size[1])
 
     def toJson(self) -> dict:
@@ -132,14 +133,5 @@ class GameObject:
             },
             'texture': fileName,
             'navigateTo': self.navigateTo,
-            'interactive': self.interactive,
-            'metrics': {'happiness-effect': self.happiness_effect,
-                        'time-effect': self.time_effect,
-                        'health-effect': self.health_effect,
-                        'money-effect': self.money_effect
-                        },
-            'next-day': self.next_day,
-            'size': self.size,
-            'collidable': self.isCollidable
         }
 
