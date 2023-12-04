@@ -1,4 +1,3 @@
-from turtle import left
 from typing import Callable
 import pygame
 

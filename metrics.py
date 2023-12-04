@@ -68,7 +68,7 @@ class Metrics:
     def updateHappiness(self, increment=0) -> None:
         self.happiness = max(0, min(100, self.happiness + increment))
     
-    def formatTime(self):
+    def formatTime(self) -> str:
         hours = self.time // 60
         minutes = (self.time % 60) // 10 * 10
         return f"{hours:02d}:{minutes:02d}"

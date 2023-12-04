@@ -1,6 +1,6 @@
-import json
 from typing import Optional
 import pygame
+from assets.assetsConstants import ANIMATION_ASSET
 from gameObject import GameObject
 from metrics import Metrics
 
@@ -117,6 +117,8 @@ class Player():
 
     def setGender(self, gender: str):
         self.gender = gender
+        self.loadAnimations()
+        self.sprite = self.animations[self.facing][0]
 
     def setMetrics(self, happiness:int, health:int, time:int, money:int) -> None:
         self.metrics = Metrics(time, happiness, health, money)
@@ -125,6 +127,8 @@ class Player():
 
     def makePopUp(self):
         object = self.close_object
+        if object is None:
+            return
         buffer = 2
         icon_size = 18
         popup_size = ((icon_size+buffer)*8+buffer,(icon_size+buffer)*2+buffer)
@@ -136,7 +140,6 @@ class Player():
         self.screen.blit(popup_surface, popup.topleft)
         pygame.draw.rect(self.screen, (255,255,255), object.getHitbox(), width=4, border_radius=6)
         
-
         isPos = lambda x: 0 if x>0 else 1 if x==0 else 2
         isPosTime = lambda x: 0 if x<0 else 1 if x==0 else 2
         value = lambda x: 0 if x==0 else 1 if 0<abs(x)<34 else 2 if 33<abs(x)<67 else 3
@@ -173,6 +176,16 @@ class Player():
             if self.close_object is not None:
                 self.close_object = None
             return
+        buffer = 2
+        icon_size = 18
+        popup_size = ((icon_size+buffer)*8+buffer,(icon_size+buffer)*2+buffer)
+        alpha = 200
+        popup = pygame.Rect(self.hitbox.topright[0]+10, self.hitbox.topright[1]-100, popup_size[0], popup_size[1])
+        popup_surface = pygame.Surface((popup.width, popup.height))
+        popup_surface.fill((255, 255, 255, 200))
+        popup_surface.set_alpha(alpha)
+        self.screen.blit(popup_surface, popup.topleft)
+        pygame.draw.rect(self.screen, (255,255,255), object.getHitbox(), width=4, border_radius=6)
         
         self.close_object = object #makes and sets close object to the parsed object to make pop up
         self.makePopUp()
@@ -189,7 +202,8 @@ class Player():
             self.metrics.changeMetrics(
                 object.getHappinessEffect(), 
                 1320 - self.metrics.getTime() if object.getNextDay() else object.getTimeEffect(), 
-                object.getHealthEffect(), object.getMoneyEffect()
+                object.getHealthEffect(),
+                object.getMoneyEffect()
             )
             # click_object = pygame.Rect()
             # if object.navigateTo():
@@ -271,7 +285,7 @@ class Player():
     # TODO - include images in assets folder
     def loadAnimations(self) -> None:
         #Arrays of all of the images for the animation
-        prefix = "assets/animations/"
+        prefix = ANIMATION_ASSET
         walkDown = [
             pygame.image.load(prefix + 'S_' + self.gender + "/S0.png"),
             pygame.image.load(prefix + 'S_' + self.gender + "/S1.png"),

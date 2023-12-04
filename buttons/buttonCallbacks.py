@@ -3,10 +3,10 @@ All button callbacks return the state of the running variable from the Game clas
 after their action has been performed. Also, they should return the next screen of
 the game.
 '''
-from json import load
 from typing import Callable
-from urllib.request import CacheFTPHandler
+from game import Game
 from oracle import Oracle
+from player import Player
 from screens.screenConstants import *
 from utils.gameLoader import load_game
 from utils.gameSaver import save_game
@@ -55,15 +55,14 @@ def oracleCancelIncomingCall(**kwargs) -> tuple[bool, str]:
     kwargs['oracle'].cancelIncomingCall()
     return True, GAME_SCREEN
 
-
 def nextDayCB(**kwargs) -> tuple[bool, str]:
-    player = kwargs['player']
-    oracle = kwargs['oracle']
-    game = kwargs['game']
+    player: Player = kwargs['player']
+    oracle: Oracle = kwargs['oracle']
+    game: Game = kwargs['game']
     game.nextDay()
     player.resetNextDay()
     oracle.resetNextDay()
-    # TODO add save game
+    save_game(game)
     return True, GAME_SCREEN
 
 def createButtonCBDict() -> dict[str, Callable]:

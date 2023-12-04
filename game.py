@@ -1,9 +1,6 @@
-from tkinter import END
 from typing import Callable
 import pygame
-from gameObject import GameObject
 from buttons.button import Button
-from metrics import Metrics
 from oracle import Oracle
 from scene import Scene
 from scenes.sceneDrawer import scene_loader
@@ -59,7 +56,7 @@ class Game:
             self, 
             screen: pygame.Surface, 
             player: Player, 
-            scene: Scene, 
+            defaultScene: Scene, 
             buttonCBs: dict[str, Callable], 
             savedGames: list[str],
     ) -> None:
@@ -68,7 +65,8 @@ class Game:
         self.currentScreen = WELCOME_SCREEN
         self.running = True
         self.player = player
-        self.currentScene = scene
+        self.currentScene = defaultScene
+        self.defaultScene = defaultScene
         self.holdingKeys = []
         self.oracle = Oracle(screen, callBacks=buttonCBs)
 
@@ -89,6 +87,7 @@ class Game:
 
     def nextDay(self):
         self.currentDay = daysOfWeek[(daysOfWeek.index(self.currentDay) + 1) % len(daysOfWeek)]
+        self.currentScene = self.defaultScene
 
     def loadPlayer(self, playerName: str, playerGender: str, playerPosition: pygame.Vector2, speed: int) -> None:
         self.player.setName(playerName)
@@ -119,6 +118,9 @@ class Game:
 
     def setCurrentScene(self, currentScene: Scene) -> None:
         self.currentScene = currentScene
+
+    def setCurrentDay(self, currentDay: str) -> None:
+        self.currentDay = currentDay
 
     def awaitExitWelcomeScreen(self) -> None:
         ''' Game.awaitExitWelcomeScreen() -> None
@@ -173,7 +175,7 @@ class Game:
 
     # TODO these will be moved to Player Class
     def setMale(self, **_) -> tuple[bool, str]:
-        # TODO call this on the Player object after male animation is implemented
+        self.player.setGender("M")
         return True, self.currentScreen
 
     # TODO these will be moved to Player Class
@@ -379,7 +381,8 @@ class Game:
                 clicked = [button for button in buttons if button.rect.collidepoint(event.pos)]
                 if len(clicked) > 0:
                     self.running, self.currentScreen = clicked[0].onClick(
-                        player = self.player, oracle=self.oracle,
+                        player = self.player,
+                        oracle=self.oracle,
                         game = self
                     )
 
@@ -425,6 +428,7 @@ class Game:
         return {
             'currentScreen': self.currentScreen,
             'currentScene': self.currentScene.getID(),
+            'currentDay': self.currentDay,
             'player': self.player.toJson()
         }
     
@@ -476,3 +480,10 @@ class Game:
             self.handleCurrentScreen(events)
             pygame.display.flip()
             clock.tick(60)
+
+    def get_game_state(self):
+        player_name = self.player.getName()
+        day_of_week = self.currentDay
+        player_time = self.player.getMetrics().formatTime()
+        game_state = f"{player_name}, {day_of_week}, {player_time}"
+        return game_state
