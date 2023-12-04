@@ -53,7 +53,7 @@ class Player():
         #New
          
         self.oldMetrics = Metrics(money=10)
-        self.metrics = Metrics()
+        self.metrics = Metrics(money=100)
 
         self.interaction_threshold = 128
         self.not_interacting = True
