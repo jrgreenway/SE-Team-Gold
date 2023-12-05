@@ -552,6 +552,7 @@
                 "time-effect": 40,
                 "happiness-effect": 15,
                 "health-effect": -10,
+                "money-effect": -50,
                 "position-absolute": {
                     "x": 256,
                     "y": 256
@@ -564,6 +565,7 @@
                 "time-effect": 80,
                 "happiness-effect": 35,
                 "health-effect": -40,
+                "money-effect": -100,
                 "position-relative": {
                     "direction": "E",
                     "relativeTo": 5
@@ -576,6 +578,7 @@
                 "time-effect": 80,
                 "happiness-effect": 35,
                 "health-effect": -40,
+                "money-effect": -100,
                 "position-relative": {
                     "direction": "N",
                     "relativeTo": 6
