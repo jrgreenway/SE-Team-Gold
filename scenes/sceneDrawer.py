@@ -45,8 +45,8 @@ def scene_loader_data(sceneData: dict) -> Scene:
         happiness_effect = load_attribute('happiness-effect', object, 0)
         time_effect = load_attribute('time-effect', object, 0)
         health_effect = load_attribute('health-effect', object, 0)
-        isCollidable = load_attribute('collidable', object, True)
-        navigateTo = load_attribute('navigateTo', object, None)
+        isCollidable = load_attribute('isCollidable', object, True)
+        openMap = load_attribute('openMap', object, None)
         nextDay = load_attribute('next-day', object, False)
         money_effect = load_attribute('money-effect', object, 0)
         gameObject = GameObject(object['id'],
@@ -57,7 +57,7 @@ def scene_loader_data(sceneData: dict) -> Scene:
             interactive=isInteractive,
             sprite=gameSprite,
             isCollidable=isCollidable,
-            navigateTo=navigateTo,
+            openMap=openMap,
             next_day=nextDay
         )
         try:

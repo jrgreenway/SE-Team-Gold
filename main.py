@@ -14,7 +14,7 @@ pygame.init()
 screen = pygame.display.set_mode((896, 640))
 
 # Set up the scenes and objects - will use a json for this
-defaultScene = scene_loader(1) # use default scene 1 for now
+defaultScene = scene_loader(0) # use default scene 1 for now
 # Create the player
 player = Player(gender="F", screen=screen, facing="S")
 

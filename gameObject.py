@@ -1,5 +1,6 @@
 import os
 import pickle
+from tkinter import N
 from typing import Optional
 import pygame
 
@@ -45,7 +46,7 @@ class GameObject:
                  time_effect=0,
                  money_effect=0,
                  next_day: bool=False,
-                 navigateTo: Optional[int] = None,
+                 openMap: Optional[bool] = None,
                  interactive: bool=False,
                  position: pygame.Vector2 = pygame.Vector2(0, 0), 
                  sprite: Optional[pygame.Surface] = None,
@@ -56,7 +57,7 @@ class GameObject:
         self.position = position
         self.sprite = sprite
         self.interactive = interactive
-        self.navigateTo = navigateTo
+        self.openMap = openMap
         self.happiness_effect = happiness_effect
         self.time_effect = time_effect
         self.next_day = next_day
@@ -71,8 +72,8 @@ class GameObject:
     def getInteractive(self):
         return self.interactive
 
-    def getNavigateTo(self):
-        return self.navigateTo
+    def getOpenMap(self):
+        return self.openMap
     
     def getHappinessEffect(self):
         return self.happiness_effect
@@ -131,7 +132,7 @@ class GameObject:
                 'y': self.position.y
             },
             'texture': fileName,
-            'navigateTo': self.navigateTo,
+            'openMap': self.openMap,
             'interactive': self.interactive,
             'metrics': {'happiness-effect': self.happiness_effect,
                         'time-effect': self.time_effect,

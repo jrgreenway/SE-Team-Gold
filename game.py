@@ -1,5 +1,7 @@
 from typing import Callable
 import pygame
+from assets.assetsConstants import LOCATIONS
+from gameObject import GameObject
 from buttons.button import Button
 from oracle import Oracle
 from scene import Scene
@@ -10,6 +12,7 @@ from screens.gameScreen import draw_game_screen
 from screens.loadScreen import draw_load_screen
 from screens.oracleAnswerScreen import draw_oracle_answer_screen
 from screens.oracleQuestionScreen import draw_oracle_question_screen
+from screens.drawMapScreen import draw_map_screen
 from screens.pauseScreen import draw_pause_screen
 from screens.screenConstants import *
 from screens.startScreen import draw_start_screen
@@ -211,15 +214,44 @@ class Game:
         #Pass objects into the player.move method
         objects = self.currentScene.getObjects()
         self.player.move(self.holdingKeys, objects)
-        navigateto = self.player.interact(self.holdingKeys, self.giveInteractable())
-        if navigateto:
-            self.currentScene = scene_loader(navigateto)
-        else: 
-            self.player.interact(self.holdingKeys, self.giveInteractable())
+        showMapScreen = self.player.interact(self.holdingKeys, self.giveInteractable())
+        
+        if showMapScreen:
+            self.currentScreen = MAP_SCREEN
+            return
+
         self.player.animate(self.checkMoving(), self.currentFrame)
         self.player.draw(self.currentDay)
         oracleButton = self.oracle.draw(self.player.getMetrics(), self.currentFrame)
         self.handleGameScreenEvents(events, [oracleButton])
+
+    def drawMapScreen(self, events) -> None:
+        ''' Game.drawMapScreen(events) -> None
+        Draws the question screen and handles mouse clicks on the buttons
+        '''
+        draw_game_screen(self.screen, self.currentScene)
+        self.player.draw(self.currentDay)
+        buttons = draw_map_screen(
+            self.screen,
+            locations=LOCATIONS,
+            clickLocationCB=self.buttonCBs['clickMapLocation'],
+            backCB=self.buttonCBs['back']
+        )
+        self.handleMapScreenEvents(events, buttons)
+
+    def handleMapScreenEvents(self,events, buttons: list[Button]) -> None:
+        for event in events:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                clicked = [button for button in buttons if button.rect.collidepoint(event.pos)]
+                index = buttons.index(clicked[0]) if len(clicked) > 0 else -1
+                if len(clicked) > 0:
+                    if index != -1:
+                        self.running, self.currentScreen = clicked[0].onClick(
+                            game=self,
+                            currentScreen=self.currentScreen, 
+                            sceneIndex=index
+                        )
+    
 
     def handleGameScreenEvents(self, events, buttons: list[Button]) -> None:
         ''' Game.handleGameScreenEvents(events) -> None
@@ -428,6 +460,8 @@ class Game:
             if self.textAnimationStartFrame == 0:
                 self.textAnimationStartFrame = self.currentFrame
             self.drawAnswerScreen(events)
+        elif self.currentScreen == MAP_SCREEN:
+            self.drawMapScreen(events)
         elif self.currentScreen == DAY_END_SCREEN:
             if self.dayEndFrame == 0:
                 self.dayEndFrame = self.currentFrame
