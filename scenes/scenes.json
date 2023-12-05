@@ -233,7 +233,7 @@
     {
         "id": 1,
         "name": "Office",
-        "texture": "assets/Floor.png",
+        "texture": "assets/Cream Carpet.png",
         "objects": [
             {
                 "id": 0,
@@ -265,23 +265,138 @@
             },
             {
                 "id": 3,
-                "texture": "assets/Oven.png",
-                "interactive": true,
-                "happiness-effect":10,
-                "health-effect":10,
-                "time-effect":120,
-                "position-relative": {
-                    "direction": "E",
-                    "relativeTo": 2
-                },
-                "w": true
-            },
-            {
-                "id": 4,
-                "texture": "assets/Sink.png",
+                "texture": "assets/Window.png",
                 "position-relative": {
                     "direction": "W",
                     "relativeTo": 0
+                }
+            },
+            {
+                "id": 4,
+                "texture": "assets/Window.png",
+                "interactive": true,
+                "happiness-effect":10,
+                "health-effect":5,
+                "time-effect":60,
+                "position-relative": {
+                    "direction": "W",
+                    "relativeTo": 3
+                }
+            },
+            {
+                "id": 5,
+                "texture": "assets/Window.png",
+                "interactive": true,
+                "happiness-effect":10,
+                "health-effect":5,
+                "time-effect":60,
+                "position-relative": {
+                    "direction": "E",
+                    "relativeTo": 2
+                }
+            },
+            {
+                "id": 6,
+                "texture": "assets/Window.png",
+                "position-relative": {
+                    "direction": "E",
+                    "relativeTo": 5
+                }
+            },
+            {
+                "id": 7,
+                "texture": "assets/Carpet Blue.png",
+                "isCollidable": false,
+                "position-relative": {
+                    "direction": "S",
+                    "relativeTo": 0
+                }
+            },
+            {
+                "id": 8,
+                "texture": "assets/Carpet Blue.png",
+                "isCollidable": false,
+                "position-relative": {
+                    "direction": "S",
+                    "relativeTo": 1
+                }
+            },
+            {
+                "id": 9,
+                "texture": "assets/Carpet Blue.png",
+                "isCollidable": false,
+                "position-relative": {
+                    "direction": "S",
+                    "relativeTo": 3
+                }
+            },
+            {
+                "id": 10,
+                "texture": "assets/Carpet Blue.png",
+                "isCollidable": false,
+                "position-relative": {
+                    "direction": "S",
+                    "relativeTo": 4
+                }
+            },
+            {
+                "id": 11,
+                "texture": "assets/Carpet Blue.png",
+                "isCollidable": false,
+                "position-relative": {
+                    "direction": "S",
+                    "relativeTo": 5
+                }
+            },
+            {
+                "id": 12,
+                "texture": "assets/Carpet Blue.png",
+                "isCollidable": false,
+                "position-relative": {
+                    "direction": "S",
+                    "relativeTo": 6
+                }
+            },
+            {
+                "id": 13,
+                "texture": "assets/Office 2.png",
+                "position-relative": {
+                    "direction": "S",
+                    "relativeTo": 3
+                }
+            },
+            {
+                "id": 14,
+                "texture": "assets/Office 1.png",
+                "interactive": true,
+                "happiness-effect":-35,
+                "health-effect":-15,
+                "time-effect":300,
+                "money-effect":150,
+                "position-relative": {
+                    "direction": "S",
+                    "relativeTo": 13
+                }
+            },
+            {
+                "id": 15,
+                "texture": "assets/Office 2.png",
+                "position-relative": {
+                    "direction": "S",
+                    "relativeTo": 6
+                }
+            },
+            {
+                "id": 16,
+                "texture": "assets/Office 1.png",
+                "interactive": true,
+                "happiness-effect":-35,
+                "health-effect":-15,
+                "time-effect":300,
+                "money-effect":150,
+                "position-relative": {
+                    "direction": "S",
+                    "relativeTo": 15
                 }
             }
         ]
