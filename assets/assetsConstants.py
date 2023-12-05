@@ -8,9 +8,9 @@ FEMALE_CHAR_ASSET = ANIMATION_ASSET + "S_F/S0.png"
 
 
 LOCATIONS = {
-    "Home": (0, 100, 200),
-    "Office": (1, 300, 200),
-    "Park": (2, 500, 200),
-    "Gym": (3, 200, 400),
-    "Tax": (4, 400, 400),
+    "Home": (0, 80, 140, "assets/home.png"),
+    "Office": (1, 300, 200, "assets/office.png"),
+    "Park": (2, 600, 250, "assets/park.png"), 
+    "Gym": (3, 200, 400, ""),
+    "Tax": (4, 400, 400, ""),
 }

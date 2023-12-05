@@ -6,7 +6,7 @@ import random
 # location format is location: (sceneIndex, x, y)
 def draw_map_screen(
         screen: pygame.Surface,
-        locations: dict[str, tuple[int, int, int]],
+        locations: dict[str, tuple[int, int, int, str]],
         clickLocationCB: Callable,
         backCB: Callable,
     ) -> list[Button]:
@@ -23,14 +23,19 @@ def draw_map_screen(
 
     # Draw the map screen
     for location in locations:
-        _, x, y = locations[location]
+        _, x, y, spritePath = locations[location]
         location_button = pygame.Rect(x, y, 150, 50)
-        pygame.draw.rect(screen, (0, 0, 255), location_button)
+        if spritePath != "":
+            location_sprite = pygame.image.load(spritePath)
+            location_button = pygame.Rect(x, y, location_sprite.get_width(), location_sprite.get_height())
+            screen.blit(location_sprite, (x, y))
+        else:
+            pygame.draw.rect(screen, (0, 0, 255), location_button)
 
-        # Draw the location name
-        location_font = pygame.font.Font(None, 30)
-        location_text = location_font.render(location, True, (255, 255, 255))
-        screen.blit(location_text, (x, y))
+            # Draw the location name
+            location_font = pygame.font.Font(None, 30)
+            location_text = location_font.render(location, True, (255, 255, 255))
+            screen.blit(location_text, (x, y))
 
         buttons.append(Button(location_button, clickLocationCB))
 
