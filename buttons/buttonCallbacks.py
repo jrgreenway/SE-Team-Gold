@@ -47,6 +47,9 @@ def clickOracleQuestionCB(**kwargs) -> tuple[bool, str]:
     kwargs['oracle'].setQuestion(kwargs['question'])
     return True, ORACLE_ANSWER_SCREEN
 
+def clickMapScreen(**kwargs) -> tuple[bool, str]:
+    return True, MAP_SCREEN
+
 def nextButtonCB(**kwargs) -> tuple[bool, str]:
     currentScreen = kwargs['currentScreen']
     return True, nextScreen(currentScreen)

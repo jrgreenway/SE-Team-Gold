@@ -227,7 +227,8 @@ class Player():
             #                 navigateTo = obj.navigateTo()
 
             
-        return object.getNavigateTo() if canInteract else None
+                
+        return self.showMapScreen if canInteract else None
 
 
     # TODO find which type of Event to import
