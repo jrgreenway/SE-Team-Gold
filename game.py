@@ -11,7 +11,7 @@ from screens.gameScreen import draw_game_screen
 from screens.loadScreen import draw_load_screen
 from screens.oracleAnswerScreen import draw_oracle_answer_screen
 from screens.oracleQuestionScreen import draw_oracle_question_screen
-from screens.mapScreen import draw_map_screen
+from screens.drawMapScreen import draw_map_screen
 from screens.pauseScreen import draw_pause_screen
 from screens.screenConstants import *
 from screens.startScreen import draw_start_screen
