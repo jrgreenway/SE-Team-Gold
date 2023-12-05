@@ -479,5 +479,108 @@
                 }
             }
         ]
+    },
+    {
+        "id": 3,
+        "name": "Gym",
+        "texture": "assets/Carpet Blue.png",
+        "objects": [
+            {
+                "id": 0,
+                "texture": "assets/Window.png",
+                "interactive": true,
+                "time-effect": 80,
+                "happiness-effect": 15,
+                "health-effect": 5,
+                "position-absolute": {
+                    "x": 256,
+                    "y": 0
+                },
+                "isCollidable": true
+            },
+            {
+                "id": 1,
+                "texture": "assets/Window.png",
+                "interactive": true,
+                "time-effect": 40,
+                "happiness-effect": 10,
+                "health-effect": 5,
+                "position-relative": {
+                    "direction": "E",
+                    "relativeTo": 0
+                }
+            },
+            {
+                "id": 2,
+                "texture": "assets/gate.png",
+                "interactive": true,
+                "openMap": true,
+                "position-relative": {
+                    "direction": "E",
+                    "relativeTo": 1
+                }
+            },
+            {
+                "id": 3,
+                "texture": "assets/Window.png",
+                "interactive": true,
+                "time-effect": 40,
+                "happiness-effect": 10,
+                "health-effect": 5,
+                "position-relative": {
+                    "direction": "E",
+                    "relativeTo": 2
+                },
+                "isCollidable": true
+            },
+            {
+                "id": 4,
+                "texture": "assets/Window.png",
+                "interactive": true,
+                "time-effect": 40,
+                "happiness-effect": 10,
+                "health-effect": 5,
+                "position-relative": {
+                    "direction": "E",
+                    "relativeTo": 3
+                }
+            },
+            {
+                "id": 5,
+                "texture": "assets/Weight.png",
+                "interactive": true,
+                "time-effect": 40,
+                "happiness-effect": 15,
+                "health-effect": -10,
+                "position-absolute": {
+                    "x": 256,
+                    "y": 256
+                }
+            },
+            {
+                "id": 6,
+                "texture": "assets/Running Machine 1.png",
+                "interactive": true,
+                "time-effect": 80,
+                "happiness-effect": 35,
+                "health-effect": -40,
+                "position-relative": {
+                    "direction": "E",
+                    "relativeTo": 5
+                }
+            },
+            {
+                "id": 7,
+                "texture": "assets/Running Machine 2.png",
+                "interactive": true,
+                "time-effect": 80,
+                "happiness-effect": 35,
+                "health-effect": -40,
+                "position-relative": {
+                    "direction": "N",
+                    "relativeTo": 6
+                }
+            }
+        ]
     }
 ]
