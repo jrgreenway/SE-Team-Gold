@@ -14,13 +14,33 @@
                 }
             },
             {
-                "id": 4,
-                "texture": "assets/Bed.png",
-                "interactive": true,
-                "next-day": true,
+                "id": 6,
+                "texture": "assets/Cupboard.png",
+                "interactive": false,
                 "position-relative": {
                     "direction": "E",
                     "relativeTo": 0
+                }
+            },
+            {
+                "id": 4,
+                "texture": "assets/Bed 1.png",
+                "interactive": true,
+                "next-day": true,
+                "position-relative": {
+                    "direction": "S",
+                    "relativeTo": 6
+                },
+                "isCollidable": true
+            },
+            {
+                "id": 5,
+                "texture": "assets/Bed 2.png",
+                "interactive": true,
+                "next-day": true,
+                "position-relative": {
+                    "direction": "S",
+                    "relativeTo": 4
                 },
                 "isCollidable": true
             },
@@ -30,7 +50,7 @@
                 "interactive": false,
                 "position-relative": {
                     "direction": "E",
-                    "relativeTo": 4
+                    "relativeTo": 6
                 }
             },
             {
@@ -42,6 +62,170 @@
                 "position-relative": {
                     "direction": "E",
                     "relativeTo": 1
+                }
+            },
+            {
+                "id": 7,
+                "texture": "assets/Carpet Blue.png",
+                "isCollidable": false,
+                "position-relative": {
+                    "direction": "S",
+                    "relativeTo": 0
+                }
+            },
+            {
+                "id": 8,
+                "texture": "assets/Carpet Blue.png",
+                "isCollidable": false,
+                "position-relative": {
+                    "direction": "S",
+                    "relativeTo": 7
+                }
+            },
+            {
+                "id": 9,
+                "texture": "assets/Carpet Blue.png",
+                "isCollidable": false,
+                "position-relative": {
+                    "direction": "S",
+                    "relativeTo": 8
+                }
+            },
+            {
+                "id": 10,
+                "texture": "assets/Carpet Blue.png",
+                "isCollidable": false,
+                "position-relative": {
+                    "direction": "E",
+                    "relativeTo": 9
+                }
+            },
+            {
+                "id": 11,
+                "texture": "assets/Carpet Blue.png",
+                "isCollidable": false,
+                "position-relative": {
+                    "direction": "E",
+                    "relativeTo": 10
+                }
+            },
+            {
+                "id": 12,
+                "texture": "assets/Carpet Blue.png",
+                "isCollidable": false,
+                "position-relative": {
+                    "direction": "N",
+                    "relativeTo": 11
+                }
+            },
+            {
+                "id": 13,
+                "texture": "assets/Carpet Blue.png",
+                "isCollidable": false,
+                "position-relative": {
+                    "direction": "N",
+                    "relativeTo": 12
+                }
+            },
+            {
+                "id": 14,
+                "texture": "assets/Cream Carpet.png",
+                "isCollidable": false,
+                "position-relative": {
+                    "direction": "E",
+                    "relativeTo": 13
+                }
+            },
+            {
+                "id": 15,
+                "texture": "assets/Cream Carpet.png",
+                "isCollidable": false,
+                "position-relative": {
+                    "direction": "S",
+                    "relativeTo": 14
+                }
+            },
+            {
+                "id": 16,
+                "texture": "assets/Cream Carpet.png",
+                "isCollidable": false,
+                "position-relative": {
+                    "direction": "S",
+                    "relativeTo": 15
+                }
+            },
+            {
+                "id": 17,
+                "texture": "assets/Cream Carpet.png",
+                "isCollidable": false,
+                "position-relative": {
+                    "direction": "E",
+                    "relativeTo": 14
+                }
+            },
+            {
+                "id": 18,
+                "texture": "assets/Cream Carpet.png",
+                "isCollidable": false,
+                "position-relative": {
+                    "direction": "S",
+                    "relativeTo": 17
+                }
+            },
+            {
+                "id": 19,
+                "texture": "assets/Cream Carpet.png",
+                "isCollidable": false,
+                "position-relative": {
+                    "direction": "S",
+                    "relativeTo": 18
+                }
+            },
+            {
+                "id": 20,
+                "texture": "assets/Cream Carpet.png",
+                "isCollidable": false,
+                "position-relative": {
+                    "direction": "E",
+                    "relativeTo": 17
+                }
+            },
+            {
+                "id": 21,
+                "texture": "assets/Cream Carpet.png",
+                "isCollidable": false,
+                "position-relative": {
+                    "direction": "S",
+                    "relativeTo": 20
+                }
+            },
+            {
+                "id": 22,
+                "texture": "assets/Cream Carpet.png",
+                "isCollidable": false,
+                "position-relative": {
+                    "direction": "S",
+                    "relativeTo": 21
+                }
+            },
+            {
+                "id": 23,
+                "texture": "assets/Oven.png",
+                "interactive": true,
+                "happiness-effect":10,
+                "health-effect":10,
+                "time-effect":120,
+                "position-relative": {
+                    "direction": "E",
+                    "relativeTo": 3
+                }
+            },
+            {
+                "id": 24,
+                "texture": "assets/Sink.png",
+                "position-relative": {
+                    "direction": "E",
+                    "relativeTo": 23
                 }
             }
         ]
@@ -90,7 +274,7 @@
                     "direction": "E",
                     "relativeTo": 2
                 },
-                "isCollidable": true
+                "w": true
             },
             {
                 "id": 4,
