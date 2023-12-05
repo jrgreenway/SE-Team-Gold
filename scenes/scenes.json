@@ -1,7 +1,7 @@
 [
     {
-        "id": 1,
-        "name": "Bedroom",
+        "id": 0,
+        "name": "Home",
         "texture": "assets/Floor.png",
         "objects": [
             {
@@ -37,7 +37,7 @@
                 "id": 3,
                 "texture": "assets/gate.png",
                 "interactive": true,
-                "navigateTo": 2,
+                "openMap": true,
                 "switch_to_scene": 3, 
                 "position-relative": {
                     "direction": "E",
@@ -47,8 +47,8 @@
         ]
     },
     {
-        "id": 2,
-        "name": "Kitchen",
+        "id": 1,
+        "name": "Office",
         "texture": "assets/Floor.png",
         "objects": [
             {
@@ -73,7 +73,7 @@
                 "id": 2,
                 "texture": "assets/gate.png",
                 "interactive": true,
-                "navigateTo": 1,
+                "openMap": true,
                 "position-relative": {
                     "direction": "E",
                     "relativeTo": 1

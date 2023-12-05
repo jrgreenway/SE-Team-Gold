@@ -228,7 +228,7 @@ class Player():
 
             
                 
-        return self.showMapScreen if canInteract else None
+        return object.getOpenMap() if canInteract else None
 
 
     # TODO find which type of Event to import

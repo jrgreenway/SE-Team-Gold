@@ -1,5 +1,6 @@
 from typing import Callable
 import pygame
+from assets.assetsConstants import LOCATIONS
 from gameObject import GameObject
 from buttons.button import Button
 from oracle import Oracle
@@ -214,22 +215,15 @@ class Game:
         objects = self.currentScene.getObjects()
         self.player.move(self.holdingKeys, objects)
         showMapScreen = self.player.interact(self.holdingKeys, self.giveInteractable())
+        
         if showMapScreen:
-            self.drawMapScreen(events)
-        else: 
-            self.player.interact(self.holdingKeys, self.giveInteractable())
+            self.currentScreen = MAP_SCREEN
+            return
+
         self.player.animate(self.checkMoving(), self.currentFrame)
         self.player.draw(self.currentDay)
         oracleButton = self.oracle.draw(self.player.getMetrics(), self.currentFrame)
         self.handleGameScreenEvents(events, [oracleButton])
-
-    def handleMapClickEvents(self,events,buttons: list[Button]):
-        for event in events:
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                clicked = [button for button in buttons if button.rect.collidepoint(event.pos)]
-                index = buttons.index(clicked[0]) if len(clicked) > 0 else -1
-                if index:
-                    self.currentScreen = scene_loader(index)
 
     def drawMapScreen(self, events) -> None:
         ''' Game.drawMapScreen(events) -> None
@@ -238,9 +232,10 @@ class Game:
         draw_game_screen(self.screen, self.currentScene)
         self.player.draw(self.currentDay)
         buttons = draw_map_screen(
-            self.screen, 
-            self.buttonCBs['office'],
-            self.buttonCBs['back']
+            self.screen,
+            locations=LOCATIONS,
+            clickLocationCB=self.buttonCBs['clickMapLocation'],
+            backCB=self.buttonCBs['back']
         )
         self.handleMapScreenEvents(events, buttons)
 
@@ -250,9 +245,12 @@ class Game:
                 clicked = [button for button in buttons if button.rect.collidepoint(event.pos)]
                 index = buttons.index(clicked[0]) if len(clicked) > 0 else -1
                 if len(clicked) > 0:
-                    if index:
-                        self.currentScreen = scene_loader(index)
-                        print(f" {clicked}")
+                    if index != -1:
+                        self.running, self.currentScreen = clicked[0].onClick(
+                            game=self,
+                            currentScreen=self.currentScreen, 
+                            sceneIndex=index
+                        )
     
 
     def handleGameScreenEvents(self, events, buttons: list[Button]) -> None:

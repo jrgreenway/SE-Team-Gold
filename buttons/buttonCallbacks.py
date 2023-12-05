@@ -7,6 +7,7 @@ from typing import Callable
 from game import Game
 from oracle import Oracle
 from player import Player
+from scenes.sceneDrawer import scene_loader, scene_loader_data
 from screens.screenConstants import *
 from utils.gameLoader import load_game
 from utils.gameSaver import save_game
@@ -47,8 +48,12 @@ def clickOracleQuestionCB(**kwargs) -> tuple[bool, str]:
     kwargs['oracle'].setQuestion(kwargs['question'])
     return True, ORACLE_ANSWER_SCREEN
 
-def clickMapScreen(**kwargs) -> tuple[bool, str]:
-    return True, MAP_SCREEN
+def clickMapLocation(**kwargs) -> tuple[bool, str]:
+    game: Game = kwargs['game']
+    sceneIndex: int = kwargs['sceneIndex']
+    print(sceneIndex)
+    game.setCurrentScene(scene_loader(sceneIndex))
+    return True, GAME_SCREEN
 
 def nextButtonCB(**kwargs) -> tuple[bool, str]:
     currentScreen = kwargs['currentScreen']
@@ -90,4 +95,5 @@ def createButtonCBDict() -> dict[str, Callable]:
         'next': nextButtonCB,
         'nextDay': nextDayCB,
         'toTitle': toTitleCB,
+        'clickMapLocation': clickMapLocation
     }
