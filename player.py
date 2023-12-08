@@ -90,11 +90,11 @@ class Player():
         self.metrics.updateHealth(-25)
         self.oldMetrics = self.metrics
 
-        # Pay the daily tax + fine if you haven't paid it at the council
+        # Pay the rent + fine if you haven't paid it at the council
         if not self.hasPaidTax:
             self.metrics.updateMoney(-250)
         else:
-            self.metrics.updateMoney(-50)
+            self.metrics.updateMoney(-50) # Rent
 
 
         self.checkGameOver()
