@@ -97,6 +97,7 @@ class Player():
             self.metrics.updateMoney(-50) # Rent
 
 
+        self.oldMetrics = self.metrics.copy()
         self.checkGameOver()
         self.metrics.resetTime()
         self.reset()

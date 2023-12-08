@@ -159,7 +159,10 @@ class Metrics:
             "happiness": self.happiness,
             "health": self.health,
             "money": self.money
-        }
+    }
+
+    def copy(self):
+        return Metrics(self.time, self.happiness, self.health, self.money)
 
     
 
