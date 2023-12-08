@@ -73,10 +73,7 @@ class Player():
         self.hitbox = pygame.Rect(self.screen.get_width() / 6, self.screen.get_height() / 2, self.width//4, self.height//4)
         self.hasPaidTax = False
 
-    def resetNextDay(self) -> None:
-        # Become sad if money is less than previous day
-        if (self.metrics.getMoney() < self.oldMetrics.getMoney()):
-            self.metrics.updateHappiness(-15)
+    def dailyChange(self) -> None:
 
         # If the player did not go to bed - becomes tired and loses health and happiness
         if self.metrics.getTime() < 1500:
@@ -88,7 +85,6 @@ class Player():
 
         # Get Hungry over night
         self.metrics.updateHealth(-25)
-        self.oldMetrics = self.metrics
 
         # Pay the rent + fine if you haven't paid it at the council
         if not self.hasPaidTax:
@@ -96,7 +92,12 @@ class Player():
         else:
             self.metrics.updateMoney(-50) # Rent
 
+        # Become sad if money is less than previous day
+        if (self.metrics.getMoney() < self.oldMetrics.getMoney()):
+            self.metrics.updateHappiness(-15)
 
+
+    def resetNextDay(self) -> None:
         self.oldMetrics = self.metrics.copy()
         self.checkGameOver()
         self.metrics.resetTime()

@@ -514,7 +514,12 @@ class Game:
             self.currentFrame += 1
             
             if self.currentFrame % 60 == 0 and self.currentScreen == GAME_SCREEN:
-                self.currentScreen = (self.player.gameOver and GAME_OVER_SCREEN) or (self.player.metrics.updateTime() and DAY_END_SCREEN) or GAME_SCREEN
+                nextDay = self.player.metrics.updateTime()
+                # trigger change in metrics to display in day end screen
+                if nextDay and self.currentScreen is not DAY_END_SCREEN:
+                    self.player.dailyChange()
+
+                self.currentScreen = (self.player.gameOver and GAME_OVER_SCREEN) or (nextDay and DAY_END_SCREEN) or GAME_SCREEN
             
             # self.currentFrame %= 60
             # Handle events - keyPresses
