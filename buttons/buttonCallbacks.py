@@ -32,7 +32,7 @@ def backButtonCB(**kwargs) -> tuple[bool, str]:
 
 def startGameButtonCB(**kwargs) -> tuple[bool, str]:
     kwargs['player'].reset()
-    return True, GAME_SCREEN
+    return True, INTRODUCTION_SCREEN
 
 def saveButtonCB(**kwargs) -> tuple[bool, str]:
     save_game(kwargs['game'])
