@@ -204,22 +204,7 @@ class Player():
                 object.getMoneyEffect()
             )
             self.checkGameOver()
-            # click_object = pygame.Rect()
-            # if object.navigateTo():
-            #     navigateTo = object.navigateTo()
 
-            # for key in holdingKeys:
-            #     x = self.position.x
-            #     y = self.position.y
-            #     mouse_clicked = pygame.mouse.get_pressed()[0]
-            #     if key == mouse_clicked:
-            #         for obj in object:
-            #             pygame.draw.rect(self.screen, pygame.Rect(obj.getPosition().x, obj.getPosition().y, 128, 128), 2)
-            #             if obj.navigateTo():
-            #                 navigateTo = obj.navigateTo()
-
-            
-                
         return object.getOpenMap() if canInteract else None
 
 
