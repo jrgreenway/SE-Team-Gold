@@ -7,7 +7,10 @@ from buttons.button import Button
 
 INTRODUCTION_MESSAGE = "Welcome to the Avatar Game! This is a game in which you will learn about the fun responsabilities of life. " + \
     "The goal of the game is to make it through to the end of the week without any of your main metrics, such as happiness, " + \
-    "health, or money, reaching zero. You can interact with the objects in your world in order to keep your metrics high. " + \
+    "health, or money, reaching zero. You can interact with the objects in your world in order to keep your metrics high. Note that " + \
+    "there are a few things you should remember. Every day, you should go to bed before 22:00 to avoid being tired and waking up sad and with less health. " + \
+    "You also lose health over night due to getting hungry so make sure to eat plenty before going to bed. Finaly, remember to pay your taxes every day at the local council " + \
+    "building. If you don't, you will lose money and get a fine. Don't worry, life's fair and you have to pay rent over night anyways. " + \
     "Ultimately, you should be able to find the perfect balance of work, training, and fun in order to make it through the week. " + \
     "Should things go bad, you will notice your friend Paul calling you with some hints. But until then, good luck at the game of life!"
 
