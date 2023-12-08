@@ -49,11 +49,12 @@ class Player():
         self.facing = facing
         self.speed = speed
         self.gender = gender
+        self.hasPaidTax = False
 
         #New
          
-        self.oldMetrics = Metrics(money=10)
-        self.metrics = Metrics(money=100)
+        self.oldMetrics: Metrics = Metrics(money=100)
+        self.metrics: Metrics = Metrics(money=100)
 
         self.interaction_threshold = 128
         self.not_interacting = True
@@ -70,14 +71,32 @@ class Player():
     def reset(self) -> None:
         #So that the player sprite doesn't start on an object
         self.hitbox = pygame.Rect(self.screen.get_width() / 6, self.screen.get_height() / 2, self.width//4, self.height//4)
+        self.hasPaidTax = False
 
     def resetNextDay(self) -> None:
+        # Become sad if money is less than previous day
         if (self.metrics.getMoney() < self.oldMetrics.getMoney()):
-            self.oldMetrics = self.metrics
             self.metrics.updateHappiness(-15)
+
+        # If the player did not go to bed - becomes tired and loses health and happiness
+        if self.metrics.getTime() < 1500:
+            self.metrics.updateHappiness(-10)
+            self.metrics.updateHealth(-10)
         else:
-            self.oldMetrics = self.metrics
-        
+            self.metrics.updateHappiness(10)
+            self.metrics.updateHealth(10)
+
+        # Get Hungry over night
+        self.metrics.updateHealth(-25)
+        self.oldMetrics = self.metrics
+
+        # Pay the daily tax + fine if you haven't paid it at the council
+        if not self.hasPaidTax:
+            self.metrics.updateMoney(-250)
+        else:
+            self.metrics.updateMoney(-50)
+
+
         self.checkGameOver()
         self.metrics.resetTime()
         self.reset()
@@ -193,13 +212,12 @@ class Player():
         
         canInteract = pygame.K_e in holdingKeys and self.not_interacting \
                         and object is not None #and facing direction
-        # navigateTo = 1
-        
+
         if canInteract:
             self.not_interacting = False
             self.metrics.changeMetrics(
                 object.getHappinessEffect(), 
-                1320 - self.metrics.getTime() if object.getNextDay() else object.getTimeEffect(), 
+                1500 if object.getNextDay() else object.getTimeEffect(), 
                 object.getHealthEffect(),
                 object.getMoneyEffect()
             )
