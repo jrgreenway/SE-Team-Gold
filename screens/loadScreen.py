@@ -14,6 +14,8 @@ def create_buttons(width: int, savedGames: list[str], buttonClick: Callable) -> 
 
 def draw_scrollbar(screen: pygame.Surface, scroll_pos: int, total_items: int, visible_height: int):
     """Draw a scrollbar on the right side of the screen."""
+    if total_items == 0:
+        total_items = 1
     bar_height = visible_height / total_items * visible_height
     bar_pos = scroll_pos / total_items * visible_height
     pygame.draw.rect(screen, (200, 200, 200), (screen.get_width() - 20, 0, 20, visible_height))
