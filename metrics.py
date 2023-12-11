@@ -67,6 +67,12 @@ class Metrics:
     
     def updateHappiness(self, increment=0) -> None:
         self.happiness = max(0, min(100, self.happiness + increment))
+
+    def updateHealth(self, increment=0) -> None:
+        self.health = max(0, min(100, self.health + increment))
+
+    def updateMoney(self, increment=0) -> None:
+        self.money = self.money + increment
     
     def formatTime(self) -> str:
         hours = self.time // 60
@@ -153,7 +159,10 @@ class Metrics:
             "happiness": self.happiness,
             "health": self.health,
             "money": self.money
-        }
+    }
+
+    def copy(self):
+        return Metrics(self.time, self.happiness, self.health, self.money)
 
     
 

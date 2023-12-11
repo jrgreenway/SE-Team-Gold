@@ -49,11 +49,12 @@ class Player():
         self.facing = facing
         self.speed = speed
         self.gender = gender
+        self.hasPaidTax = False
 
         #New
          
-        self.oldMetrics = Metrics(money=10)
-        self.metrics = Metrics(money=100)
+        self.oldMetrics: Metrics = Metrics(money=100)
+        self.metrics: Metrics = Metrics(money=100)
 
         self.interaction_threshold = 128
         self.not_interacting = True
@@ -70,14 +71,34 @@ class Player():
     def reset(self) -> None:
         #So that the player sprite doesn't start on an object
         self.hitbox = pygame.Rect(self.screen.get_width() / 6, self.screen.get_height() / 2, self.width//4, self.height//4)
+        self.hasPaidTax = False
+
+    def dailyChange(self) -> None:
+
+        # If the player did not go to bed - becomes tired and loses health and happiness
+        if self.metrics.getTime() < 1500:
+            self.metrics.updateHappiness(-10)
+            self.metrics.updateHealth(-10)
+        else:
+            self.metrics.updateHappiness(10)
+            self.metrics.updateHealth(10)
+
+        # Get Hungry over night
+        self.metrics.updateHealth(-25)
+
+        # Pay the rent + fine if you haven't paid it at the council
+        if not self.hasPaidTax:
+            self.metrics.updateMoney(-250)
+        else:
+            self.metrics.updateMoney(-50) # Rent
+
+        # Become sad if money is less than previous day
+        if (self.metrics.getMoney() < self.oldMetrics.getMoney()):
+            self.metrics.updateHappiness(-15)
+
 
     def resetNextDay(self) -> None:
-        if (self.metrics.getMoney() < self.oldMetrics.getMoney()):
-            self.oldMetrics = self.metrics
-            self.metrics.updateHappiness(-15)
-        else:
-            self.oldMetrics = self.metrics
-        
+        self.oldMetrics = self.metrics.copy()
         self.checkGameOver()
         self.metrics.resetTime()
         self.reset()
@@ -193,33 +214,17 @@ class Player():
         
         canInteract = pygame.K_e in holdingKeys and self.not_interacting \
                         and object is not None #and facing direction
-        # navigateTo = 1
-        
+
         if canInteract:
             self.not_interacting = False
             self.metrics.changeMetrics(
                 object.getHappinessEffect(), 
-                1320 - self.metrics.getTime() if object.getNextDay() else object.getTimeEffect(), 
+                1500 if object.getNextDay() else object.getTimeEffect(), 
                 object.getHealthEffect(),
                 object.getMoneyEffect()
             )
             self.checkGameOver()
-            # click_object = pygame.Rect()
-            # if object.navigateTo():
-            #     navigateTo = object.navigateTo()
 
-            # for key in holdingKeys:
-            #     x = self.position.x
-            #     y = self.position.y
-            #     mouse_clicked = pygame.mouse.get_pressed()[0]
-            #     if key == mouse_clicked:
-            #         for obj in object:
-            #             pygame.draw.rect(self.screen, pygame.Rect(obj.getPosition().x, obj.getPosition().y, 128, 128), 2)
-            #             if obj.navigateTo():
-            #                 navigateTo = obj.navigateTo()
-
-            
-                
         return object.getOpenMap() if canInteract else None
 
 
