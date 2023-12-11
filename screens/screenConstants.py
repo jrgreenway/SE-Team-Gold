@@ -9,6 +9,7 @@ MAP_SCREEN = "mapScreen"
 ORACLE_ANSWER_SCREEN = "oracleAnswer"
 DAY_END_SCREEN = "dayEnd"
 GAME_OVER_SCREEN = "gameOver"
+INTRODUCTION_SCREEN = "introduction"
 
 def nextScreen(currentScreen: str) -> str:
     ''' nextScreen: str -> str
@@ -17,7 +18,8 @@ def nextScreen(currentScreen: str) -> str:
     return {
         WELCOME_SCREEN: START_SCREEN,
         START_SCREEN: CREATE_AVATAR_SCREEN,
-        CREATE_AVATAR_SCREEN: GAME_SCREEN,
+        CREATE_AVATAR_SCREEN: INTRODUCTION_SCREEN,
+        INTRODUCTION_SCREEN: GAME_SCREEN,
         GAME_SCREEN: PAUSE_SCREEN,
         PAUSE_SCREEN: GAME_SCREEN,
         LOAD_SCREEN: GAME_SCREEN,
@@ -35,6 +37,7 @@ def previousScreen(currentScreen: str) -> str:
         WELCOME_SCREEN: WELCOME_SCREEN,
         START_SCREEN: WELCOME_SCREEN,
         CREATE_AVATAR_SCREEN: START_SCREEN,
+        INTRODUCTION_SCREEN: CREATE_AVATAR_SCREEN,
         PAUSE_SCREEN: GAME_SCREEN,
         LOAD_SCREEN: START_SCREEN,
         GAME_SCREEN: START_SCREEN,

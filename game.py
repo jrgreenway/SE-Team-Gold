@@ -9,6 +9,7 @@ from scenes.sceneDrawer import scene_loader
 from screens.avatarScreen import draw_avatar_screen
 from screens.endOfDayScreen import draw_end_of_day_screen
 from screens.gameScreen import draw_game_screen
+from screens.introductionScreen import draw_introduction_screen
 from screens.loadScreen import draw_load_screen
 from screens.oracleAnswerScreen import draw_oracle_answer_screen
 from screens.oracleQuestionScreen import draw_oracle_question_screen
@@ -432,12 +433,26 @@ class Game:
                 if len(clicked) > 0:
                     self.running, self.currentScreen = clicked[0].onClick(game=self)
 
+    def createIntroductionScreen(self, events):
+        draw_game_screen(self.screen, self.currentScene)
+        buttons = draw_introduction_screen(self.screen, self.textAnimationStartFrame, self.currentFrame, self.buttonCBs['next'])
+        self.handleIntroductionScreenEvents(events, buttons)
+
+    def handleIntroductionScreenEvents(self, events, buttons):
+        for event in events:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                clicked = [button for button in buttons if button.rect.collidepoint(event.pos)]
+                if len(clicked) > 0:
+                    self.running, self.currentScreen = clicked[0].onClick(
+                        currentScreen=self.currentScreen,
+                    )
+
     def handleCurrentScreen(self, events) -> None:
         ''' Game.handleCurrentScreen(events) -> None
         Handles the current screen
         '''
 
-        if self.currentScreen is not ORACLE_ANSWER_SCREEN:
+        if self.currentScreen is not ORACLE_ANSWER_SCREEN and self.currentScreen is not INTRODUCTION_SCREEN:
             self.textAnimationStartFrame = 0
         if self.currentScreen is not DAY_END_SCREEN:
             self.dayEndFrame = 0
@@ -468,6 +483,10 @@ class Game:
             self.createDayEndScreen(events)
         elif self.currentScreen == GAME_OVER_SCREEN:
             self.createGameOverScreen(events)
+        elif self.currentScreen == INTRODUCTION_SCREEN:
+            if self.textAnimationStartFrame == 0:
+                self.textAnimationStartFrame = self.currentFrame
+            self.createIntroductionScreen(events)
         else:
             raise Exception("Invalid Screen")
         
