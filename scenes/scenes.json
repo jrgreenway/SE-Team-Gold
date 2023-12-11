@@ -554,7 +554,7 @@
                 "health-effect": -10,
                 "position-absolute": {
                     "x": 256,
-                    "y": 256
+                    "y": 384
                 }
             },
             {
