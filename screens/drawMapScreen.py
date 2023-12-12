@@ -1,7 +1,6 @@
 from typing import Callable
 from buttons.button import Button
 import pygame
-import random
 
 # location format is location: (sceneIndex, x, y)
 def draw_map_screen(
