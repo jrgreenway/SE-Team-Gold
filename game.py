@@ -424,6 +424,8 @@ class Game:
 
         buttons = draw_game_over_screen(self.screen, exitToTitleCB=self.buttonCBs['toTitle'], exitToDesktopCB=self.buttonCBs['exit'])
         self.handleGameOverScreenEvents(events, buttons)
+        if self.currentScene != self.defaultScene:
+            self.setCurrentScene(self.defaultScene)
 
     def handleGameOverScreenEvents(self, events, buttons):
 
@@ -531,7 +533,7 @@ class Game:
         # Game loop
         while self.running:
             self.currentFrame += 1
-            
+
             if self.currentFrame % 60 == 0 and self.currentScreen == GAME_SCREEN:
                 nextDay = self.player.metrics.updateTime()
                 # trigger change in metrics to display in day end screen
@@ -539,7 +541,6 @@ class Game:
                     self.player.dailyChange()
 
                 self.currentScreen = (self.player.gameOver and GAME_OVER_SCREEN) or (nextDay and DAY_END_SCREEN) or GAME_SCREEN
-            
             # self.currentFrame %= 60
             # Handle events - keyPresses
             events = pygame.event.get()
