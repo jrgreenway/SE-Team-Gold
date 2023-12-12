@@ -522,9 +522,10 @@ class Game:
         '''
         clock = pygame.time.Clock()
 
-        # pygame.mixer.init()
-        # pygame.mixer.music.load("assets/audio/soundtrack.mp3")
-        # pygame.mixer.music.play(-1)
+        pygame.mixer.init()
+        pygame.mixer.music.load("assets/audio/soundtrack.mp3")
+        pygame.mixer.music.set_volume(0.1)
+        pygame.mixer.music.play(-1)
 
         # Game loop
         while self.running:
