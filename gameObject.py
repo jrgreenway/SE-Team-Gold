@@ -1,6 +1,5 @@
 import os
 import pickle
-from tkinter import N
 from typing import Optional
 import pygame
 

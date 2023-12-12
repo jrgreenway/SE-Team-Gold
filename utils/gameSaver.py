@@ -1,6 +1,5 @@
 import json
 import os
-from requests import get
 
 from game import Game
 from utils.gameLoader import get_saved_games

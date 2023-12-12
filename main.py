@@ -1,12 +1,10 @@
 import pygame
-from requests import get
 from buttons.buttonCallbacks import createButtonCBDict
 
 from game import Game
 from player import Player
 from scenes.sceneDrawer import scene_loader
-from utils.gameLoader import get_saved_games, load_game
-from utils.gameSaver import save_game
+from utils.gameLoader import get_saved_games
 
 pygame.init()
 
