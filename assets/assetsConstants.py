@@ -11,6 +11,6 @@ LOCATIONS = {
     "Home": (0, 80, 140, "assets/home.png"),
     "Office": (1, 300, 200, "assets/office.png"),
     "Park": (2, 600, 250, "assets/park.png"), 
-    "Gym": (3, 200, 400, ""),
+    "Gym": (3, 200, 400, "assets/gym.png"),
     "Tax": (4, 400, 400, ""),
 }
