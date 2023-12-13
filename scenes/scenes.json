@@ -582,5 +582,183 @@
                 }
             }
         ]
+    },
+    {
+        "id": 4,
+        "name": "Tax Office",
+        "texture": "assets/Tax Floor.png",
+        "objects": [
+            {
+                "id": 0,
+                "texture": "assets/Window.png",
+                "interactive": true,
+                "time-effect": 80,
+                "happiness-effect": 15,
+                "health-effect": 5,
+                "position-absolute": {
+                    "x": 0,
+                    "y": 0
+                },
+                "isCollidable": true
+            },
+            {
+                "id": 1,
+                "texture": "assets/Window.png",
+                "interactive": true,
+                "time-effect": 40,
+                "happiness-effect": 10,
+                "health-effect": 5,
+                "position-relative": {
+                    "direction": "E",
+                    "relativeTo": 0
+                }
+            },
+            {
+                "id": 2,
+                "texture": "assets/gate.png",
+                "interactive": true,
+                "openMap": true,
+                "position-relative": {
+                    "direction": "E",
+                    "relativeTo": 1
+                }
+            },
+            {
+                "id": 3,
+                "texture": "assets/Window.png",
+                "interactive": true,
+                "time-effect": 40,
+                "happiness-effect": 10,
+                "health-effect": 5,
+                "position-relative": {
+                    "direction": "E",
+                    "relativeTo": 2
+                },
+                "isCollidable": true
+            },
+            {
+                "id": 4,
+                "texture": "assets/Window.png",
+                "interactive": true,
+                "time-effect": 40,
+                "happiness-effect": 10,
+                "health-effect": 5,
+                "position-relative": {
+                    "direction": "E",
+                    "relativeTo": 3
+                }
+            },
+            {
+                "id": 5,
+                "texture": "assets/Window.png",
+                "interactive": true,
+                "time-effect": 40,
+                "happiness-effect": 10,
+                "health-effect": 5,
+                "position-relative": {
+                    "direction": "E",
+                    "relativeTo": 4
+                }
+            },
+            {
+                "id": 6,
+                "texture": "assets/Window.png",
+                "interactive": true,
+                "time-effect": 40,
+                "happiness-effect": 10,
+                "health-effect": 5,
+                "position-relative": {
+                    "direction": "E",
+                    "relativeTo": 5
+                }
+            },
+            {
+                "id": 7,
+                "texture": "assets/Window.png",
+                "interactive": true,
+                "time-effect": 40,
+                "happiness-effect": 10,
+                "health-effect": 5,
+                "position-relative": {
+                    "direction": "E",
+                    "relativeTo": 6
+                }
+            },
+            {
+                "id": 8,
+                "texture": "assets/Window.png",
+                "interactive": true,
+                "time-effect": 80,
+                "happiness-effect": 15,
+                "health-effect": 5,
+                "position-relative": {
+                    "direction": "E",
+                    "relativeTo": 7
+                },
+                "isCollidable": true
+            },
+            {
+                "id": 9,
+                "texture": "assets/Window.png",
+                "interactive": true,
+                "time-effect": 80,
+                "happiness-effect": 15,
+                "health-effect": 5,
+                "position-relative": {
+                    "direction": "E",
+                    "relativeTo": 8
+                },
+                "isCollidable": true
+            },
+            {
+                "id": 10,
+                "texture": "assets/Window.png",
+                "interactive": true,
+                "time-effect": 80,
+                "happiness-effect": 15,
+                "health-effect": 5,
+                "position-relative": {
+                    "direction": "E",
+                    "relativeTo": 9
+                },
+                "isCollidable": true
+            },
+            {
+                "id": 11,
+                "texture": "assets/Window.png",
+                "interactive": true,
+                "time-effect": 80,
+                "happiness-effect": 15,
+                "health-effect": 5,
+                "position-relative": {
+                    "direction": "E",
+                    "relativeTo": 10
+                },
+                "isCollidable": true
+            },
+            {
+                "id": 12,
+                "texture": "assets/Window.png",
+                "interactive": true,
+                "time-effect": 80,
+                "happiness-effect": 15,
+                "health-effect": 5,
+                "position-relative": {
+                    "direction": "E",
+                    "relativeTo": 11
+                },
+                "isCollidable": true
+            },
+            {
+                "id": 13,
+                "texture": "assets/Tax Interactable.png",
+                "interactive": true,
+                "money-effect": -150,
+                "position-absolute":{
+                    "x": 256,
+                    "y": 256
+                }
+            }
+        ]
     }
 ]
