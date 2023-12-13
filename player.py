@@ -73,6 +73,12 @@ class Player():
         self.hitbox = pygame.Rect(self.screen.get_width() / 6, self.screen.get_height() / 2, self.width//4, self.height//4)
         self.hasPaidTax = False
 
+    def resetCharacter(self):
+        self.reset()
+        self.metrics = Metrics(money=100)
+        self.oldMetrics = Metrics(money=100)
+        self.gameOver = False
+
     def dailyChange(self) -> None:
 
         # If the player did not go to bed - becomes tired and loses health and happiness
