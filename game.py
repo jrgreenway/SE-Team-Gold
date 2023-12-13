@@ -21,7 +21,7 @@ from screens.welcomeScreen import draw_welcome_screen
 
 from player import Player
 
-daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", "Won"]
 
 class Game:
     '''
@@ -90,6 +90,8 @@ class Game:
 
     def nextDay(self):
         self.currentDay = daysOfWeek[(daysOfWeek.index(self.currentDay) + 1) % len(daysOfWeek)]
+        if self.currentDay == "Won":
+            self.currentScreen = GAME_OVER_SCREEN
         self.currentScene = self.defaultScene
 
     def loadPlayer(self, playerName: str, playerGender: str, playerPosition: pygame.Vector2, speed: int) -> None:
@@ -420,7 +422,12 @@ class Game:
 
     def createGameOverScreen(self, events):
 
-        buttons = draw_game_over_screen(self.screen, exitToTitleCB=self.buttonCBs['toTitle'], exitToDesktopCB=self.buttonCBs['exit'])
+        buttons = draw_game_over_screen(
+            self.screen, 
+            exitToTitleCB=self.buttonCBs['toTitle'], 
+            exitToDesktopCB=self.buttonCBs['exit'],
+            lost = self.currentDay != "Won"
+        )
         self.handleGameOverScreenEvents(events, buttons)
         if self.currentScene != self.defaultScene:
             self.setCurrentScene(self.defaultScene)

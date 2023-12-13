@@ -3,7 +3,12 @@ import pygame
 
 from buttons.button import Button
 
-def draw_game_over_screen(screen: pygame.Surface, exitToTitleCB: Callable, exitToDesktopCB: Callable) -> list[Button]:
+def draw_game_over_screen(
+    screen: pygame.Surface, 
+    exitToTitleCB: Callable, 
+    exitToDesktopCB: Callable,
+    lost: bool = True
+) -> list[Button]:
 
     # Set up the font
     font = pygame.font.Font(None, 36)
@@ -22,8 +27,10 @@ def draw_game_over_screen(screen: pygame.Surface, exitToTitleCB: Callable, exitT
 
     screen.fill((255, 255, 255))
 
+    message = "Game Over" if lost else "You Won!"
+
     #Draw game over message
-    message = font2.render("Game Over", True, (158, 14, 14))
+    message = font2.render(message, True, (158, 14, 14))
     messageRect = pygame.Rect((screen.get_width() - button_width) / 2, exit_to_title_button_rect.top - button_height - button_padding*3, button_width, button_height)
     screen.blit(message, messageRect)
 
