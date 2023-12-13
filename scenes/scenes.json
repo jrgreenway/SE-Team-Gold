@@ -615,9 +615,11 @@
             },
             {
                 "id": 2,
-                "texture": "assets/gate.png",
+                "texture": "assets/Window.png",
                 "interactive": true,
-                "openMap": true,
+                "time-effect": 40,
+                "happiness-effect": 10,
+                "health-effect": 5,
                 "position-relative": {
                     "direction": "E",
                     "relativeTo": 1
@@ -633,16 +635,13 @@
                 "position-relative": {
                     "direction": "E",
                     "relativeTo": 2
-                },
-                "isCollidable": true
+                }
             },
             {
                 "id": 4,
-                "texture": "assets/Window.png",
+                "texture": "assets/gate.png",
                 "interactive": true,
-                "time-effect": 40,
-                "happiness-effect": 10,
-                "health-effect": 5,
+                "openMap": true,
                 "position-relative": {
                     "direction": "E",
                     "relativeTo": 3
@@ -652,100 +651,25 @@
                 "id": 5,
                 "texture": "assets/Window.png",
                 "interactive": true,
-                "time-effect": 40,
-                "happiness-effect": 10,
+                "time-effect": 80,
+                "happiness-effect": 15,
                 "health-effect": 5,
                 "position-relative": {
                     "direction": "E",
                     "relativeTo": 4
-                }
+                },
+                "isCollidable": true
             },
             {
                 "id": 6,
                 "texture": "assets/Window.png",
                 "interactive": true,
-                "time-effect": 40,
-                "happiness-effect": 10,
+                "time-effect": 80,
+                "happiness-effect": 15,
                 "health-effect": 5,
                 "position-relative": {
                     "direction": "E",
                     "relativeTo": 5
-                }
-            },
-            {
-                "id": 7,
-                "texture": "assets/Window.png",
-                "interactive": true,
-                "time-effect": 40,
-                "happiness-effect": 10,
-                "health-effect": 5,
-                "position-relative": {
-                    "direction": "E",
-                    "relativeTo": 6
-                }
-            },
-            {
-                "id": 8,
-                "texture": "assets/Window.png",
-                "interactive": true,
-                "time-effect": 80,
-                "happiness-effect": 15,
-                "health-effect": 5,
-                "position-relative": {
-                    "direction": "E",
-                    "relativeTo": 7
-                },
-                "isCollidable": true
-            },
-            {
-                "id": 9,
-                "texture": "assets/Window.png",
-                "interactive": true,
-                "time-effect": 80,
-                "happiness-effect": 15,
-                "health-effect": 5,
-                "position-relative": {
-                    "direction": "E",
-                    "relativeTo": 8
-                },
-                "isCollidable": true
-            },
-            {
-                "id": 10,
-                "texture": "assets/Window.png",
-                "interactive": true,
-                "time-effect": 80,
-                "happiness-effect": 15,
-                "health-effect": 5,
-                "position-relative": {
-                    "direction": "E",
-                    "relativeTo": 9
-                },
-                "isCollidable": true
-            },
-            {
-                "id": 11,
-                "texture": "assets/Window.png",
-                "interactive": true,
-                "time-effect": 80,
-                "happiness-effect": 15,
-                "health-effect": 5,
-                "position-relative": {
-                    "direction": "E",
-                    "relativeTo": 10
-                },
-                "isCollidable": true
-            },
-            {
-                "id": 12,
-                "texture": "assets/Window.png",
-                "interactive": true,
-                "time-effect": 80,
-                "happiness-effect": 15,
-                "health-effect": 5,
-                "position-relative": {
-                    "direction": "E",
-                    "relativeTo": 11
                 },
                 "isCollidable": true
             },
@@ -754,6 +678,7 @@
                 "texture": "assets/Tax Interactable.png",
                 "interactive": true,
                 "money-effect": -150,
+                "paid-tax": true,
                 "position-absolute":{
                     "x": 256,
                     "y": 256
