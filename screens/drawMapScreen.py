@@ -26,15 +26,10 @@ def draw_map_screen(
         location_button = pygame.Rect(x, y, 150, 50)
         if spritePath != "":
             location_sprite = pygame.image.load(spritePath)
+            location_sprite = pygame.transform.scale(location_sprite, (160,160))
             location_button = pygame.Rect(x, y, location_sprite.get_width(), location_sprite.get_height())
             screen.blit(location_sprite, (x, y))
-        else:
-            pygame.draw.rect(screen, (0, 0, 255), location_button)
 
-            # Draw the location name
-            location_font = pygame.font.Font(None, 30)
-            location_text = location_font.render(location, True, (255, 255, 255))
-            screen.blit(location_text, (x, y))
 
         buttons.append(Button(location_button, clickLocationCB))
 
