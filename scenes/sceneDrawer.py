@@ -49,6 +49,7 @@ def scene_loader_data(sceneData: dict) -> Scene:
         openMap = load_attribute('openMap', object, None)
         nextDay = load_attribute('next-day', object, False)
         money_effect = load_attribute('money-effect', object, 0)
+        paid_tax = load_attribute('paid-tax', object, False)
         gameObject = GameObject(object['id'],
             happiness_effect=happiness_effect,
             time_effect=time_effect,
@@ -58,7 +59,8 @@ def scene_loader_data(sceneData: dict) -> Scene:
             sprite=gameSprite,
             isCollidable=isCollidable,
             openMap=openMap,
-            next_day=nextDay
+            next_day=nextDay,
+            paid_tax=paid_tax
         )
         try:
             pos = object['position-absolute']

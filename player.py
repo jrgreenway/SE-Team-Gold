@@ -229,6 +229,8 @@ class Player():
                 object.getHealthEffect(),
                 object.getMoneyEffect()
             )
+            if object.getPaidTax():
+                self.hasPaidTax = True
             self.checkGameOver()
 
         return object.getOpenMap() if canInteract else None

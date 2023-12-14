@@ -50,6 +50,7 @@ class GameObject:
                  position: pygame.Vector2 = pygame.Vector2(0, 0), 
                  sprite: Optional[pygame.Surface] = None,
                  isCollidable = True,
+                 paid_tax: bool = False,
                  size: tuple = (128,128)
                  ) -> None:
         self.id = id
@@ -64,6 +65,7 @@ class GameObject:
         self.money_effect = money_effect
         self.size = size # placeholder for if we make larger objects
         self.isCollidable = isCollidable
+        self.paid_tax = paid_tax
 
     def getID(self) -> int:
         return self.id
@@ -88,6 +90,9 @@ class GameObject:
     
     def getMoneyEffect(self):
         return self.money_effect
+    
+    def getPaidTax(self):
+        return self.paid_tax
 
     def getPosition(self) -> pygame.Vector2:
         return self.position
