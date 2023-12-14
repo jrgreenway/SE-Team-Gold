@@ -5,7 +5,7 @@ SINK_ASSET = "assets/sink.png"
 ANIMATION_ASSET = "assets/animations/"
 MALE_CHAR_ASSET = ANIMATION_ASSET + "S_M/S0.png"
 FEMALE_CHAR_ASSET = ANIMATION_ASSET + "S_F/S0.png"
-
+TUTORIAL = "assets/Avatar Game Tutorial.mp4"
 
 LOCATIONS = {
     "Home": (0, 100, 140, "assets/Home Icon.png"),
