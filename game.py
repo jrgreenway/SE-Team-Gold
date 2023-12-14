@@ -157,7 +157,13 @@ class Game:
         ''' Game.startScreen(events) -> None
         Draws the start screen and handles mouse clicks on the buttons
         '''
-        buttons = draw_start_screen(self.screen, startCB=self.buttonCBs['start'], loadCB=self.buttonCBs['load'], exitCB=self.buttonCBs['exit'])
+        buttons = draw_start_screen(
+            self.screen, 
+            startCB=self.buttonCBs['start'], 
+            loadCB=self.buttonCBs['load'], 
+            exitCB=self.buttonCBs['exit'],
+            tutorialCB=self.buttonCBs['tutorial']
+        )
         self.handleMoseClicksStartScreen(events, buttons)
 
     def handleAvatarScreenEvents(self, events, buttons) -> None:
