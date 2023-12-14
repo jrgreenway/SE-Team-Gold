@@ -7,6 +7,7 @@ import platform
 import subprocess
 import threading
 from typing import Callable
+import webbrowser
 from assets.assetsConstants import TUTORIAL
 from game import Game
 from oracle import Oracle
@@ -82,13 +83,7 @@ def nextDayCB(**kwargs) -> tuple[bool, str]:
     return True, GAME_SCREEN
 
 def tutorialCB(**kwargs) -> tuple[bool, str]:
-    system_platform = platform.system().lower()
-    if system_platform == 'darwin':  # macOS
-        subprocess.run(['open', TUTORIAL], check=True)
-    elif system_platform == 'linux':  # Linux
-        subprocess.run(['xdg-open', TUTORIAL], check=True)
-    elif system_platform == 'windows':  # Windows
-        subprocess.run(['start', TUTORIAL], check=True)
+    webbrowser.open("file://"+os.path.abspath(TUTORIAL))
 
     return True, START_SCREEN
 
