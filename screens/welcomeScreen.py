@@ -12,7 +12,7 @@ def draw_welcome_screen(screen, currentFrame):
     # Set font and text
     font_size = 30 + int(5 * abs(math.sin((currentFrame % 60) / 20)))
     font = pygame.font.Font(None, font_size)
-    text = font.render("Avatar Game", True, (0, 0, 0))
+    text = font.render("My Friend Paul", True, (0, 0, 0))
 
     # Center text on screen
     text_rect = text.get_rect(center=screen.get_rect().center)
