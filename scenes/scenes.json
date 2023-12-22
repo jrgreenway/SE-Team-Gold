@@ -213,7 +213,7 @@
                 "texture": "assets/Oven.png",
                 "interactive": true,
                 "happiness-effect":10,
-                "health-effect":10,
+                "health-effect":20,
                 "time-effect":120,
                 "position-relative": {
                     "direction": "E",
@@ -472,7 +472,7 @@
                 "interactive": true,
                 "time-effect": 100,
                 "happiness-effect": 30,
-                "health-effect": -10,
+                "health-effect": 10,
                 "position-absolute": {
                     "x": 256,
                     "y": 256
@@ -551,7 +551,7 @@
                 "interactive": true,
                 "time-effect": 40,
                 "happiness-effect": 15,
-                "health-effect": -10,
+                "health-effect": -5,
                 "position-absolute": {
                     "x": 256,
                     "y": 384
@@ -563,7 +563,7 @@
                 "interactive": true,
                 "time-effect": 80,
                 "happiness-effect": 35,
-                "health-effect": -40,
+                "health-effect": -10,
                 "position-relative": {
                     "direction": "E",
                     "relativeTo": 5
@@ -575,7 +575,7 @@
                 "interactive": true,
                 "time-effect": 80,
                 "happiness-effect": 35,
-                "health-effect": -40,
+                "health-effect": -10,
                 "position-relative": {
                     "direction": "N",
                     "relativeTo": 6
@@ -677,7 +677,7 @@
                 "id": 13,
                 "texture": "assets/Tax Interactable.png",
                 "interactive": true,
-                "money-effect": -150,
+                "money-effect": -100,
                 "paid-tax": true,
                 "position-absolute":{
                     "x": 256,
